@@ -1,0 +1,45 @@
+{
+  "purpose": "Approved contact page neighbourhood map",
+  "source": "OpenStreetMap API primary data",
+  "downloaded": "2026-11-06",
+  "counts": {
+    "buildings": 802,
+    "roads": 488,
+    "greenAreas": 36
+  },
+  "verifiedMallPoint": {
+    "lat": 35.7911174,
+    "lon": 51.4207593
+  },
+  "osmMallWay": 1192581831,
+  "sources": {
+    "officialAddress": "https://mellalgallery.com/fa/contact/",
+    "officialDirections": "https://www.google.com/maps/place/Melal%2BBoutique%2BMall/@35.7911174,51.4181844,17z/data=!3m1!4b1!4m6!3m5!1s0x3f8e0672751b1753:0xed4d880692ab6ad3!8m2!3d35.7911174!4d51.4207593!16s%2Fg%2F11c0xszpbz?entry=ttu&g_ep=EgoyMDI1MDMxMC4wIKXMDSoASAFQAw%3D%3D",
+    "osmMall": "https://www.openstreetmap.org/way/1192581831",
+    "osmMallApi": "https://api.openstreetmap.org/api/0.6/way/1192581831/full",
+    "osmMapApi": "https://api.openstreetmap.org/api/0.6/map?bbox=51.4085,35.7846,51.4331,35.7975",
+    "copyright": "https://www.openstreetmap.org/copyright"
+  },
+  "mapDescription": {
+    "fa": "نمای هنری محلهٔ الهیه بر پایهٔ خیابان‌ها و ردپای ساختمان‌های واقعی؛ ارتفاع‌ها صرفاً نمایشی‌اند.",
+    "en": "An illustrated Elahiyeh neighbourhood view based on real streets and building footprints; building heights are stylised."
+  },
+  "rootIntegration": {
+    "svg": "assets/contact/elahiyeh-map.svg",
+    "json": "assets/contact/map-data.json",
+    "groups": [
+      "map-parks",
+      "map-roads",
+      "map-buildings",
+      "map-labels",
+      "mall-pin"
+    ],
+    "buildingAttributes": [
+      "data-i",
+      "data-cx",
+      "data-cy",
+      "data-rise"
+    ],
+    "attribution": "Keep a visible © OpenStreetMap contributors link to https://www.openstreetmap.org/copyright when embedding or restyling this map."
+  }
+}

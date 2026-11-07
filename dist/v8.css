@@ -1,0 +1,153 @@
+/* Owner's November refinements: proportional type, tactile detail, clear navigation. */
+:root{--navy:#243141;--emboss-ink:#a59781}
+.page-footer-nav{display:flex!important;justify-content:center!important;align-items:center;flex-wrap:wrap;width:100%;margin-inline:auto;gap:18px 30px;text-align:center}
+.page-footer-nav a{flex:0 0 auto;text-align:center}
+.portal-art-link{display:block;position:absolute;inset:0;z-index:3;background:transparent;cursor:pointer}
+.portal-art-link:focus-visible,.heritage-panorama-link:focus-visible{outline:2px solid var(--bronze);outline-offset:8px}
+.heritage-panorama-link{display:block;width:100%;height:auto;cursor:pointer}
+.phone-number{display:flex!important;flex-direction:column;align-items:flex-end;gap:5px;text-decoration:none}
+.phone-department{font:400 11px/1.9 Vazirmatn,Arial,sans-serif;color:var(--muted);direction:rtl;text-align:right;white-space:normal}
+.contact-block .phone-row{min-height:78px;padding-block:12px;align-items:center}
+.contact-block .phone-socials a{width:40px;height:40px;min-width:40px;min-height:40px;display:grid;place-items:center;border-radius:50%;color:#8e7858;transition:background .2s,border-color .2s,color .2s}
+.contact-block .phone-socials a:hover,.contact-block .phone-socials a:focus-visible{background:#a28a6712;border-color:var(--bronze);color:var(--ink)}
+.contact-block .phone-socials .contact-icon{width:18px;height:18px;flex-basis:18px}
+.contact-block .phone-socials .brand-contact-icon{width:19px;height:19px;stroke:none;fill:currentColor}
+.heritage-entry-heading h1{text-shadow:0 2px 3px #493a2620,0 -1px 0 #fffdf8b0}
+.heritage-entry-heading .heritage-subtitle{text-shadow:0 1px 2px #59452c18,0 -1px 0 #fffdf8a0;mask-image:none!important;-webkit-mask-image:none!important;opacity:var(--write,1);transform:translateY(calc((1 - var(--write,1))*5px))}
+.heritage-families .heritage-section-heading{position:relative;text-align:center;max-width:1020px;margin:0 auto;padding:24px 0 28px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.heritage-families .heritage-section-heading:after{content:'';position:absolute;bottom:0;left:50%;width:1px;height:22px;background:var(--bronze);opacity:.55}
+.heritage-families .heritage-section-heading .small-english{display:flex;align-items:center;gap:12px;margin:0;letter-spacing:.18em;font-size:9px;line-height:1.8;color:var(--bronze)}
+.heritage-families .heritage-section-heading .small-english:before,.heritage-families .heritage-section-heading .small-english:after{content:'';width:34px;height:1px;background:var(--line)}
+.heritage-families .heritage-section-heading h2{font-family:Naskh,Georgia,serif;font-size:clamp(30px,3.4vw,46px);font-weight:400;line-height:1.65;margin:0 0 12px;text-wrap:balance}
+.family-name{text-align:center!important;width:100%;margin:0;line-height:1.65}
+.family-columns{--family-gap:min(8vw,110px);position:relative;align-items:start;gap:var(--family-gap);padding-top:22px}
+.family-columns:before{content:'';position:absolute;top:0;left:calc((100% - var(--family-gap))/4);right:calc((100% - var(--family-gap))/4);height:22px;border-top:1px solid var(--bronze);border-inline:1px solid var(--bronze);opacity:.55;pointer-events:none}
+.engraving-note h2{font-size:clamp(27px,3.3vw,49px)!important;line-height:1.65!important;white-space:normal!important;text-wrap:balance;margin-bottom:14px}
+.engraving-note p{font-family:Vazirmatn,Arial,sans-serif!important;font-size:clamp(13px,1.45vw,18px)!important;line-height:2.15!important;max-width:700px!important;text-wrap:balance}
+html[dir=ltr] .engraving-note h2{font-family:Cormorant,Georgia,serif;font-size:clamp(28px,3.5vw,49px)!important;line-height:1.3!important}
+html[dir=ltr] .engraving-note p{font-size:clamp(13px,1.3vw,17px)!important;line-height:1.8!important}
+.collection-detail #collection-page-title{color:var(--emboss-ink);text-shadow:-1px -1px 1px #fffdf7d9,1px 1px 1px #826f5645,1px 2px 3px #6c59401a;font-size:clamp(51px,6.9vw,96px);line-height:1.12;font-weight:400;letter-spacing:-.015em;max-width:100%;text-wrap:balance;overflow-wrap:normal}
+.collection-detail .collection-category{font-size:clamp(22px,2.4vw,31px);line-height:1.75;margin:14px 0 28px}
+.collection-security-link,.guide-collection-link{display:flex!important;align-items:center;justify-content:center;gap:12px;width:fit-content;max-width:100%;min-height:50px;border:1px solid var(--navy)!important;background:var(--navy);color:#f7f2e9!important;font:400 13px/1.9 Vazirmatn,Arial,sans-serif!important;padding:13px 23px!important;text-align:center;text-decoration:none;transition:background .2s,box-shadow .2s;box-shadow:0 4px 10px #1724350d}
+.collection-security-link{margin-block:27px 12px}
+.collection-security-link:before{content:'';display:block;width:16px;height:19px;flex:0 0 16px;background:currentColor;clip-path:polygon(50% 0,96% 16%,91% 64%,74% 86%,50% 100%,26% 86%,9% 64%,4% 16%,50% 0,50% 13%,17% 25%,22% 60%,35% 77%,50% 86%,65% 77%,78% 60%,83% 25%,50% 13%)}
+.collection-security-link:hover,.guide-collection-link:hover{background:#38495b;box-shadow:0 5px 13px #17243520}
+.guide-collection-link{grid-column:1/-1;margin:32px auto 0!important;background:transparent;color:var(--navy)!important;min-width:210px}
+.guide-collection-link:hover{background:var(--navy);color:var(--paper)!important}
+.introduction{padding-block:65px 62px;min-height:0}
+.introduction .section-kicker{margin-bottom:28px}
+.introduction-text{font-family:Vazirmatn,Arial,sans-serif;font-size:clamp(17px,1.7vw,23px);font-weight:400;line-height:2.1;max-width:100%;margin:0;text-wrap:pretty;letter-spacing:normal;word-spacing:normal}
+.introduction-text *{font:inherit;letter-spacing:inherit;word-spacing:inherit}
+.introduction-text .intro-break{display:block;height:.7em}
+.introduction-bottom{margin-top:25px;grid-template-columns:32px 1fr;gap:22px;align-items:start}
+.introduction-bottom p{font-size:13px!important;line-height:2.1;max-width:100%;margin:0}
+.introduction-bottom p,.introduction-bottom strong{font-family:Vazirmatn,Arial,sans-serif;font-weight:400}
+.enterprise-website{grid-column:2;justify-self:start;width:fit-content;font:400 18px/1.6 Cormorant,Georgia,serif;letter-spacing:.03em;border-bottom:1px solid var(--line);padding-block:10px;margin-top:12px}
+.atlas-interface{grid-template-columns:minmax(0,1fr) 84px;gap:26px 35px}
+.country-tabs{grid-column:1/-1;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;width:100%;min-width:0;overflow:visible;padding:0;border-bottom:1px solid var(--line)}
+.country-tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;min-width:0;min-height:72px;padding:8px 1px 13px;text-align:center;white-space:nowrap;font-size:12px}
+.country-tabs button:after{left:15%;right:15%;top:auto;bottom:-1px;width:auto;height:2px;transform:scaleX(0)}
+.country-tabs button[aria-selected=true]:after{transform:scaleX(1)}
+.country-tabs button:focus-visible{outline:1px solid var(--bronze);outline-offset:2px}
+.country-tabs button>span{max-width:100%}
+.country-flag{width:24px!important;height:16px!important;object-fit:cover;border-radius:1px;box-shadow:0 1px 3px #30281b1a;flex:0 0 auto;opacity:.9}
+.country-panels{grid-column:1;min-width:0}
+.atlas-pagination{grid-column:2;grid-row:2}
+.construction-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:18px 45px;padding-top:40px}
+.construction-sketch{grid-row:1/3;margin:0;align-self:center;isolation:isolate;mask-image:linear-gradient(to bottom,transparent,#000 5%,#000 92%,transparent)}
+.construction-sketch img{width:100%;height:auto;display:block;mix-blend-mode:multiply}
+.construction-row .construction-company{grid-column:2;font:400 11px/1.8 Cormorant,Georgia,serif;letter-spacing:.12em;color:var(--bronze)}
+.construction-row>div{grid-column:2}
+.construction-row h3{margin-top:0}
+.granules-row{grid-template-columns:90px minmax(0,1fr);gap:12px 35px;align-items:start}
+.granules-row .row-index{grid-column:1;grid-row:1/3;font:12px Cormorant,Georgia,serif;letter-spacing:.2em;padding-top:15px}
+.granules-row h3{grid-column:2;grid-row:1;font-size:31px;margin:0;line-height:1.8}
+.granules-row>p{grid-column:2;grid-row:2;margin:0;font-size:14px;line-height:2.2;max-width:800px}
+.argentum-intro{max-width:870px;margin-bottom:42px}
+.argentum-section{display:grid;grid-template-columns:1fr 1fr;gap:5vw;align-items:start;border-top:1px solid var(--line);padding-block:40px 45px;scroll-margin-top:110px}
+.argentum-section h3{font:400 35px/1.7 Naskh,Georgia,serif;margin:8px 0 14px}
+.argentum-section p{font:400 14px/2.2 Vazirmatn,Arial,sans-serif;color:var(--muted)}
+.argentum-section .collection-gallery{width:100%;max-width:100%;padding:0}
+.argentum-section .collection-gallery .gallery-main{aspect-ratio:4/3}
+.argentum-section .gallery-main img{width:100%;height:100%;object-fit:contain}
+.argentum-section .collection-specs{margin-top:20px}
+.argentum-section .gallery-thumbs{display:flex;gap:10px;flex-wrap:wrap}
+.argentum-section .gallery-thumbs button{width:calc(33.333% - 7px)}
+.argentum-section-nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.argentum-section-nav button{border:1px solid var(--line);padding:10px 18px;font:12px/1.9 Vazirmatn,Arial,sans-serif;color:var(--navy);background:#a28a6709;cursor:pointer}
+.argentum-section-nav button:hover,.argentum-section-nav button:focus-visible{border-color:var(--bronze);background:#a28a6718}
+html[dir=ltr] .argentum-section h3{font-family:Cormorant,Georgia,serif;line-height:1.3}
+.wind-panorama{display:block;width:100%;height:auto;overflow:visible}
+@media(min-width:701px){.medallion-position{width:min(34vw,38svh)}}
+.heritage-city-portrait .wind-panorama{mix-blend-mode:multiply;opacity:.9;mask-image:linear-gradient(180deg,#000 72%,transparent);transform:translateY(calc((1 - var(--city-ink,1))*12px));clip-path:inset(0 calc((1 - var(--city-ink,1))*48%) 0 calc((1 - var(--city-ink,1))*48%))}
+.heritage-panorama .wind-panorama{mix-blend-mode:multiply;opacity:.83;transform:translateX(var(--heritage-drift,0px));clip-path:inset(0 calc((1 - var(--heritage-reveal,1))*100%) 0 0);transition:clip-path .3s linear}
+.wind-canopy{transform-box:view-box;transform-origin:var(--wind-origin);animation:canopy-sway var(--wind-duration,7s) ease-in-out var(--wind-delay,0s) infinite;animation-play-state:paused;will-change:transform}
+.wind-panorama.is-windy .wind-canopy{animation-play-state:running}
+@keyframes canopy-sway{0%,100%{transform:rotate(calc(var(--wind-angle)*-.7)) skewX(-.5deg)}25%{transform:rotate(calc(var(--wind-angle)*.3)) skewX(.35deg)}55%{transform:rotate(var(--wind-angle)) skewX(.8deg)}78%{transform:rotate(calc(var(--wind-angle)*-.2)) skewX(-.25deg)}}
+html.motion-reduced .wind-canopy{animation:none!important;transform:none!important;filter:none!important}
+@media(max-width:700px){
+ .heritage-city-portrait .wind-panorama{width:140%;max-width:none;margin-inline-start:-20%}
+ .page-footer-nav{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 18px!important;margin-inline:auto;justify-content:center!important;max-width:350px}
+ .page-footer-nav a{font-size:11px}
+ .contact-block .phone-row{min-height:85px;gap:9px;padding-block:13px}
+ .phone-number{gap:4px}
+ .phone-department{font-size:10.5px;line-height:1.85;max-width:190px}
+ .contact-block .phone-socials{gap:4px}
+ .contact-block .phone-socials a{width:36px;height:40px;min-width:36px;min-height:40px}
+ .contact-block .phone-socials .contact-icon{width:17px;height:17px}
+ .contact-block .phone-socials .brand-contact-icon{width:18px;height:18px}
+ .contact-block .contact-number-value,.contact-block.compact .contact-number-value{font-size:clamp(13px,3.65vw,16px)}
+ .heritage-families .heritage-section-heading{gap:5px;padding:20px 0 22px;margin-bottom:0}
+ .heritage-families .heritage-section-heading h2{font-size:clamp(24px,6.6vw,30px);line-height:1.7;margin-bottom:12px}
+ .heritage-families .heritage-section-heading .small-english{font-size:8px;gap:10px;letter-spacing:.15em}
+ .heritage-families .heritage-section-heading .small-english:before,.heritage-families .heritage-section-heading .small-english:after{width:24px}
+ .family-name{font-size:20px;line-height:1.7;padding-bottom:14px}
+ .family-columns{--family-gap:22px}
+ html[dir=ltr] .heritage-families .heritage-section-heading h2{font-size:clamp(25px,7vw,32px);line-height:1.25}
+ .heritage-entry-heading h1{font-size:clamp(43px,11.8vw,62px);line-height:1.65;margin-bottom:4px}
+ .heritage-entry-heading .heritage-subtitle{font-size:clamp(18px,5.25vw,24px);line-height:1.9;margin-bottom:21px}
+ .engraving-note h2{font-size:clamp(22px,5.85vw,29px)!important;line-height:1.7!important;max-width:100%;margin-bottom:14px}
+ .engraving-note p{font-size:clamp(11px,3.25vw,14px)!important;line-height:2.2!important;max-width:100%!important}
+ .engraving-note .eyebrow{font-size:10px}
+ html[dir=ltr] .engraving-note h2{font-size:clamp(24px,6.25vw,31px)!important;line-height:1.3!important}
+ html[dir=ltr] .engraving-note p{font-size:clamp(11px,3.1vw,13px)!important;line-height:1.9!important}
+ .collection-detail-back{margin-bottom:24px}
+ .collection-detail #collection-page-title{font-size:clamp(42px,10.6vw,62px);margin:20px 0 13px;line-height:1.14;letter-spacing:-.022em}
+ .collection-detail .collection-category{font-size:clamp(21px,5.6vw,27px);line-height:1.8;margin:14px 0 25px;text-wrap:balance}
+ .collection-detail .collection-product-line{font-size:12px;margin-top:16px}
+ .collection-detail .collection-description{font-size:13px;line-height:2.2}
+ .collection-security-link,.guide-collection-link{font-size:11px!important;min-height:48px;padding:12px 17px!important}
+ .collection-security-link{width:100%;margin:24px auto 10px}
+ .guide-collection-link{width:fit-content;max-width:100%}
+ .introduction{padding-block:36px 38px}
+ .introduction .section-kicker{margin-bottom:22px}
+ .introduction-text{font-size:16px;line-height:2.1;margin:0;max-width:100%;text-wrap:pretty}
+ .introduction-bottom{margin-top:21px;gap:14px;grid-template-columns:20px 1fr}
+ .introduction-bottom p{font-size:12px!important;line-height:2.1}
+ .enterprise-website{grid-column:auto;font-size:18px;margin:6px 0 0}
+ .atlas-interface{grid-template-columns:minmax(0,1fr);gap:22px;padding-top:17px}
+ .country-tabs{gap:2px;padding:0;scroll-padding:0}
+ .country-tabs button{gap:7px;font-size:clamp(10px,2.6vw,12px);min-height:67px;padding:5px 0 11px}
+ .country-flag{width:22px!important;height:15px!important;flex-basis:auto}
+ html[dir=ltr] .country-tabs button{font-size:clamp(8px,2.2vw,10px);letter-spacing:-.025em}
+ .atlas-pagination{grid-column:1;grid-row:3;align-items:center;justify-content:flex-end;gap:12px}
+ .atlas-pagination .country-index{width:auto;margin:0 auto 0 0}
+ .construction-row{grid-template-columns:1fr;gap:12px;padding-top:28px}
+ .construction-sketch{grid-row:auto;grid-column:1;margin-inline:-5vw}
+ .construction-row .construction-company,.construction-row>div{grid-column:1}
+ .construction-row .construction-company{font-size:10px}
+ .construction-row h3{font-size:29px;margin-bottom:16px}
+ .granules-row{grid-template-columns:1fr;gap:12px;padding-block:25px}
+ .granules-row .row-index{display:none}
+ .granules-row h3,.granules-row>p{grid-row:auto;grid-column:1}
+ .granules-row h3{font-size:26px}
+ .granules-row>p{font-size:12px;line-height:2.2}
+ .argentum-intro{margin-bottom:30px}
+ .argentum-section{grid-template-columns:1fr;gap:26px;padding-block:27px 33px}
+ .argentum-section h3{font-size:30px;margin-block:6px 14px}
+ .argentum-section p{font-size:12px}
+}
+@media(max-width:359px){.phone-department{font-size:9.5px;max-width:150px}.contact-block .phone-socials a{width:31px;min-width:31px}.contact-block .phone-socials{gap:3px}.contact-block .contact-number-value{font-size:12px!important}.collection-detail #collection-page-title{font-size:clamp(36px,10.4vw,44px)}}
+@media(max-height:550px) and (orientation:landscape){.engraving-note h2{font-size:clamp(18px,2.4vw,26px)!important;line-height:1.5!important}.engraving-note p{font-size:12px!important;line-height:1.8!important}.engraving-note{bottom:11%}.introduction{padding-block:35px}.construction-row{grid-template-columns:1fr 1fr}.construction-sketch{grid-row:1/3}.construction-row .construction-company,.construction-row>div{grid-column:2}}
+html.motion-reduced .heritage-city-portrait .wind-panorama,html.motion-reduced .heritage-panorama .wind-panorama{opacity:1;transform:none;clip-path:none}
+@media(max-height:550px) and (orientation:landscape){.medallion-position{width:min(27vw,35svh)}}

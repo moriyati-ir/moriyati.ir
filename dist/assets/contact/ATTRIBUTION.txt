@@ -1,0 +1,5 @@
+Map data © OpenStreetMap contributors, available under the Open Database License (ODbL).
+https://www.openstreetmap.org/copyright
+
+All road and building footprint positions are derived from the bounded OSM primary dataset. Extrusion depths and colours are artistic styling, not measured building heights.
+The mall pin is the point linked from the official Mellal Gallery contact page; it identifies the mall, not a specific office unit.

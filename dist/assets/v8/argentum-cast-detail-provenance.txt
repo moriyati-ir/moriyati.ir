@@ -1,0 +1,11 @@
+Argentum cast silver detail — 6 November 2026
+Generated using the built-in image_gen tool with definitive reference image.
+Reference: dist/assets/collections/argentum/cast-silver-range.webp
+Output: dist/assets/v8/argentum-cast-detail.webp
+Source PNG: /workspace/scratch/b3a18d503fe5/generated_images/exec-683e1d32-6efa-412a-be28-3cfd6a6ced15.png
+WebP RGB quality 86, source dimensions retained; no content or geometry modifications in optimization.
+Visual QA: silver only, three bars 250 G / 500 G / 1 KG, 999.9, Fine Silver, MORIYATI wordmark and square lion stamp, blank serial field, no jar/granules. 1kg front dominant, smaller bars recede softly.
+
+Prompt:
+Use case: precise-object-edit. Asset type: a second dedicated cast-silver product gallery photograph for Moriyati Argentum. Input image 1 is the definitive reference for the bar design, surface, stamped logo and markings. Create a matching elegant close-up photograph of the SAME three cast silver bars, silver only. The 1 KG bar is dominant in the foreground near center-right, its full front and rounded cast edges visible, with the 500 G and 250 G bars smaller and softly receding at left behind it. Remove the granules jar entirely; absolutely no jar, loose granules or gold anywhere. Preserve the exact recognizable single square lion stamp design from the reference and its placement above the MORIYATI wordmark; do not redesign the stamp, do not add new logos or symbols. On foreground bar preserve text verbatim: MORIYATI® / 1 KG / 999.9 / Fine Silver, with a blank rounded rectangular serial field at the bottom. Background bars carry the same layout with 500 G and 250 G respectively, and 999.9. Preserve soft fine silver casting texture, true straight rectangular proportions and rounded corners from source; no fancy packaging. Warm pale cream limestone studio setting with quiet natural window light, premium industrial/professional raw material presentation, authentic metal reflections and gentle contact shadows. Landscape composition 3:2. No additional text, no serial numbers, no invented certifications or decorations. Photographic physical realism, no cartoon or glossy synthetic showroom effects.
+

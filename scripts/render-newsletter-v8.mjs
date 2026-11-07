@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+const root=new URL('../dist/',import.meta.url);
+const article={innerHTML:''};
+const context={window:{MoriyatiLocale:{language:'fa'}},document:{getElementById:()=>article,querySelectorAll:()=>[],querySelector:()=>({dataset:{}})},addEventListener(){},Intl};
+vm.runInNewContext(fs.readFileSync(new URL('newsletter-data.js',root),'utf8'),context);
+vm.runInNewContext(fs.readFileSync(new URL('newsletter.js',root),'utf8'),context);
+const data=context.window.MORIYATI_NEWSLETTER;
+let s=fs.readFileSync(new URL('bulletin.html',root),'utf8');
+s=s.replace(/(<article[^>]+id="newsletter-article"[^>]*>)[\s\S]*?(<\/article>\s*<section class="newsletter-archive)/,(_,a,b)=>a+article.innerHTML+b);
+const cards=data.editions.map((e,i)=>`<button type="button" data-news-id="${e.id}" aria-pressed="${i===0}"><span class="news-archive-cover"><img src="${e.cover}" width="1672" height="941" alt="${e.coverAlt.fa}" loading="lazy"><time datetime="${e.date}T${e.time}:00+03:30"><span data-en="November 5, 2026">۱۴ آبان ۱۴۰۵</span><b>${e.time}</b></time></span><span class="news-archive-copy"><span data-en="${e.edition==='morning'?'Morning edition':'Evening edition'}">${e.edition==='morning'?'شمارهٔ صبح':'شمارهٔ شب'}</span><strong data-en="${e.en.title.replace(/"/g,'&quot;')}">${e.fa.title}</strong></span></button>`).join('');
+s=s.replace(/(<div class="newsletter-archive-grid">)[\s\S]*?(<\/div><\/section>)/,(_,a,b)=>a+cards+b);
+if(!s.includes('newsletter-v8.css'))s=s.replace('</head>','<link rel="stylesheet" href="newsletter-v8.css">\n</head>');
+fs.writeFileSync(new URL('bulletin.html',root),s);
+console.log('Rendered the full default archive issue and both illustrated issue cards.');

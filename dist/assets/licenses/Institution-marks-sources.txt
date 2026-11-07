@@ -1,0 +1,10 @@
+# Expertise revision assets
+
+- `dist/assets/moriyati-goldbar-front.png`: transparent cutout edit of the user-supplied front design `5721155D-D6F6-40D6-B762-776457CC562B.jpeg`, using built-in image generation. The exact lion front, 1 G and 995.0 specification are retained. The reverse is a native CSS radial diffraction material based on the supplied holographic technical reference; it has no fish-scale pattern.
+- `dist/assets/authorities/tehran-gold-union.png`: https://www.estjt.ir/wp-content/themes/newstheme/assets/img/logo.png — official union website.
+- `dist/assets/authorities/ntsw.png`: official application publisher listing, https://cafebazaar.ir/app/ir.ntsw , image https://s.cafebazaar.ir/images/icons/ir.ntsw_512x512.png?x-img=v1%2Fresize%2Ch_256%2Cw_256%2Clossless_false%2Foptimize .
+- `dist/assets/authorities/inso.jpg`: INSO / Standardvanak, https://commons.wikimedia.org/wiki/File:Iran_National_Standards_Organization_logo.jpg . Original bytes retained. Source and license details are recorded on that page; structured metadata identifies CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0/ .
+- `dist/assets/authorities/mimt.svg`: national government emblem extracted as vector geometry from the Ministry flag source by SpinnerLaserz, https://commons.wikimedia.org/wiki/File:Flag_of_the_Ministry_of_Industry,_Mine_and_Trade_(Iran).svg . Original retained at `reference-assets/mimt-flag-source.svg`. The flag field is excluded; the emblem uses a neutral presentation color.
+- ISO is identified as the standards body, not an issuing certification body. The illustrative prototype assumption remains visible. ISO usage source: https://www.iso.org/iso-name-and-logo.html .
+
+Institution marks retain their owners' identities. These reference marks do not replace actual certificate documents.

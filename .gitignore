@@ -1,0 +1,3 @@
+# Generated self-contained downloads are reproducible from the published source.
+exports/*.html
+scripts/__pycache__/

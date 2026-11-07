@@ -1,0 +1,82 @@
+{
+  "generated_with": "built-in image_gen",
+  "reference_medallion": "dist/assets/medallion.png",
+  "reference_palette": "dist/assets/room.png",
+  "assets": [
+    {
+      "name": "medallion-blank",
+      "path": "dist/assets/motion/medallion-blank.webp",
+      "source_file": "reference-assets/generated-hero/medallion-blank.png",
+      "imagegen_source": "/workspace/scratch/b3a18d503fe5/generated_images/exec-9c696608-9fc1-4d38-989e-0b135f388ed7.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "has_alpha": true,
+      "alpha_bounds": [
+        0,
+        0,
+        1241,
+        1240
+      ],
+      "opaque_bounds": [
+        7,
+        5,
+        1238,
+        1231
+      ],
+      "bytes": 505926,
+      "use_case": "precise-object-edit",
+      "brief": "Existing dist/assets/medallion.png. Preserve complete original circular guilloche silver/ivory ring and geometry; remove all interior building, trees, carriage and horse; replace with continuous wavy silver disc texture. Transparent outside. Same front view/material/light."
+    },
+    {
+      "name": "carriage-relief",
+      "path": "dist/assets/motion/carriage-relief.webp",
+      "source_file": "reference-assets/generated-hero/carriage-relief.png",
+      "imagegen_source": "/workspace/scratch/b3a18d503fe5/generated_images/exec-3fc06f4c-1ebc-4bcb-8bd4-4ebfbbcd6a13.png",
+      "dimensions": [
+        1774,
+        887
+      ],
+      "has_alpha": true,
+      "alpha_bounds": [
+        19,
+        15,
+        1714,
+        867
+      ],
+      "opaque_bounds": [
+        64,
+        32,
+        1710,
+        843
+      ],
+      "bytes": 475278,
+      "use_case": "background-extraction",
+      "brief": "Extract original lower medallion horse, carriage and seated driver as single transparent cutout. Horse faces right; preserve original bas-relief finish, pose, harness, two visible spoked wheels and proportions. Remove entire coin, city, trees, water and ground."
+    },
+    {
+      "name": "isfahan-qajar-panorama",
+      "path": "dist/assets/motion/isfahan-qajar-panorama.webp",
+      "source_file": "reference-assets/generated-hero/isfahan-qajar-panorama.png",
+      "imagegen_source": "/workspace/scratch/b3a18d503fe5/generated_images/exec-cc857bf3-3fb8-41d7-bc9c-8a4f95bf7a0b.png",
+      "dimensions": [
+        2172,
+        724
+      ],
+      "has_alpha": false,
+      "alpha_bounds": null,
+      "opaque_bounds": null,
+      "bytes": 407130,
+      "use_case": "historical-scene",
+      "brief": "Wide compact artistic panorama of Isfahan during Qajar period, antique photograph hand-painted and delicately etched in Isfahan miniature spirit. Low city skyline, long brick arcades, modest domes/minarets, cypresses and pale distant mountains. Restrained ivory/sepia/slate, faded paper edges, no modern buildings, text, UI or border. Approximately3:1 composition."
+    }
+  ],
+  "integration_notes": [
+    "Original medallion and room assets are unchanged.",
+    "Use original medallion image for city reveal; animate its masked layer over medallion-blank.",
+    "Carriage asset is transparent with a small source-canvas margin. Match its silhouette to original medallion carriage region around x0.30..0.67,y0.65..0.82.",
+    "Panorama is an artistic period interpretation, not an archival photograph or exact historical survey. It has ivory faded edges and works with mix-blend-mode:multiply on warm cream.",
+    "WebP versions are format-only transcodes of generated PNGs with dimensions and alpha preserved."
+  ]
+}

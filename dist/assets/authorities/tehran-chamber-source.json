@@ -1,0 +1,17 @@
+{
+  "name_fa": "اتاق بازرگانی، صنایع، معادن و کشاورزی تهران",
+  "name_en": "Tehran Chamber of Commerce, Industries, Mines and Agriculture",
+  "source_page": "https://www.tccim.ir/",
+  "source_asset": "https://www.tccim.ir/images/logo.png",
+  "retrieved_utc": "2026-11-06",
+  "original_file": "tehran-chamber.png",
+  "original_dimensions": [
+    400,
+    400
+  ],
+  "original_mode": "RGBA, white mark on transparent background",
+  "original_sha256": "513387e5734e43c349f6040a7bec1e690dd2b0ed66553b9f6fde60a0f7c63fa3",
+  "display_file": "tehran-chamber.svg",
+  "display_note": "Code-native SVG mask uses the untouched official PNG alpha. Uniform ink color only; no generative redraw, no shape change.",
+  "rights_note": "Institutional identification mark retrieved from official website. No blanket reuse licence was stated in the retrieved material; trademark rights remain with the institution."
+}
