@@ -32,7 +32,7 @@ def brand_icon(name):
     s=re.sub(r'<svg[^>]*>','<svg class="contact-icon brand-contact-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor" stroke="none">',s,1)
     return s
 
-phone_roles=[('56','فروش، مشاوره و همکاری تجاری','Sales, enquiries & business partnerships'),('57','پیگیری سفارش و هماهنگی تحویل','Orders & delivery'),('58','خدمات پس از فروش','After-sales support'),('59','حسابداری و امور مالی','Accounting & finance')]
+phone_roles=[('56','فروش، مشاوره و همکاری تجاری','Sales, enquiries & business partnerships'),('57','پیگیری سفارش و هماهنگی تحویل','Orders & delivery'),('58','حسابداری و امور مالی','Accounting & finance'),('59','خدمات پس از فروش','After-sales service')]
 for p in D.glob('*.html'):
     s=p.read_text()
     if 'v8.css' not in s:s=s.replace('</head>','<link rel="stylesheet" href="v8.css">\n</head>')
