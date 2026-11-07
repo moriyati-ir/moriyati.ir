@@ -189,7 +189,7 @@
     if(!reduced&&(processVisible||blueprintVisible)){raf=requestAnimationFrame(tick);}else{raf=0;}
   }
 
-  function tick(time){const delta=lastTime?Math.max(1,time-lastTime):16;lastTime=time;update(time,delta);}
+  function tick(time){raf=0;if(document.hidden||menu.open){lastTime=0;return;}const delta=lastTime?Math.max(1,time-lastTime):16;lastTime=time;update(time,delta);}
   function requestDraw(){if(!raf)raf=requestAnimationFrame(tick);}
 
   function applyMotion(persist=false) {
@@ -265,7 +265,7 @@
   menuButton.addEventListener('click',()=>{menu.showModal();menuButton.setAttribute('aria-expanded','true');});
   $('.menu-close').addEventListener('click',closeMenu);
   $$('a',menu).forEach(link=>link.addEventListener('click',closeMenu));
-  menu.addEventListener('close',()=>menuButton.setAttribute('aria-expanded','false'));
+  menu.addEventListener('close',()=>{menuButton.setAttribute('aria-expanded','false');lastTime=0;requestDraw();});
   menu.addEventListener('click',event=>{if(event.target===menu)closeMenu();});
 
   if('IntersectionObserver' in window){
@@ -278,6 +278,7 @@
   let resizeTimer;
   addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>{measure();requestDraw();},120);},{passive:true});
   addEventListener('scroll',requestDraw,{passive:true});
+  document.addEventListener('visibilitychange',()=>{lastTime=0;requestDraw();});
   $$('details').forEach(detail=>detail.addEventListener('toggle',()=>{measure();requestDraw();}));
   document.fonts.ready.then(()=>{measure();requestDraw();});
   addEventListener('load',()=>{measure();requestDraw();});

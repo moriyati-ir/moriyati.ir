@@ -19,12 +19,14 @@
  }
  async function scan(time){
   if(!stream)return;
+  const ticket=generation;
   if(time-lastScan>140 && video.readyState>=2){lastScan=time;
    try{let data=null;if(detector){const found=await detector.detect(video);data=found[0]?.rawValue;}else if(window.jsQR){const w=Math.min(720,video.videoWidth),h=Math.round(video.videoHeight*w/video.videoWidth);canvas.width=w;canvas.height=h;ctx.drawImage(video,0,0,w,h);const image=ctx.getImageData(0,0,w,h);data=window.jsQR(image.data,w,h,{inversionAttempts:'attemptBoth'})?.data;}
+    if(ticket!==generation||!stream)return;
     if(data){stopCamera();$('#serial-input').value=parse(data)||'';result(data);message('کد خوانده شد؛ نتیجه را بررسی کنید.','Code read. Please review the result.');return;}
    }catch(_){/* A transient unreadable camera frame is retried. */}
   }
-  if(stream)frame=requestAnimationFrame(scan);
+  if(stream&&ticket===generation)frame=requestAnimationFrame(scan);
  }
  start.addEventListener('click',async()=>{
   if(!navigator.mediaDevices?.getUserMedia){message('دوربین در این مرورگر در دسترس نیست؛ شمارهٔ سریال را وارد کنید.','Camera access is unavailable in this browser. Please enter the serial number.');return;}
@@ -36,10 +38,10 @@
    stream=incoming;video.srcObject=stream;video.hidden=false;$('#scan-idle').hidden=true;stop.hidden=false;$('.scanner-panel').classList.add('scanning');
    if('BarcodeDetector' in window){try{detector=new BarcodeDetector({formats:['qr_code']});}catch(_){detector=null;}}
    await video.play();if(ticket!==generation)return;message('کد QR را روشن و ثابت داخل کادر نگه دارید.','Keep the QR code well lit and steady inside the frame.');lastScan=0;frame=requestAnimationFrame(scan);
-  }catch(error){stopCamera();if(error.name==='NotAllowedError')message('دسترسی دوربین مجاز نشد. از تنظیمات مرورگر اجازه دهید یا سریال را دستی وارد کنید.','Camera permission was not granted. Enable it in browser settings or enter the serial manually.');else if(error.name==='NotFoundError')message('دوربینی پیدا نشد؛ سریال را دستی وارد کنید.','No camera was found. Please enter the serial number manually.');else message('دوربین فعال نشد؛ دوباره تلاش کنید یا سریال را وارد کنید.','The camera could not start. Try again or enter the serial number.');}
+  }catch(error){if(ticket!==generation)return;stopCamera();if(error.name==='NotAllowedError')message('دسترسی دوربین مجاز نشد. از تنظیمات مرورگر اجازه دهید یا سریال را دستی وارد کنید.','Camera permission was not granted. Enable it in browser settings or enter the serial manually.');else if(error.name==='NotFoundError')message('دوربینی پیدا نشد؛ سریال را دستی وارد کنید.','No camera was found. Please enter the serial number manually.');else message('دوربین فعال نشد؛ دوباره تلاش کنید یا سریال را وارد کنید.','The camera could not start. Try again or enter the serial number.');}
  });
  stop.addEventListener('click',()=>{stopCamera();message('دوربین بسته شد.','Camera closed.');});
- addEventListener('pagehide',stopCamera);document.addEventListener('visibilitychange',()=>{if(document.hidden&&stream)stopCamera();});
+ addEventListener('pagehide',stopCamera);document.addEventListener('visibilitychange',()=>{if(document.hidden)stopCamera();});
  $('#serial-form').addEventListener('submit',e=>{e.preventDefault();result($('#serial-input').value);});
  $('#show-demo').addEventListener('click',()=>{$('#serial-input').value='AA0002008';result('AA0002008');});
  function guide(slug,focus=false){
@@ -51,7 +53,7 @@
   if(focus)$('#guide-panel').focus({preventScroll:true});
  }
  $('#guide-tabs').innerHTML=window.MORIYATI_COLLECTIONS.map(c=>`<button type="button" role="tab" id="guide-tab-${c.slug}" data-guide="${c.slug}" aria-controls="guide-panel" aria-selected="false" tabindex="-1">${c.name}</button>`).join('');
- document.querySelectorAll('[data-guide]').forEach((b,i)=>{b.onclick=()=>{history.replaceState(null,'','#guide-'+b.dataset.guide);guide(b.dataset.guide);};b.onkeydown=e=>{const tabs=[...document.querySelectorAll('[data-guide]')];if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();const j=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[j].focus();tabs[j].click();}};});
+ document.querySelectorAll('[data-guide]').forEach((b,i)=>{b.onclick=()=>{history.replaceState(null,'','#guide-'+b.dataset.guide);guide(b.dataset.guide);};b.onkeydown=e=>{const tabs=[...document.querySelectorAll('[data-guide]')];if(['ArrowRight','ArrowLeft','Home','End'].includes(e.key)){e.preventDefault();const next=document.documentElement.dir==='rtl'?'ArrowLeft':'ArrowRight';const j=e.key==='Home'?0:e.key==='End'?tabs.length-1:(i+(e.key===next?1:-1)+tabs.length)%tabs.length;tabs[j].focus();tabs[j].click();}};});
  function route(){const slug=location.hash.match(/^#guide-(.+)$/)?.[1];if(slug){guide(slug);$('#packaging').scrollIntoView({behavior:document.documentElement.classList.contains('motion-reduced')?'instant':'smooth'});}}
  addEventListener('hashchange',route);addEventListener('moriyati:language',()=>{guide(selectedGuide);if(lastLookup!==null)result(lastLookup);if(stream)message('کد QR را روشن و ثابت داخل کادر نگه دارید.','Keep the QR code well lit and steady inside the frame.');});guide(selectedGuide);if(location.hash.startsWith('#guide-'))requestAnimationFrame(route);
 })();

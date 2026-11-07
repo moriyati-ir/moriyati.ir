@@ -12,25 +12,27 @@
     const original=link.textContent;link.setAttribute('aria-busy','true');link.textContent=document.documentElement.lang==='en'?'Preparing…':'در حال آماده‌سازی…';
     try{
       const base=link.dataset.portableDownload==='expertise'?'expertise':'index';
+      const language=document.documentElement.lang==='en'?'en':'fa';
+      const origin=new URL('./',location.href).href;
       let html=await read(base+'.html').then(r=>r.text());
       const scripts=Array.from(html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*><\/script>/g)).map(m=>m[1]);
       const sources=await Promise.all(scripts.map(path=>read(path).then(r=>r.text())));
       html=html.replace(/\s*<link rel="preload"[^>]+>/g,'').replace(/<script\b[\s\S]*?<\/script>/gi,'');
-      html=html.replace('<html ','<html data-portable="true" ');
+      html=html.replace('<html ','<html data-portable="true" data-portable-language="'+language+'" data-site-base="'+origin+'" ');
       html=await replaceAsync(html,/<link rel="stylesheet" href="([^"]+)">/g,async m=>{let css=await read(m[1]).then(r=>r.text());css=await replaceAsync(css,/url\(['"]?([^'"\)]+)['"]?\)/g,async u=>u[1].startsWith('data:')?u[0]:"url('"+await data(u[1])+"')");return '<style>'+css+'</style>';});
       html=await replaceAsync(html,/(src|href)="(assets\/[^\"]+)"/g,async m=>m[1]+'="'+await data(m[2])+'"');
       let js=sources.join('\n;\n');
       const paths=[...new Set(Array.from(js.matchAll(/(?<![A-Za-z0-9_-])assets\/[A-Za-z0-9_./-]+\.(?:webp|png|jpeg|jpg|svg)/g)).map(m=>m[0]))];
       const embedded=await Promise.all(paths.map(path=>data(path)));
       paths.forEach((path,i)=>{js=js.split(path).join(embedded[i]);});
-      const origin='https://moriyati-mint-treasury.humble-deer-9355.chatgpt.site/';
-      html=html.replace(/href="((?:index|expertise|contact|authenticity|heritage|bulletin)\.html[^\"]*)"/g,(_,path)=>'href="'+origin+path+'"');
+      html=html.replace(/href="((?:index|expertise|contact|authenticity|heritage|bulletin)\.html[^\"]*)"/g,(_,path)=>{const url=new URL(path,origin);url.searchParams.set('lang',language);return 'href="'+url.href+'"';});
       const licenseFiles=['CormorantGaramond-OFL.txt','NotoNaskhArabic-OFL.txt','Vazirmatn-OFL.txt','Institution-marks-sources.txt'];
       const licenses=await Promise.all(licenseFiles.map(path=>read('assets/licenses/'+path).then(r=>r.text())));
       const endScript='</scr'+'ipt>';
       const licenseTag='<script type="text/plain" id="font-licenses">'+licenses.join('\n\n').replace(/<\/script/gi,'<\\/script')+endScript;
       const script='<script>\n'+js.replace(/<\/script/gi,'<\\/script')+'\n'+endScript;
-      html=html.replace('</body>',()=>licenseTag+script+'\n</body>');save(html,name);
+      const endBody='</bo'+'dy>';
+      html=html.replace(endBody,()=>licenseTag+script+'\n'+endBody);save(html,name);
     }catch(error){link.title=document.documentElement.lang==='en'?'Download failed. Please try again.':'دریافت کامل نشد؛ دوباره تلاش کنید.';}
     finally{link.removeAttribute('aria-busy');link.textContent=original;}
   }));

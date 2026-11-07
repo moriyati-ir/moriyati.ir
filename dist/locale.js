@@ -2,22 +2,28 @@
   'use strict';
   const root = document.documentElement;
   let lang = new URLSearchParams(location.search).get('lang');
+  if (!['fa','en'].includes(lang)) lang = root.dataset.portableLanguage;
   if (!['fa','en'].includes(lang)) { try { lang = localStorage.getItem('moriyati-language'); } catch (_) {} }
   if (!['fa','en'].includes(lang)) lang = 'fa';
   const originals = new WeakMap();
   const attributes = new WeakMap();
   function links() {
+    const siteBase=root.dataset.portable==='true'&&root.dataset.siteBase?new URL(root.dataset.siteBase):null;
     document.querySelectorAll('a[href]').forEach(a => {
       const raw = a.getAttribute('href');
-      if (!raw || raw.startsWith('#') || a.hasAttribute('download') || !/^(?:index|expertise|contact|authenticity|heritage|bulletin)\.html(?:[?#]|$)/.test(raw)) return;
-      const url = new URL(raw, location.href);
+      if (!raw || raw.startsWith('#') || a.hasAttribute('download')) return;
+      const relative=/^(?:index|expertise|contact|authenticity|heritage|bulletin)\.html(?:[?#]|$)/.test(raw);
+      if(!relative&&!siteBase)return;
+      const url = new URL(raw, siteBase||location.href);
+      if(!relative&&!(url.origin===siteBase.origin&&url.pathname.startsWith(siteBase.pathname)&&/^(?:index|expertise|contact|authenticity|heritage|bulletin)\.html$/.test(url.pathname.split('/').pop())))return;
       url.searchParams.set('lang', lang);
-      a.setAttribute('href', url.pathname.split('/').pop() + url.search + url.hash);
+      a.setAttribute('href', siteBase?url.href:url.pathname.split('/').pop() + url.search + url.hash);
     });
   }
   function set(value, announce = true) {
     lang = value === 'en' ? 'en' : 'fa';
     root.lang = lang; root.dir = lang === 'fa' ? 'rtl' : 'ltr';
+    if(root.dataset.portable==='true')root.dataset.portableLanguage=lang;
     try { localStorage.setItem('moriyati-language',lang); } catch (_) {}
     try { const u=new URL(location.href);u.searchParams.set('lang',lang);history.replaceState(null,'',u); } catch (_) {}
     document.querySelectorAll('[data-en]').forEach(el => {

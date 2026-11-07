@@ -5,7 +5,7 @@ import mimetypes
 import re
 
 DIST = Path(__file__).resolve().parents[1] / 'dist'
-ORIGIN = 'https://moriyati-mint-treasury.humble-deer-9355.chatgpt.site/'
+ORIGIN = 'https://moriyati-ir.github.io/moriyati.ir/'
 
 def build(page, filename):
     cache = {}
@@ -21,7 +21,7 @@ def build(page, filename):
     html = re.sub(r'\s*<link rel="preload"[^>]+>', '', html)
     html = re.sub(r'<script\b[\s\S]*?</script>', '', html)
     html = re.sub(r'^[\t ]+$', '', html, flags=re.M)
-    html = html.replace('<html ', '<html data-portable="true" ')
+    html = html.replace('<html ', '<html data-portable="true" data-portable-language="fa" data-site-base="' + ORIGIN + '" ')
     def stylesheet(match):
         css = (DIST / match[1]).read_text()
         css = re.sub(r"url\(['\"]?([^'\")]+)['\"]?\)", lambda m: m[0] if m[1].startswith('data:') else "url('" + uri(m[1]) + "')", css)
