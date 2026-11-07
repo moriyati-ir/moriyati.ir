@@ -62,6 +62,30 @@ test('The lightweight edge retains physical thickness through a 180 degree flip'
  for(const angle of [0,30,90,150,180])for(const x of [-610,0,610])assert.ok(renderer.project(x,0,half,angle,width).every(Number.isFinite));
  assert.equal(renderer.resolution(300,3,true),975);assert.equal(renderer.resolution(700,3,false),1254);
  assert.equal(renderer.createReverse({getContext:()=>null}),null,'Unsupported canvas must leave the SVG fallback available');
+ const polygons=[];let points;
+ const ctx={setTransform(){},clearRect(){polygons.length=0;},createLinearGradient(){return {addColorStop(){}};},beginPath(){points=[];},moveTo(x,y){points.push([x,y]);},lineTo(x,y){points.push([x,y]);},closePath(){},fill(){polygons.push(points);}};
+ const canvas={width:0,height:0,getContext:()=>ctx},edge=renderer.createEdge(canvas);
+ edge.resize(width,3,true);
+ assert.equal(canvas.width,640,'Only the narrow moving edge uses the smaller mobile surface');
+ for(const angle of [30,90,150]){
+  edge.draw(angle);assert.equal(polygons.length,192);
+  const first=renderer.project(610*Math.cos(Math.PI/2),610,-half,angle,width);
+  assert.ok(Math.abs(polygons[0][0][0]-first[0])<1e-8&&Math.abs(polygons[0][0][1]-first[1])<1e-8,'The faster projection must retain the original physical silhouette');
+ }
+});
+
+test('Atlas decoding completes before the first paint and retains the pending scroll pose',async()=>{
+ const api=await runtime(),draw=drawing(api.MORIYATI_COIN_ATLAS);let resolve,failed=0;
+ const scene=api.MORIYATI_COIN_RENDERER.createReverse(draw.canvas,{failed(){failed++;}});
+ scene.resize(300,3,true);scene.draw(.56);
+ api.images[0].decode=()=>new Promise(done=>{resolve=done;});api.images[0].onload();
+ assert.equal(scene.loaded,false);assert.equal(draw.calls.length,0);
+ resolve();await Promise.resolve();
+ assert.equal(scene.loaded,true);assert.equal(draw.calls.filter(c=>c.name.startsWith('tree')).length,13);assert.equal(failed,0);
+ const next=drawing(api.MORIYATI_COIN_ATLAS);
+ api.MORIYATI_COIN_RENDERER.createReverse(next.canvas,{failed(){failed++;}});
+ api.images[1].decode=()=>Promise.reject(new Error('Decode failed'));api.images[1].onload();await Promise.resolve();
+ assert.equal(failed,1,'A decoder failure must leave the existing fallback reachable');
 });
 
 test('A texture load failure restores the original SVG instead of leaving an empty reverse',async()=>{

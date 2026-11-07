@@ -70,7 +70,9 @@
    }
    sprite('final',state.final);
   }
-  image.onload=()=>{loaded=true;draw(lastBuild,lastReduced);notify();};
+  const ready=()=>{loaded=true;draw(lastBuild,lastReduced);notify();};
+  // Complete the asynchronous decode before canvas asks for its first pixels.
+  image.onload=()=>{if(typeof image.decode==='function')image.decode().then(ready,failed);else ready();};
   image.onerror=failed;image.src=atlas.image;
   return {canvas,draw,get loaded(){return loaded;},resize(width,dpr,small){
    const size=resolution(width,dpr,small);
@@ -89,23 +91,26 @@
   const strips=Array.from({length:reedCount*2},(_,i)=>{
    const a=i*tau/(reedCount*2),b=(i+1)*tau/(reedCount*2),mid=(a+b)/2,tone=(180+Math.cos(mid-2.2)*36)/255;
    const rgb=(i%2?[248,244,238]:[156,149,140]).map(c=>Math.round(c*tone));
-   return {cos:Math.cos(mid),points:[[R*Math.cos(a),R*Math.sin(a),-half],[R*Math.cos(b),R*Math.sin(b),-half],[R*Math.cos(b),R*Math.sin(b),half],[R*Math.cos(a),R*Math.sin(a),half]],rgb};
+   const stops=[[0,.82],[.35,1.1],[.6,1.14],[1,.72]].map(([stop,factor])=>[stop,'rgb('+rgb.map(c=>Math.min(255,Math.round(c*factor))).join(' ')+')']);
+   return {cos:Math.cos(mid),points:[[R*Math.cos(a),R*Math.sin(a),-half],[R*Math.cos(b),R*Math.sin(b),-half],[R*Math.cos(b),R*Math.sin(b),half],[R*Math.cos(a),R*Math.sin(a),half]],stops};
   });
   function draw(angle){
    if(angle===lastAngle)return;lastAngle=angle;
    const scale=canvas.width/W;ctx.setTransform(scale,0,0,scale,0,0);ctx.clearRect(0,0,W,W);
    if(angle<=0||angle>=180)return;
-   const sin=Math.sin(angle*Math.PI/180);
+   const radians=angle*Math.PI/180,sin=Math.sin(radians),cos=Math.cos(radians),perspective=1400*W/width;
+   const projected=([x,y,z])=>{const depth=-x*sin+z*cos,k=perspective/(perspective-depth);return [C+(x*cos+z*sin)*k,C+y*k];};
    for(const strip of strips){
     if(-strip.cos*sin<=0)continue;
-    const points=strip.points.map(p=>project(...p,angle,width));
+    const points=strip.points.map(projected);
     const light=ctx.createLinearGradient(points[0][0],points[0][1],points[3][0],points[3][1]);
-    [[0,.82],[.35,1.1],[.6,1.14],[1,.72]].forEach(([stop,factor])=>light.addColorStop(stop,'rgb('+strip.rgb.map(c=>Math.min(255,Math.round(c*factor))).join(' ')+')'));
+    strip.stops.forEach(([stop,color])=>light.addColorStop(stop,color));
     ctx.beginPath();points.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fillStyle=light;ctx.fill();
    }
   }
   return {canvas,draw,resize(value,dpr,small){
-   width=value||300;const size=resolution(width,dpr,small);
+   // The thin moving sidewall needs fewer pixels than the engraved faces.
+   width=value||300;const size=Math.min(resolution(width,dpr,small),small?640:W);
    if(canvas.width!==size||canvas.height!==size){canvas.width=size;canvas.height=size;}
    const angle=lastAngle??0;lastAngle=null;draw(angle);
   }};
