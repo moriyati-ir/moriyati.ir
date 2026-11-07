@@ -1,0 +1,16 @@
+Moriyati Newsletter Cover Assets — 6 November 2026
+Generated with the built-in image_gen imagegen tool.
+No generated text, charts, numerical data or logo. Parent applies real HTML date/time overlays.
+
+MORNING
+Source: /workspace/scratch/b3a18d503fe5/generated_images/exec-982225a6-125d-4cd4-8ef8-91735108d2f6.png
+Prompt:
+Use case: ads-marketing. Asset type: a polished photographic cover for a precious-metals market newsletter on the Moriyati website. Primary request: restrained, sophisticated editorial still-life of unbranded fine gold and silver bullion on pale cream limestone, in soft early morning window light. Landscape 16:9 composition. A small sculptural arrangement of one warm yellow gold bar and one cool silver bar occupies the lower left to lower middle, cropped close enough for authentic fine metal texture and subtle weight; upper third and right side remain calm clean cream negative space for real text to be overlaid later in HTML. Quiet financial newspaper/art-house atmosphere; optically precise rectangular metal shapes, softly rounded edges, natural fine surface marks, physically plausible reflections, warm soft shadows. Warm ivory, pale stone, understated antique gold and silver. No engraved marks, no logo, no numbers, no words, no coins, no banknotes, no charts, no graphs, no invented lettering, no excessive props, no glowing neon or artificial montage. Product photography with refined depth, not a 3D rendering. Deliver one single beautiful full-bleed image.
+
+EVENING
+Source: /workspace/scratch/b3a18d503fe5/generated_images/exec-daa8fb3e-2372-4cd9-9029-bd93eb6dbd18.png
+Prompt:
+Use case: ads-marketing. Asset type: a luxury editorial photographic cover for the evening precious-metals newsletter on the Moriyati website, a companion to a quiet morning still life. Primary request: two simple unbranded gold and silver bullion bars on dark blue-grey stone with refined evening light. Landscape 16:9 composition, naturally photographic. One softly reflective silver bar and one subtly glowing antique yellow gold bar arranged in the lower left to center-left, a gentle diagonal in placement, while upper third and right half remain softly dark navy/bronze negative space so a real HTML headline, date and time can be placed later. Deep muted navy, taupe stone and mellow bronze highlights, precise believable rectangular bar geometry, brushed precious metal texture, shallow depth of field, restrained lighting and soft contact shadows. Cultured market journal atmosphere, beautiful but not theatrical. No text, no logo, no serials, no numerals, no coins, no banknotes, no graphs, no charts, no charts disguised as decoration, no neon, no montage, no fabricated financial information. Full-bleed single image, subtle natural photograph rather than synthetic 3D product render.
+
+Delivery: RGB WebP quality 88, original 1672x941 pixel dimensions (verify file metadata), no geometry/image content edits. Both visually inspected: physical plausible bullion shapes, generous right/upper negative space, no fake inscriptions.
+

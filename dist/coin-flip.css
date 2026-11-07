@@ -1,0 +1,25 @@
+/* A separate 3D stage preserves the existing homepage position and scale. */
+.medallion-tilt{transform-style:preserve-3d}
+.coin-layers.coin-two-sided{overflow:visible;border-radius:0;isolation:auto;perspective:1400px;--coin-thickness:16px}
+.coin-turntable{position:absolute;inset:0;transform-style:preserve-3d;transform-origin:50% 50%;will-change:transform;z-index:1}
+.coin-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;pointer-events:none}
+.coin-front{transform:translateZ(calc(var(--coin-thickness)/2))}
+.coin-reverse{transform:rotateY(180deg) translateZ(calc(var(--coin-thickness)/2));visibility:hidden}
+.coin-front-art,.coin-face>.coin-engraving{display:block;width:100%;height:100%;overflow:visible}
+.coin-edge-segment{position:absolute;display:block;height:var(--coin-thickness);transform:translate(-50%,-50%) rotateZ(var(--edge-turn)) rotateX(90deg);backface-visibility:hidden;-webkit-backface-visibility:hidden;background:repeating-linear-gradient(90deg,#71685c 0%,#c2b9ac 8%,#f7eedf 22%,#d9d0c4 36%,#827568 49%,#71685c 50%),linear-gradient(#e9e7e3,rgb(var(--edge-tone) var(--edge-tone) var(--edge-tone)),#777572);background-blend-mode:multiply;pointer-events:none}
+.coin-reverse .coin-reflection{clip-path:circle(50% at 50% 50%)}
+html.motion-reduced .coin-turntable{will-change:auto}
+.medallion-position{filter:none;will-change:auto}
+.coin-layers.coin-two-sided:before{content:'';position:absolute;inset:1.35%;border-radius:50%;box-shadow:3px 13px 13px #2f1d0a3d;transform:scaleX(var(--coin-shadow-scale,1));transform-origin:50% 50%;pointer-events:none}
+.coin-edge-wall{position:absolute;inset:0;transform-style:preserve-3d;visibility:hidden}
+.coin-ring-texture,.coin-reeded-face,.coin-reverse>.coin-engraving{position:absolute;inset:0;display:block;width:100%;height:100%}
+.coin-ring-texture{object-fit:contain;transform-origin:50% 50%;will-change:transform;filter:grayscale(1) brightness(1.07)}
+.coin-reverse>.coin-engraving{filter:grayscale(1) brightness(1.23) contrast(.98)}
+.coin-ambient{position:absolute;inset:1.35%;border-radius:50%;background:linear-gradient(135deg,#ffd58d38 0%,#f2d8ad17 44%,#5e3c1f38 100%);mix-blend-mode:normal;pointer-events:none}
+.coin-relief-layer{will-change:auto}
+.masthead{backdrop-filter:none;-webkit-backdrop-filter:none}
+.coin-back-canvas,.coin-edge-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;pointer-events:none}
+.coin-back-canvas{filter:none;contain:strict}
+.coin-edge-canvas{z-index:0;visibility:hidden}
+.coin-layers[data-coin-renderer=canvas] .coin-reverse:before{content:'';position:absolute;inset:1.35%;border-radius:50%;background:radial-gradient(circle at 30% 20%,#eeeae4,#b4b0aa);z-index:-1}
+.craft-detail:not(.is-playing) .stage-diagram *{animation-play-state:paused!important}

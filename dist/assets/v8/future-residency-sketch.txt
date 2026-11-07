@@ -1,0 +1,23 @@
+Future Residency Solutions architectural sketch
+Generated with the built-in image_gen tool on 2026-11-06.
+Source output: /workspace/scratch/b3a18d503fe5/generated_images/exec-4dc86169-341c-488b-8cbf-0a0cc5b3d9cf.png
+Delivered: future-residency-sketch.webp, 1536 x 1024, WebP quality 88.
+
+Reference research (inspiration only, no source image copied):
+- Official Oman Ministry of Heritage and Tourism: https://experienceoman.om/en/destinations/muscat/royal-opera-house
+- Primary architect project listing (WATG on RIBA): https://find-an-architect.architecture.com/watg/london/royal-opera-house-muscat
+- Architect's description of arcades: https://www.watg.com/surface-and-society-an-active-exchange-in-urban-environments/
+Official visual reference inspected: https://experienceoman.om/media/mwxfuodr/royal-opera-house-muscat-2.jpg
+Research confirms five tall entrance arches, palm-lined piazza, horizontal colonnades, limestone and complementary stucco. This image is an original concept illustration inspired by those design features, not a depiction of the company's actual built premises or of a project built by the company.
+
+Final prompt:
+Use case: illustration-story.
+Asset type: a polished architectural sketch illustration for an elegant construction and property-development company section on a luxury cream-and-gold editorial website.
+
+Primary request: a graceful, believable low-rise company building inspired specifically by the Royal Opera House Muscat, Oman: a broad limestone-coloured horizontal palace-like facade; symmetrical cubic end masses with Omani crenellated parapets; a taller central volume with five tall arched entrance bays and recessed geometric screens; long shaded colonnades; clean rectilinear terraces, precise structural rhythm, and an open stone forecourt. Integrate the exact company name "Future Residency Solutions" as discreet but clearly legible refined lettering in the long central facade frieze immediately above the entrance arches. Spell this name exactly. This is an original architectural concept inspired by the opera house, not a photograph or a claim to be the actual opera house.
+
+Style/medium: master architect's fine-pen and soft graphite sketch, highly controlled, sophisticated line hierarchy, exquisite but restrained architectural detail, fine hatching only inside shadows, delicate taupe watercolour wash, pale limestone planes. Feels like an architectural drawing commissioned by a cultured construction company.
+Composition/framing: landscape 3:2. Slight three-quarter frontal view, nearly eye-level, carefully symmetric and composed, all building and forecourt in frame. Building occupies the central 75 percent horizontally and about 60 percent vertically, with generous quiet warm cream paper around and above. Two or three restrained palm silhouettes help scale the Omani building; no people, cars, cranes, captions or other logos.
+Palette: warm cream paper approximately #f6f2e8, muted taupe and champagne-gold stone washes, gentle charcoal drawing, very soft warm shadows. Faint drawing edges dissolve naturally into the same cream paper, no dark rectangular backdrop or enclosing border. The architectural form is crisp and clear at phone size.
+Text (verbatim): "Future Residency Solutions"
+Constraints: correct perspective, consistent arch proportions, realistic elegant Omani architecture, no domes or mosque minarets, no skyscrapers, no futuristic forms, no blueprints, no cartoon, no oversaturated colour, no watermarks, no extra text.

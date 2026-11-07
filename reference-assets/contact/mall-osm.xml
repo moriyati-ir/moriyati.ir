@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.1 (1061188 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <node id="11070628460" visible="true" version="2" changeset="141692228" timestamp="2023-09-24T17:16:46Z" user="elsy1" uid="2038741" lat="35.7912265" lon="51.4211365"/>
+ <node id="11070628461" visible="true" version="2" changeset="141692228" timestamp="2023-09-24T17:16:46Z" user="elsy1" uid="2038741" lat="35.7913426" lon="51.4209600"/>
+ <node id="11070628462" visible="true" version="2" changeset="141692228" timestamp="2023-09-24T17:16:46Z" user="elsy1" uid="2038741" lat="35.7908708" lon="51.4204881"/>
+ <node id="11070628463" visible="true" version="2" changeset="141692228" timestamp="2023-09-24T17:16:46Z" user="elsy1" uid="2038741" lat="35.7907546" lon="51.4206646"/>
+ <way id="1192581831" visible="true" version="1" changeset="139071153" timestamp="2023-07-27T07:23:34Z" user="Hadi Omid" uid="3817321">
+  <nd ref="11070628460"/>
+  <nd ref="11070628461"/>
+  <nd ref="11070628462"/>
+  <nd ref="11070628463"/>
+  <nd ref="11070628460"/>
+  <tag k="building" v="yes"/>
+  <tag k="name" v="بوتیک مال ملل"/>
+  <tag k="operator" v="Mellal Boutique Mall"/>
+  <tag k="shop" v="mall"/>
+ </way>
+</osm>

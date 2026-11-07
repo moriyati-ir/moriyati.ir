@@ -1,0 +1,62 @@
+{
+  "viewBox": [0, 0, 1254, 1254],
+  "source": "assets/medallion.webp",
+  "source_image_unchanged": true,
+  "runtime": "coin-geometry.js",
+  "api": {
+    "create(prefix)": "Returns an inline SVG string with collision-safe definition IDs.",
+    "svg": "Default-prefix SVG string; equivalent to create().",
+    "walk(svgRoot, options)": "options.travel is original-image pixels from -680 to 0; options.energy is gait amplitude0..1. Set energy0 and travel0 at rest. Upper/lower joints, source-wheel spokes, driver arm and rein curves are updated together.",
+    "turn(svgRoot, angleDegrees)": "Rotates the entire annulus including its inner rail, guilloche and outer rails. Source-perspective correction keeps the inner opening fixed. Finish at360 or720 degrees before showing the final original.",
+    "stages": ["body", "windows", "trees", "ground"],
+    "stage_selector": "[data-coin-layer=NAME]",
+    "arrival_selector": "[data-coin-carriage]",
+    "final_selector": "[data-coin-final]",
+    "ring_selector": "[data-coin-ring]"
+  },
+  "integration": [
+    "Load coin-geometry.js before the homepage enhancement script.",
+    "Replace the existing medallion image wrapper contents with create(prefix).",
+    "The four stage groups, carriage, and final original start with opacity0 attributes to prevent an assembled-scene flash. Runtime style.opacity overrides these attributes.",
+    "Apply scroll-scrubbed opacity and blur to each stage, in order, keeping earlier groups fully visible when the next begins.",
+    "The final group is OUTSIDE the interior clip and contains the untouched original whole medallion. Fade it in only after the carriage stops and the rotating annulus reaches a whole-turn rest.",
+    "For reduced motion, set final opacity1, walk travel0/energy0, turn0, and remove blur.",
+    "Use width100%, height100%, display:block on the SVG. Allow SVG overflow so the perspective-corrected rotating rim is not cut at the source canvas edge.",
+    "Portable exports need all three image paths: source, v5 blank, and v6 ground clean plate."
+  ],
+  "geometry": {
+    "windows_openings": 29,
+    "foliage_silhouettes": 13,
+    "horse_legs": 4,
+    "articulated_leg_segments": 8,
+    "wheel_spokes": [14, 14],
+    "ring_pivot": [626, 635],
+    "rear_wheel_pivot": [432, 988],
+    "front_wheel_pivot": [554, 1003],
+    "driver_arm_pivot": [510, 901]
+  },
+  "clean_plate": {
+    "path": "assets/motion/v6/medallion-ground-clean.webp",
+    "generation_mode": "built-in image_gen precise-object-edit",
+    "generated_source": "/workspace/scratch/b3a18d503fe5/generated_images/exec-6809fee9-d531-4272-9217-305326acb9cf.png",
+    "dimensions": [1254, 1254],
+    "has_alpha": true,
+    "format_conversion": "WebP quality95, alphaQuality100; no post-generation image editing.",
+    "usage": "Empty foreground water/ground and small original-driver occlusion repair. Architecture, window and foliage layers otherwise sample the original unchanged image. The moving carriage and all its parts sample the original unchanged image.",
+    "prompt": "Use case: precise-object-edit. Edit target: the provided original circular silver bas-relief medallion. This is a technical background-clean-plate for a website animation, NOT a redesign. Remove ONLY the horse, carriage, seated driver, harness/reins, carriage wheels, and their shadows/reflections in the lower foreground. Reconstruct the removed foreground as continuous finely engraved water/ground ripples matching the surrounding metal texture, perspective, lighting and color. Preserve the entire palace, all windows, every cypress and shrub, steps, sky texture, exact outer silver guilloche ring and inner rails, location/proportions and canvas framing unchanged. Keep a front-facing view and fully transparent outside the coin. Do not move, add, replace, or redraw any architectural or tree details. No text, no extra objects. The output should be exactly the SAME medallion, but the lower foreground is completely empty and clean, without any outlines or ghost silhouettes of the removed horse and carriage."
+  },
+  "fidelity_notes": [
+    "The moving annulus samples the existing v5 blank medallion, which prevents architecture touching the original inner edge from rotating as stray slivers. The untouched original whole medallion is restored by the final overlay.",
+    "This is a2D original-relief cutout rig, not a new3D character. It articulates visible pixels and cannot reveal genuinely unseen body surfaces.",
+    "Window and foliage masks follow individual silhouettes; overlap margins remove isolated original-tree edge fragments. The exact original final pose is preserved by the final overlay.",
+    "Positive window masks overlap their inverse body cutouts by1 source pixel; positive foliage masks similarly overlap inverse foliage cutouts. This prevents antialiased joins exposing the blank field when all layers are visible.",
+    "The empty water clean plate avoids an old-position carriage-shaped patch or ghost silhouette during travel."
+  ],
+  "checks": [
+    "node --check dist/coin-geometry.js passed.",
+    "Generated SVG parsed as valid XML; all three raster references exist.",
+    "walk and turn exercised at -680, -340, -100 and0 travel; no NaN/Infinity;64 attribute updates.",
+    "Code-native SVG still proofs inspected for building-only, assembled construction, moving articulated carriage, and rotated annulus.",
+    "Compared assembled layers with the untouched source before the final overlay: upper pavilion/seam68600 pixels max-channel delta3; floor join15000 pixels delta2; lower facade71050 pixels delta3. No pixel in these regions differed by more than5. The broad horizontal balcony rail is present in the source."
+  ]
+}

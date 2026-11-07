@@ -1,0 +1,886 @@
+{
+  "schemaVersion": 1,
+  "mode": "archive",
+  "automaticPublication": false,
+  "timezone": "Asia/Tehran",
+  "notice": {
+    "fa": "دو شمارهٔ آرشیوی برای نمایش تجربهٔ خبرنامه؛ قیمت‌ها مربوط به زمان ثبت هر شماره‌اند و به‌صورت زنده به‌روز نمی‌شوند.",
+    "en": "Two archived editions demonstrating the newsletter experience. Any quoted prices belong to the stated observation time and are not live."
+  },
+  "editions": [
+    {
+      "id": "morning-2026-11-05",
+      "edition": "morning",
+      "date": "2026-11-05",
+      "dateFa": "پنجشنبه ۱۴ آبان ۱۴۰۵",
+      "time": "11:00",
+      "observationTime": "11:02",
+      "status": "archive",
+      "fa": {
+        "title": "فلزات بالاتر؛ بازار در انتظار داده‌های آمریکا",
+        "summary": "افت دلار و بازده اوراق از طلا حمایت کرد. مرور ایران، نرخ‌های ثبت‌شدهٔ طلا، نقره و ارز را در کنار آخرین جلسهٔ بورس قرار می‌دهد.",
+        "global": [
+          {
+            "heading": "طلا در ابتدای روز",
+            "paragraphs": [
+              "گزارش صبح ۵ نوامبر رویترز، طلای نقدی را در ساعت ۰۳:۱۶ گرینویچ، معادل ۰۶:۴۶ تهران، ۴٬۱۳۴٫۸۳ دلار برای هر اونس ثبت کرد. رشد ۱٫۹ درصدی، قیمت را به بالاترین محدودهٔ دو هفته رساند. دلار ضعیف‌تر و کاهش بازده اوراق خزانه، دو عامل همراه این حرکت بودند.",
+              "در همان گزارش، نقرهٔ نقدی با رشد ۱٫۷ درصدی به ۵۳٫۱۲ دلار برای هر اونس رسید. گزارش همچنین از رشد سهام جهانی در واکنش اولیه به نتیجهٔ انتخابات میان‌دوره‌ای آمریکا خبر می‌داد."
+            ],
+            "sourceIds": [
+              "reuters-morning"
+            ]
+          },
+          {
+            "heading": "تقویم پیش رو",
+            "paragraphs": [
+              "بر اساس تقویم ادارهٔ آمار کار آمریکا، گزارش اشتغال اکتبر برای جمعه ۶ نوامبر ساعت ۰۸:۳۰ شرق آمریکا، معادل ۱۷:۰۰ تهران، برنامه‌ریزی شده بود. این داده از آن جهت در کانون توجه قرار داشت که می‌توانست بر ارزیابی بازار از مسیر نرخ بهره اثر بگذارد. جهت واکنش قیمت، پیش از انتشار داده قطعی نبود."
+            ],
+            "sourceIds": [
+              "bls"
+            ]
+          },
+          {
+            "heading": "نظر منابع معتبر جهانی",
+            "paragraphs": [
+              "لین تران، تحلیلگر بازار در شرکت ایکس‌اس، حفظ طلا بالای ۴٬۰۰۰ دلار را کلیدی دانست و گفت ادامه ورود سرمایه و افت بازده می‌تواند مسیر ۴٬۲۰۰ و سپس ۴٬۴۰۰ دلار را باز کند. سیتی در همان گزارش، هدف صفر تا سه‌ماهه ۴٬۵۰۰ دلار را حفظ کرد؛ این هدف سناریو است، نه اجماع یا تضمین."
+            ],
+            "sourceIds": [
+              "reuters-morning"
+            ]
+          },
+          {
+            "heading": "برداشت تیم تحلیل موریاتی",
+            "paragraphs": [
+              "نسبت هم‌زمان طلا به نقره ۷۷٫۸۴ است. برای پنج جلسه جهانی آینده، جهت طلا را «رشد نوسانی» با اطمینان متوسط می‌بینیم: ماندگاری بالای ۴٬۰۰۰ دلار، دلار نرم‌تر و افت بازده حمایت می‌کنند؛ احتمال بالای افزایش نرخ و گزارش اشتغال قوی شواهد مخالف‌اند. بازگشت بازده یا تثبیت زیر ۴٬۰۰۰ برداشت را خنثی می‌کند.",
+              "برای نقره، جهت «رشد نوسانی» با اطمینان پایین است. همراهی با طلا روشن است، اما داده صنعتی تازه‌ای که رشد مستقل را تأیید کند نداریم. دوام بالای ۵۲ دلار همراه با بهبود شاخص‌های صنعتی شرط تقویت؛ دلار قوی‌تر یا افت فعالیت شرط تضعیف است. تمایل تحلیلی ما صبر برای تأیید پس از اشتغال است، نه سیگنال معامله."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "iran": [
+          {
+            "heading": "طلا، نقره و ارز؛ تصویر ثبت‌شدهٔ صبح",
+            "paragraphs": [
+              "در نسخهٔ اصلی این شماره، نرخ فروش دلار آزاد بن‌بست در ساعت ۱۱:۰۱، ۲۶۷٬۷۰۰ تومان و طلای ۱۸ عیار ۲۶٬۰۹۷٬۶۹۶ تومان برای هر گرم ثبت شده بود. نرخ نقرهٔ ۹۹۹ نیز در برداشت ساعت ۱۰:۵۰ از شبکهٔ طلا و ارز، ۴۷۸٬۴۲۰ تومان برای هر گرم بود. این ارقام، مشاهدات آرشیوی همان شماره‌اند؛ ساعت و منبع آن‌ها یکسان نیست."
+            ],
+            "sourceIds": [
+              "bonbast",
+              "tgju"
+            ],
+            "type": "archived-observation"
+          },
+          {
+            "heading": "سهام؛ مرور آخرین جلسه",
+            "paragraphs": [
+              "پنجشنبه، بازار سهام تهران جلسهٔ معاملاتی تازه‌ای نداشت. مبنای مرور، چهارشنبه ۱۳ آبان است؛ تسنیم رشد حدود ۱٫۱ درصدی شاخص کل را برای آن روز گزارش کرد. بنابراین عملکرد بورس در این شماره، به جلسهٔ پیشین تعلق دارد و نباید با نرخ‌های پنجشنبهٔ ارز و فلزات هم‌زمان فرض شود."
+            ],
+            "sourceIds": [
+              "iran-equities",
+              "iran-calendar"
+            ]
+          },
+          {
+            "heading": "تأمین مالی ارزی؛ خبری برای بازار سرمایه",
+            "paragraphs": [
+              "بانک مرکزی در اطلاعیهٔ ۱۲ آبان، ابلاغ دستورالعمل اوراق وکالت ارزی را اعلام کرد. این چارچوب، استفاده از منابع ارزی برای تأمین مالی طرح‌های مشخص را در نظر می‌گیرد و برای هر پروژه سقف پایه تعیین می‌کند. در خبرنامه، این خبر در بخش تأمین مالی دنبال می‌شود و از تغییر روزانهٔ شاخص سهام جداست."
+            ],
+            "sourceIds": [
+              "cbi-wakala"
+            ]
+          },
+          {
+            "heading": "برداشت موریاتی",
+            "paragraphs": [
+              "در بازار داخلی، اثر اونس از مسیر تبدیل ارز به قیمت ریالی می‌رسد. بنابراین افزایش قیمت جهانی می‌تواند با کاهش نرخ ارز بخشی از اثر خود را از دست بدهد. برای مقایسهٔ شمش، آب‌شده و مصنوعات نیز وزن، عیار، هزینهٔ ساخت، سمت خرید یا فروش و شرایط تسویه باید روشن باشد. فاصلهٔ دو تابلوی ناهم‌زمان، به‌تنهایی نشانهٔ فرصت قطعی خرید یا فروش نیست."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "closing": "این شماره برای مرور رویدادها و زمینهٔ بازار است و دستور خرید یا فروش محسوب نمی‌شود."
+      },
+      "en": {
+        "title": "Metals higher as markets await US data",
+        "summary": "A softer dollar and lower bond yields supported gold. The Iranian review places archived gold, silver and currency observations alongside the latest equity-market session.",
+        "global": [
+          {
+            "heading": "Gold at the start of the day",
+            "paragraphs": [
+              "Reuters’ morning report on 5 November recorded spot gold at US$4,134.83 per ounce at 03:16 GMT, or 06:46 Tehran time. A 1.9% gain took the price into its highest range in two weeks. A weaker dollar and lower US Treasury yields accompanied the move.",
+              "The same report placed spot silver 1.7% higher at US$53.12 per ounce. It also described a rise in global equities during the initial reaction to the US midterm election result."
+            ],
+            "sourceIds": [
+              "reuters-morning"
+            ]
+          },
+          {
+            "heading": "The calendar ahead",
+            "paragraphs": [
+              "The US Bureau of Labor Statistics calendar scheduled the October employment report for Friday 6 November at 08:30 Eastern Time, equivalent to 17:00 in Tehran. Markets were watching for information that could influence expectations for interest rates. The direction of the price response could not be established before the release."
+            ],
+            "sourceIds": [
+              "bls"
+            ]
+          },
+          {
+            "heading": "Views from global sources",
+            "paragraphs": [
+              "Linh Tran of XS described holding above $4,000 as important for gold and said continued inflows and lower yields could open a path towards $4,200 and then $4,400. Citi retained a zero-to-three-month target of $4,500 in the same report. These were attributed scenarios at the time, rather than a consensus or a guarantee."
+            ],
+            "sourceIds": [
+              "reuters-morning"
+            ]
+          },
+          {
+            "heading": "Moriyati’s analytical assessment",
+            "paragraphs": [
+              "The contemporaneous gold/silver ratio was 77.84. In the original five-session assessment, gold had a volatile upward bias with medium confidence. Holding above $4,000, a softer dollar and lower yields were supportive. The high probability of a rate increase and a strong employment report were opposing evidence. A recovery in yields or sustained prices below $4,000 would neutralise that view.",
+              "The original silver assessment was a volatile upward bias with low confidence. Its short-term connection with gold was visible, but fresh industrial evidence for independent strength was absent. Holding above $52 together with improving industrial indicators would strengthen the view; a firmer dollar or weaker activity would weaken it. The editorial stance was to wait for confirmation after payrolls, rather than issue a trading signal."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "iran": [
+          {
+            "heading": "Gold, silver and currencies: the archived morning record",
+            "paragraphs": [
+              "The original edition recorded Bonbast’s free-market US dollar selling rate at 267,700 tomans and 18-carat gold at 26,097,696 tomans per gram at 11:01. The recorded TGJU quotation for 999 silver was 478,420 tomans per gram at 10:50. These are archived observations from that edition, with different sources and observation times."
+            ],
+            "sourceIds": [
+              "bonbast",
+              "tgju"
+            ],
+            "type": "archived-observation"
+          },
+          {
+            "heading": "Equities: the latest completed session",
+            "paragraphs": [
+              "Tehran equities had no fresh trading session on Thursday. The relevant session was Wednesday 4 November, for which Tasnim reported an approximately 1.1% rise in the main index. That performance belongs to the previous session and should not be treated as simultaneous with Thursday’s currency and metals quotations."
+            ],
+            "sourceIds": [
+              "iran-equities",
+              "iran-calendar"
+            ]
+          },
+          {
+            "heading": "Foreign-currency financing and capital markets",
+            "paragraphs": [
+              "In its 3 November notice, the Central Bank of Iran announced the implementation framework for foreign-currency wakala securities. It provides for financing specified projects from foreign-currency resources and sets a basic ceiling for each project. The newsletter follows this as a financing development, separately from the daily performance of equity indices."
+            ],
+            "sourceIds": [
+              "cbi-wakala"
+            ]
+          },
+          {
+            "heading": "Moriyati’s perspective",
+            "paragraphs": [
+              "Global bullion prices reach the Iranian market through currency conversion. A decline in the exchange rate can therefore offset part of a rise in dollar-denominated metal. Comparing bars, melted gold and jewellery also requires clear weight, fineness, manufacturing costs, bid or offer basis, and settlement terms. A gap between quotations recorded at different times is not, by itself, a certain trading opportunity."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "closing": "This edition reviews events and market context; it is not an instruction to buy or sell."
+      },
+      "sources": [
+        {
+          "id": "reuters-morning",
+          "title": "Reuters — Gold hits a two-week high (morning report)",
+          "url": "https://www.brecorder.com/news/amp/40447533",
+          "publishedDate": "2026-11-05",
+          "note": "Reuters-authored syndicated morning version; 03:16 GMT gold observation. Original Reuters page was subsequently updated."
+        },
+        {
+          "id": "bls",
+          "title": "U.S. Bureau of Labor Statistics — November 2026 release calendar",
+          "url": "https://www.bls.gov/schedule/2026/11_sched_list.htm",
+          "publishedDate": "2026-11-03"
+        },
+        {
+          "id": "bonbast",
+          "title": "Bonbast — Iranian free-market quotations",
+          "url": "https://www.bonbast.com/",
+          "publishedDate": "2026-11-05",
+          "note": "Historical observations retained in the original Moriyati morning edition; linked page is a current quotation service, not a preserved 11:01 snapshot."
+        },
+        {
+          "id": "tgju",
+          "title": "TGJU — Silver 999",
+          "url": "https://www.tgju.org/profile/silver_999",
+          "publishedDate": "2026-11-05",
+          "note": "Historical observation retained in original Moriyati edition; current linked page is not an archived quotation."
+        },
+        {
+          "id": "cbi-wakala",
+          "title": "Central Bank of Iran — foreign-currency wakala securities",
+          "url": "https://cbi.ir/showitem/36680.aspx",
+          "publishedDate": "2026-11-03",
+          "verifiedMirror": "https://t.me/s/prcbi1"
+        },
+        {
+          "id": "iran-equities",
+          "title": "Tasnim — Tehran equity-market report, 13 Aban 1405",
+          "url": "https://www.tasnimnews.ir/fa/news/1405/08/13/3740266/",
+          "publishedDate": "2026-11-04",
+          "note": "Previous Iranian equity-market session; approximately 1.1% index increase. The exact index level is omitted because secondary end-of-session feeds differ."
+        },
+        {
+          "id": "iran-calendar",
+          "title": "Ideal Kousha brokerage — market trading calendar",
+          "url": "https://idbr.ir/market-hours",
+          "publishedDate": null,
+          "note": "Explains the Saturday–Wednesday equity trading week; Thursday 5 November had no fresh equity session."
+        },
+        {
+          "id": "exchange",
+          "title": "Tasnim — official USD remittance, 13 Aban 1405",
+          "url": "https://www.tasnimnews.ir/fa/news/1405/08/13/3739900/",
+          "publishedDate": "2026-11-04",
+          "note": "Rate preserved from the owner’s original morning email; observation predates this issue."
+        }
+      ],
+      "cover": "assets/v8/newsletter-morning.webp",
+      "coverAlt": {
+        "fa": "مطالعه‌ای از طلا و نقره در نور صبح",
+        "en": "Gold and silver in morning light"
+      },
+      "globalSnapshot": [
+        {
+          "symbol": "Au",
+          "value": 4134.83,
+          "label": {
+            "fa": "طلای نقدی",
+            "en": "Spot gold"
+          },
+          "unit": {
+            "fa": "دلار / اونس تروا",
+            "en": "USD / troy ounce"
+          },
+          "change": 1.9,
+          "observedAt": "06:46",
+          "sourceId": "reuters-morning"
+        },
+        {
+          "symbol": "Ag",
+          "value": 53.12,
+          "label": {
+            "fa": "نقرهٔ نقدی",
+            "en": "Spot silver"
+          },
+          "unit": {
+            "fa": "دلار / اونس تروا",
+            "en": "USD / troy ounce"
+          },
+          "change": 1.7,
+          "observedAt": "06:46",
+          "sourceId": "reuters-morning"
+        }
+      ],
+      "ratio": 77.84,
+      "comparison": {
+        "morning": {
+          "gold": 4134.83,
+          "silver": 53.12,
+          "time": "06:46"
+        },
+        "evening": {
+          "gold": 4100.27,
+          "silver": 52.23,
+          "time": "22:35"
+        },
+        "date": "2026-11-05"
+      },
+      "iranSnapshot": [
+        {
+          "label": {
+            "fa": "دلار آزاد تهران",
+            "en": "Tehran free-market USD"
+          },
+          "value": {
+            "fa": "۲۶۷٬۷۰۰",
+            "en": "267,700"
+          },
+          "unit": {
+            "fa": "تومان / فروش",
+            "en": "toman / sell"
+          },
+          "observedAt": {
+            "fa": "۱۱:۰۱",
+            "en": "11:01"
+          },
+          "sourceId": "bonbast"
+        },
+        {
+          "label": {
+            "fa": "حوالهٔ رسمی دلار",
+            "en": "Official USD remittance"
+          },
+          "value": {
+            "fa": "۱۸۸٬۶۶۸",
+            "en": "188,668"
+          },
+          "unit": {
+            "fa": "تومان / فروش",
+            "en": "toman / sell"
+          },
+          "observedAt": {
+            "fa": "آخرین ثبت: ۱۳ آبان",
+            "en": "Last observation: 4 November"
+          },
+          "sourceId": "exchange"
+        },
+        {
+          "label": {
+            "fa": "طلای ۱۸ عیار",
+            "en": "18-karat gold"
+          },
+          "value": {
+            "fa": "۲۶٬۰۹۷٬۶۹۶",
+            "en": "26,097,696"
+          },
+          "unit": {
+            "fa": "تومان / گرم",
+            "en": "toman / gram"
+          },
+          "observedAt": {
+            "fa": "۱۱:۰۱",
+            "en": "11:01"
+          },
+          "sourceId": "bonbast"
+        },
+        {
+          "label": {
+            "fa": "نقرهٔ ۹۹۹",
+            "en": "999 silver"
+          },
+          "value": {
+            "fa": "۴۷۸٬۴۲۰",
+            "en": "478,420"
+          },
+          "unit": {
+            "fa": "تومان / گرم",
+            "en": "toman / gram"
+          },
+          "observedAt": {
+            "fa": "۱۰:۵۰",
+            "en": "10:50"
+          },
+          "sourceId": "tgju"
+        },
+        {
+          "label": {
+            "fa": "آب‌شدهٔ نقدی",
+            "en": "Melted gold, cash"
+          },
+          "value": {
+            "fa": "۱۱۳٬۰۵۰٬۰۰۰",
+            "en": "113,050,000"
+          },
+          "unit": {
+            "fa": "تومان / مثقال",
+            "en": "toman / mithqal"
+          },
+          "observedAt": {
+            "fa": "۱۱:۰۱",
+            "en": "11:01"
+          },
+          "sourceId": "bonbast"
+        },
+        {
+          "label": {
+            "fa": "بورس تهران",
+            "en": "Tehran equities"
+          },
+          "value": {
+            "fa": "جلسهٔ تازه نداشت",
+            "en": "No new session"
+          },
+          "unit": {
+            "fa": "آخرین جلسه: ۱۳ آبان",
+            "en": "Last session: 4 November"
+          },
+          "observedAt": {
+            "fa": "روز غیرمعاملاتی",
+            "en": "Non-trading day"
+          },
+          "sourceId": "iran-equities"
+        }
+      ],
+      "iranSnapshotNote": {
+        "fa": "ثبت صبح ۱۴ آبان ۱۴۰۵؛ زمان مشاهدهٔ هر نرخ در جدول آمده است.",
+        "en": "Morning observations from 5 November 2026; each row retains its observation time."
+      },
+      "outlook": {
+        "fa": {
+          "gold": "رشد نوسانی",
+          "silver": "رشد نوسانی",
+          "confidenceGold": "اطمینان متوسط",
+          "confidenceSilver": "اطمینان پایین"
+        },
+        "en": {
+          "gold": "Volatile upward bias",
+          "silver": "Volatile upward bias",
+          "confidenceGold": "Medium confidence",
+          "confidenceSilver": "Low confidence"
+        }
+      }
+    },
+    {
+      "id": "evening-2026-11-05",
+      "edition": "evening",
+      "date": "2026-11-05",
+      "dateFa": "پنجشنبه ۱۴ آبان ۱۴۰۵",
+      "time": "23:00",
+      "observationTime": "23:10",
+      "status": "archive",
+      "fa": {
+        "title": "فلزات از اوج روز عقب نشستند",
+        "summary": "طلا بخشی از رشد روز را واگذار کرد؛ گزارش ماهانهٔ شورای جهانی طلا و تقویم اشتغال آمریکا، زمینهٔ مرور شب را شکل می‌دهند.",
+        "global": [
+          {
+            "heading": "تصویر پایان روز جهانی",
+            "paragraphs": [
+              "رویترز در ساعت ۱۹:۰۵ گرینویچ، معادل ۲۲:۳۵ تهران، طلای نقدی را ۴٬۱۰۰٫۲۷ دلار و نقره را ۵۲٫۲۳ دلار برای هر اونس ثبت کرد. طلا از سقف روزانهٔ خود عقب آمده بود؛ نقره نیز در همان گزارش نسبت به روز پیش تقریباً ثابت توصیف شد."
+            ],
+            "sourceIds": [
+              "reuters-evening"
+            ]
+          },
+          {
+            "heading": "سهام آمریکا؛ فشار بر فناوری در جریان معاملات",
+            "paragraphs": [
+              "در گزارش میان‌روزی رویترز، در ساعت ۰۹:۵۷ شرق آمریکا، معادل ۱۸:۲۷ تهران، اس‌اندپی ۵۰۰ حدود ۱٫۷ درصد و نزدک حدود ۳٫۱ درصد پایین‌تر بود. ضعف سهام تراشه و زیرساخت مراکز داده بر بازار فشار می‌آورد. این یک برداشت حین معاملات است؛ پایان رسمی بازار آمریکا بعد از ساعت انتشار این شماره قرار می‌گیرد."
+            ],
+            "sourceIds": [
+              "reuters-equities"
+            ]
+          },
+          {
+            "heading": "ارز؛ تصمیم تازهٔ بانک انگلستان",
+            "paragraphs": [
+              "بانک انگلستان در اطلاعیهٔ ۵ نوامبر، نرخ سیاستی را با افزایش ۰٫۲۵ واحد درصدی به ۴ درصد رساند. بانک بر فشارهای تورمی و وابستگی تصمیم‌های بعدی به داده‌ها تأکید کرد. در مرور بازار ارز، این خبر بخشی از زمینهٔ ارزیابی پوند است؛ از خودِ تصمیم نرخ بهره نمی‌توان جهت قطعی نرخ برابری را نتیجه گرفت."
+            ],
+            "sourceIds": [
+              "boe"
+            ]
+          },
+          {
+            "heading": "قیمت و جریان سرمایه همیشه هم‌جهت نیستند",
+            "paragraphs": [
+              "شورای جهانی طلا در گزارش ۵ نوامبر خود، افت ۶٫۳ درصدی قیمت طلا در اکتبر را در کنار ورود خالص سرمایه به صندوق‌های قابل معاملهٔ طلا قرار داد. این هم‌زمانی یادآور می‌شود که جریان صندوق‌ها، معاملات مشتقه و قیمت روزانه را باید جداگانه خواند. یک شاخص به‌تنهایی، شرح کاملی از تقاضا نیست."
+            ],
+            "sourceIds": [
+              "wgc"
+            ]
+          },
+          {
+            "heading": "نظر منابع معتبر جهانی",
+            "paragraphs": [
+              "دیوید مگر، مدیر معاملات فلزات در های‌ریج فیوچرز، گفت ضعف انرژی می‌تواند ترس تورمی و نیاز به افزایش نرخ را کاهش دهد. در سوی مخالف، تای وونگ، معامله‌گر مستقل فلزات، هشدار داد اشتغال قوی‌تر از انتظار می‌تواند طلا را تحت فشار بگذارد و انتظار افزایش نرخ را تقویت کند."
+            ],
+            "sourceIds": [
+              "reuters-evening"
+            ]
+          },
+          {
+            "heading": "برداشت تیم تحلیل موریاتی",
+            "paragraphs": [
+              "نسبت هم‌زمان طلا به نقره ۷۸٫۵۰ شد و نسبت به صبح بالا رفت؛ یعنی نقره در عقب‌نشینی ضعیف‌تر بود. برای پنج جلسه جهانی آینده، طلا را «رشد نوسانی» با اطمینان متوسط‌روبه‌پایین می‌بینیم: دلار و بازده پایین‌تر حمایت می‌کنند، اما برگشت از سقف روز و حساسیت به اشتغال شواهد مخالف‌اند. تثبیت زیر ۴٬۰۰۰ دلار یا بازگشت بازده، برداشت را خنثی می‌کند.",
+              "جهت نقره «نامشخص و نوسانی» با اطمینان پایین است؛ همراهی کامل با طلا دیده نشد و شاهد صنعتی تازه‌ای برای رشد مستقل نداریم. دوام بالای ۵۲ دلار همراه با بهبود داده‌های صنعتی شرط تقویت است؛ دلار قوی‌تر یا شکست این سطح شرط تضعیف. تمایل تحلیلی ما صبر تا روشن‌شدن گزارش اشتغال است، نه سیگنال معامله."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "iran": [
+          {
+            "heading": "بازار ایران؛ یک مبنای روشن برای مقایسه",
+            "paragraphs": [
+              "در شمارهٔ شب، نرخ‌های ثبت‌شدهٔ صبح نباید به‌عنوان قیمت پایانی تکرار شوند. برای دلار، طلا و نقره، مقایسهٔ معتبر به زمان، منبع و سمت یکسان نرخ نیاز دارد. در این بازنشر آرشیوی، به‌دلیل نبود برداشت هم‌زمانِ تأییدشده برای پایان بازار ایران، عدد تازه‌ای به نام نرخ پایانی درج نشده است.",
+              "در سهام نیز جلسهٔ تازه‌ای برگزار نشده بود؛ آخرین جلسه، چهارشنبه ۱۳ آبان، با رشد حدود ۱٫۱ درصدی شاخص کل در گزارش تسنیم همراه بود. این عدد به روز قبل تعلق دارد."
+            ],
+            "sourceIds": [
+              "iran-equities",
+              "iran-calendar"
+            ],
+            "type": "data-note"
+          },
+          {
+            "heading": "بازار سرمایه و تأمین مالی ارزی",
+            "paragraphs": [
+              "اطلاعیهٔ بانک مرکزی دربارهٔ اصلاح چارچوب اوراق مرابحهٔ ارزی، بر نقش مجوز بانک مرکزی و رعایت ضوابط ارزی و بازار سرمایه تأکید دارد. برای بنگاه‌های دارای فعالیت ارزی، موضوع اصلی، شیوهٔ تأمین و بازپرداخت منابع است. این خبر را باید از بازده روزانهٔ بورس یا تغییر قیمت شمش جدا خواند."
+            ],
+            "sourceIds": [
+              "cbi-murabaha"
+            ]
+          },
+          {
+            "heading": "یادداشت شب موریاتی",
+            "paragraphs": [
+              "برای دارندهٔ طلا و نقره در ایران، بازده ریالی حاصل برهم‌کنش فلز و ارز است. از سوی دیگر، بهای قابل معامله با قیمت مرجع یکسان نیست: هزینهٔ ساخت، بسته‌بندی، نقدشوندگی و فاصلهٔ خرید و فروش نیز در آن حضور دارند. مرور شب زمانی مفیدتر است که این اجزا را روشن کند و خبر را از تحلیل، و تحلیل را از توصیهٔ معامله جدا نگه دارد."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "closing": "قیمت‌های این شماره تاریخی‌اند. این بازنشر، گزارش زنده یا توصیهٔ شخصی سرمایه‌گذاری نیست."
+      },
+      "en": {
+        "title": "Metals retreat from the day’s highs",
+        "summary": "Gold surrendered part of its intraday advance. The World Gold Council’s monthly review and the US employment calendar provide context for the evening edition.",
+        "global": [
+          {
+            "heading": "The late global session",
+            "paragraphs": [
+              "At 19:05 GMT, or 22:35 Tehran time, Reuters recorded spot gold at US$4,100.27 and silver at US$52.23 per ounce. Gold had retreated from its intraday high, while silver was described as broadly unchanged from the previous day."
+            ],
+            "sourceIds": [
+              "reuters-evening"
+            ]
+          },
+          {
+            "heading": "US equities: technology pressure during the session",
+            "paragraphs": [
+              "Reuters’ intraday report placed the S&P 500 about 1.7% lower and the Nasdaq about 3.1% lower at 09:57 Eastern Time, or 18:27 Tehran. Semiconductor and data-centre infrastructure stocks were weighing on the market. This is an intraday observation: the official US close falls after this edition’s publication time."
+            ],
+            "sourceIds": [
+              "reuters-equities"
+            ]
+          },
+          {
+            "heading": "Currencies: a fresh Bank of England decision",
+            "paragraphs": [
+              "In its 5 November announcement, the Bank of England raised its policy rate by 0.25 percentage points to 4%. It highlighted inflation pressures and said future decisions would depend on the evidence. For the currency review, the decision provides context for sterling; the interest-rate decision alone does not establish a certain direction for the exchange rate."
+            ],
+            "sourceIds": [
+              "boe"
+            ]
+          },
+          {
+            "heading": "Prices and investment flows can diverge",
+            "paragraphs": [
+              "In its 5 November report, the World Gold Council placed October’s 6.3% decline in gold alongside net inflows into gold exchange-traded funds. The contrast is a reminder to distinguish fund flows, derivatives positioning and daily prices. No single indicator provides a complete account of demand."
+            ],
+            "sourceIds": [
+              "wgc"
+            ]
+          },
+          {
+            "heading": "Views from global sources",
+            "paragraphs": [
+              "David Meger, director of metals trading at High Ridge Futures, said softer energy prices could ease inflation concerns and the need for rate increases. Independent metals trader Tai Wong pointed to the opposing risk: stronger-than-expected employment could put pressure on gold and reinforce expectations of higher interest rates."
+            ],
+            "sourceIds": [
+              "reuters-evening"
+            ]
+          },
+          {
+            "heading": "Moriyati’s analytical assessment",
+            "paragraphs": [
+              "The contemporaneous gold/silver ratio rose to 78.50, showing silver underperforming during the retreat. The original five-session gold assessment remained a volatile upward bias, with medium-to-low confidence. A softer dollar and lower yields supported it; the reversal from the daily high and sensitivity to payrolls were opposing evidence. A sustained move below $4,000 or a recovery in yields would neutralise the view.",
+              "The original silver outlook was uncertain and volatile, with low confidence. Silver was not fully matching gold, and there was no fresh industrial evidence for independent strength. Holding above $52 alongside stronger industrial data would strengthen the case; a firmer dollar or loss of that level would weaken it. The editorial preference was to wait for the employment release, not to provide a trading signal."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "iran": [
+          {
+            "heading": "Iranian markets: establish a consistent comparison",
+            "paragraphs": [
+              "Morning observations should not be relabelled as closing prices in an evening edition. Comparisons for the dollar, gold and silver need consistent times, sources and bid or offer bases. This archived republication does not introduce a new Iranian closing quotation where a verified, simultaneous observation was unavailable.",
+              "Equities also had no fresh session. The latest session, Wednesday 4 November, showed an approximately 1.1% main-index increase in Tasnim’s report. This figure belongs to the preceding day."
+            ],
+            "sourceIds": [
+              "iran-equities",
+              "iran-calendar"
+            ],
+            "type": "data-note"
+          },
+          {
+            "heading": "Capital markets and foreign-currency financing",
+            "paragraphs": [
+              "The Central Bank of Iran’s announcement revising foreign-currency murabaha securities emphasises central-bank authorisation and compliance with currency and capital-market rules. For businesses with foreign-currency operations, the relevant issue is how funding is raised and repaid. This should be read separately from daily equity-market returns or changes in bullion prices."
+            ],
+            "sourceIds": [
+              "cbi-murabaha"
+            ]
+          },
+          {
+            "heading": "Moriyati’s evening note",
+            "paragraphs": [
+              "For an Iranian gold or silver holder, local-currency returns reflect the interaction between the metal and foreign exchange. An executable price also differs from a reference quotation: manufacturing, packaging, liquidity and the buy–sell spread play a part. An evening review is most useful when it makes those components clear and distinguishes reported events from analysis, and analysis from a trading recommendation."
+            ],
+            "sourceIds": [],
+            "type": "editorial"
+          }
+        ],
+        "closing": "Prices in this edition are historical. This republication is neither live reporting nor personalised investment advice."
+      },
+      "sources": [
+        {
+          "id": "reuters-evening",
+          "title": "Reuters — Gold at over two-week high; US payrolls awaited",
+          "url": "https://www.reuters.com/world/india/gold-hits-two-week-high-dollar-treasury-yields-ease-after-us-midterm-elections-2026-11-05/",
+          "publishedDate": "2026-11-05",
+          "note": "19:05 GMT observation, also retained in original Moriyati evening edition."
+        },
+        {
+          "id": "wgc",
+          "title": "World Gold Council — Gold Market Commentary: October 2026",
+          "url": "https://www.gold.org/goldhub/research/gold-market-commentary-october-2026",
+          "publishedDate": "2026-11-05"
+        },
+        {
+          "id": "bls",
+          "title": "U.S. Bureau of Labor Statistics — November 2026 release calendar",
+          "url": "https://www.bls.gov/schedule/2026/11_sched_list.htm",
+          "publishedDate": "2026-11-03"
+        },
+        {
+          "id": "cbi-murabaha",
+          "title": "Central Bank of Iran — amended foreign-currency murabaha framework",
+          "url": "https://t.me/s/prcbi1",
+          "publishedDate": "2026-11-03",
+          "note": "Official CBI channel announcement dated12Aban1405; verified readback lines92–99 in the public channel."
+        },
+        {
+          "id": "iran-equities",
+          "title": "Tasnim — Tehran equity-market report, 13 Aban 1405",
+          "url": "https://www.tasnimnews.ir/fa/news/1405/08/13/3740266/",
+          "publishedDate": "2026-11-04",
+          "note": "Previous Iranian equity-market session; approximately 1.1% index increase. The exact index level is omitted because secondary end-of-session feeds differ."
+        },
+        {
+          "id": "iran-calendar",
+          "title": "Ideal Kousha brokerage — market trading calendar",
+          "url": "https://idbr.ir/market-hours",
+          "publishedDate": null,
+          "note": "Explains the Saturday–Wednesday equity trading week; Thursday 5 November had no fresh equity session."
+        },
+        {
+          "id": "reuters-equities",
+          "title": "Reuters — Wall Street intraday report",
+          "url": "https://www.fidelity.com/news/article/us-markets/202611051023RTRSNEWSCOMBINED_L6N46M12A_1",
+          "publishedDate": "2026-11-05",
+          "note": "Reuters report published 10:23 ET; index observation at 09:57 ET, before the 23:00 Tehran edition. No later US closing figures used."
+        },
+        {
+          "id": "boe",
+          "title": "Bank of England — November 2026 policy decision",
+          "url": "https://www.bankofengland.co.uk/monetary-policy-summary-and-minutes/2026/november-2026",
+          "publishedDate": "2026-11-05",
+          "note": "Official midday release, available before the 23:00 Tehran edition."
+        },
+        {
+          "id": "bonbast",
+          "title": "Bonbast — Iranian free-market quotations",
+          "url": "https://www.bonbast.com/",
+          "publishedDate": "2026-11-05",
+          "note": "Historical observations retained in the original Moriyati morning edition; linked page is a current quotation service, not a preserved 11:01 snapshot."
+        },
+        {
+          "id": "tgju",
+          "title": "TGJU — Silver 999",
+          "url": "https://www.tgju.org/profile/silver_999",
+          "publishedDate": "2026-11-05",
+          "note": "Historical observation retained in original Moriyati edition; current linked page is not an archived quotation."
+        },
+        {
+          "id": "exchange",
+          "title": "Tasnim — official USD remittance, 13 Aban 1405",
+          "url": "https://www.tasnimnews.ir/fa/news/1405/08/13/3739900/",
+          "publishedDate": "2026-11-04",
+          "note": "Rate preserved from the owner’s original morning email; observation predates this issue."
+        }
+      ],
+      "cover": "assets/v8/newsletter-evening.webp",
+      "coverAlt": {
+        "fa": "مطالعه‌ای از طلا و نقره در نور شب",
+        "en": "Gold and silver in evening light"
+      },
+      "globalSnapshot": [
+        {
+          "symbol": "Au",
+          "value": 4100.27,
+          "label": {
+            "fa": "طلای نقدی",
+            "en": "Spot gold"
+          },
+          "unit": {
+            "fa": "دلار / اونس تروا",
+            "en": "USD / troy ounce"
+          },
+          "change": 1.0,
+          "observedAt": "22:35",
+          "sourceId": "reuters-evening"
+        },
+        {
+          "symbol": "Ag",
+          "value": 52.23,
+          "label": {
+            "fa": "نقرهٔ نقدی",
+            "en": "Spot silver"
+          },
+          "unit": {
+            "fa": "دلار / اونس تروا",
+            "en": "USD / troy ounce"
+          },
+          "change": 0,
+          "observedAt": "22:35",
+          "sourceId": "reuters-evening"
+        }
+      ],
+      "ratio": 78.5,
+      "comparison": {
+        "morning": {
+          "gold": 4134.83,
+          "silver": 53.12,
+          "time": "06:46"
+        },
+        "evening": {
+          "gold": 4100.27,
+          "silver": 52.23,
+          "time": "22:35"
+        },
+        "date": "2026-11-05"
+      },
+      "iranSnapshot": [
+        {
+          "label": {
+            "fa": "دلار آزاد تهران",
+            "en": "Tehran free-market USD"
+          },
+          "value": {
+            "fa": "۲۶۷٬۷۰۰",
+            "en": "267,700"
+          },
+          "unit": {
+            "fa": "تومان / فروش",
+            "en": "toman / sell"
+          },
+          "observedAt": {
+            "fa": "۱۱:۰۱",
+            "en": "11:01"
+          },
+          "sourceId": "bonbast"
+        },
+        {
+          "label": {
+            "fa": "حوالهٔ رسمی دلار",
+            "en": "Official USD remittance"
+          },
+          "value": {
+            "fa": "۱۸۸٬۶۶۸",
+            "en": "188,668"
+          },
+          "unit": {
+            "fa": "تومان / فروش",
+            "en": "toman / sell"
+          },
+          "observedAt": {
+            "fa": "آخرین ثبت: ۱۳ آبان",
+            "en": "Last observation: 4 November"
+          },
+          "sourceId": "exchange"
+        },
+        {
+          "label": {
+            "fa": "طلای ۱۸ عیار",
+            "en": "18-karat gold"
+          },
+          "value": {
+            "fa": "۲۶٬۰۹۷٬۶۹۶",
+            "en": "26,097,696"
+          },
+          "unit": {
+            "fa": "تومان / گرم",
+            "en": "toman / gram"
+          },
+          "observedAt": {
+            "fa": "۱۱:۰۱",
+            "en": "11:01"
+          },
+          "sourceId": "bonbast"
+        },
+        {
+          "label": {
+            "fa": "نقرهٔ ۹۹۹",
+            "en": "999 silver"
+          },
+          "value": {
+            "fa": "۴۷۸٬۴۲۰",
+            "en": "478,420"
+          },
+          "unit": {
+            "fa": "تومان / گرم",
+            "en": "toman / gram"
+          },
+          "observedAt": {
+            "fa": "۱۰:۵۰",
+            "en": "10:50"
+          },
+          "sourceId": "tgju"
+        },
+        {
+          "label": {
+            "fa": "آب‌شدهٔ نقدی",
+            "en": "Melted gold, cash"
+          },
+          "value": {
+            "fa": "۱۱۳٬۰۵۰٬۰۰۰",
+            "en": "113,050,000"
+          },
+          "unit": {
+            "fa": "تومان / مثقال",
+            "en": "toman / mithqal"
+          },
+          "observedAt": {
+            "fa": "۱۱:۰۱",
+            "en": "11:01"
+          },
+          "sourceId": "bonbast"
+        },
+        {
+          "label": {
+            "fa": "بورس تهران",
+            "en": "Tehran equities"
+          },
+          "value": {
+            "fa": "جلسهٔ تازه نداشت",
+            "en": "No new session"
+          },
+          "unit": {
+            "fa": "آخرین جلسه: ۱۳ آبان",
+            "en": "Last session: 4 November"
+          },
+          "observedAt": {
+            "fa": "روز غیرمعاملاتی",
+            "en": "Non-trading day"
+          },
+          "sourceId": "iran-equities"
+        }
+      ],
+      "iranSnapshotNote": {
+        "fa": "آخرین ثبتِ در دسترس از شمارهٔ صبح ۱۴ آبان؛ این نرخ‌ها قیمت ساعت ۲۳ نیستند.",
+        "en": "Latest available observations from the 5 November morning issue; these are not 23:00 quotations."
+      },
+      "outlook": {
+        "fa": {
+          "gold": "رشد نوسانی",
+          "silver": "نامشخص و نوسانی",
+          "confidenceGold": "اطمینان متوسط‌روبه‌پایین",
+          "confidenceSilver": "اطمینان پایین"
+        },
+        "en": {
+          "gold": "Volatile upward bias",
+          "silver": "Uncertain and volatile",
+          "confidenceGold": "Medium-to-low confidence",
+          "confidenceSilver": "Low confidence"
+        }
+      }
+    }
+  ]
+}

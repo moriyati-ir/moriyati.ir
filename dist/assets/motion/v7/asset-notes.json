@@ -1,0 +1,63 @@
+{
+  "tool": "built-in image_gen image editing, followed only by lossless WebP format conversion with ImageMagick",
+  "sources": [
+    "assets/medallion.webp",
+    "assets/motion/medallion-blank.webp",
+    "user-provided IMG_3555(1).jpeg"
+  ],
+  "canvas": [
+    1254,
+    1254
+  ],
+  "registration": {
+    "original_interior_center": [
+      626,
+      635
+    ],
+    "original_interior_ellipse_radii": [
+      479,
+      470
+    ],
+    "canonical_circle_center": [
+      627,
+      627
+    ],
+    "canonical_circle_radius": 468,
+    "source_to_canonical_translation": [
+      1,
+      -8
+    ],
+    "outer_native_circle_radius": 610,
+    "note": "Apply the same translation to every image and original carriage rig. Preserve artwork aspect ratio. Clip interiors to radius468. Never reintroduce the original full medal outer/inner raster rails in final state."
+  },
+  "assets": [
+    {
+      "file": "pavilion-base-complete.webp",
+      "generation": "precise-object-edit",
+      "prompt": "Approved Moriyati medallion, exact aligned composition, preserve pavilion outline, roof, columns, wings, texture and light. Remove all foliage and carriage/driver/horse. Reconstruct physically continuous masonry behind foliage; remove window/lattice/door detail and replace with gently recessed solid architectural panels inside original arches. Complete steps/plinth and engraved water. No sky-filled or transparent holes. No movement or changed proportions. Transparent outside medal."
+    },
+    {
+      "file": "pavilion-detailed-complete.webp",
+      "generation": "precise-object-edit",
+      "prompt": "Approved Moriyati medallion, exact composition and ornate windows, lattice doors, columns, roof and wings. Remove foliage and horse/carriage/driver. Reconstruct fully continuous detailed architecture behind foliage including side-wing arches, walls, plinth and steps. Reconstruct original water behind carriage. Preserve original relief and light, exact positions. Transparent outside medal."
+    },
+    {
+      "file": "pavilion-foliage-complete.webp",
+      "generation": "precise-object-edit",
+      "prompt": "Remove only horse, carriage, wheels, reins, driver and reflections from approved silver medallion. Keep exact pavilion, every plant, all architectural details and lighting. Reconstruct silver engraved water/ground and complete shrub where driver overlapped. No carriage/hat/hoof/wheel ghosts or holes. Exact framing, transparent outside."
+    },
+    {
+      "file": "medallion-lion-emboss.webp",
+      "generation": "compositing",
+      "prompt": "Use blank medallion as target, user lion plaque solely as exact lion silhouette. Add centered standalone Moriyati lion in inner circular field; no square plaque or border, no gold color, no text, no new outline. Extremely shallow, subtle same-tone silver raised emboss with soft barely visible light/shadow, continuous original engraved texture through relief. Preserve medallion framing, ring, light and texture. Intended fast fade to original blank at first scroll."
+    },
+    {
+      "file": "annulus-circular.svg",
+      "generation": "native SVG geometry",
+      "description": "True circular rails and guilloche at center627,627, radii468/610. The display geometry is inlined with unique mask IDs, explicit user-space masks and92 crossing pairs for small-screen clarity."
+    }
+  ],
+  "integration": "Base and detailed facade are each complete attractive independent renders. Use their full interior or a full contiguous building silhouette. Do not subtract window/foliage silhouettes from the base. Foliage image provides complete backing to the original moving carriage. Faint lion should disappear quickly at first scroll. All PNG files are original masters; WebP conversion is lossless.",
+  "raster_editing": "No Python raster editing, inpainting, painting or pixel resampling performed. Generative reconstruction via built-in image_gen only. Python used for metadata and native SVG math; ImageMagick only lossless format conversion.",
+  "delivery": "Production WebP quality92 with full alpha and the original1254×1254 registration. Lossless masters remain in source version6e9acffc48be053b471b5141717fcb14bca37eaf; all generative edits were made with image_gen."
+}
