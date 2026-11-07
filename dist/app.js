@@ -242,6 +242,8 @@
       currentCollection=null;
       page.innerHTML=`<article class="collection-page"><h2 id="collection-page-title" tabindex="-1">${t.noResult}</h2><a class="text-link" href="#/works">${t.allWorks}</a></article>`;
     }
+    document.title=(c?c.name:slug?t.noResult:t.works)+' | '+(language==='fa'?'موریاتی':'Moriyati');
+    window.MoriyatiLocale?.links();
     dialog.scrollTop=0;
     requestAnimationFrame(()=>$('#collection-page-title').focus({preventScroll:true}));
   }
@@ -252,11 +254,12 @@
       if(menu.open)closeMenu();
       if(!dialog.open){lastWorksFocus=document.activeElement;dialog.showModal();}
       renderCollection(slug);
-    }else if(dialog.open)dialog.close();
+    }else if(dialog.open){dialog.close();document.title=language==='fa'?'موریاتی | ضرابخانه و خزانه':'Moriyati | Mint & Treasury';}
   }
   function closeCollection() {
     try{history.replaceState(null,'',location.href.split('#')[0]);}catch(_){location.hash='';}
     if(dialog.open)dialog.close();
+    document.title=language==='fa'?'موریاتی | ضرابخانه و خزانه':'Moriyati | Mint & Treasury';
     if(lastWorksFocus instanceof HTMLElement)lastWorksFocus.focus({preventScroll:true});
     requestDraw();
   }
