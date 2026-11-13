@@ -1,0 +1,138 @@
+{
+  "mode": "coming-soon",
+  "clearMastersIncluded": false,
+  "images": [
+    {
+      "path": "assets/collections/argentum/argentum-granules-jar.webp",
+      "originalSha256": "119cca98aa23cff3388bee1c3ee5ed2a56468db2be006cfb3374464de899aade"
+    },
+    {
+      "path": "assets/collections/argentum/argentum-workshop-5kg.webp",
+      "originalSha256": "ef249a28e5952bb5093596242f2d13b40ac3b25a32c2063058693226c8fdf662"
+    },
+    {
+      "path": "assets/collections/argentum/cast-silver-range.webp",
+      "originalSha256": "824bab166c885ae8d9628c59e0590ff6cad062d34a28e914d8fe6cc1ccf45674"
+    },
+    {
+      "path": "assets/collections/argentum/granules-label-detail.webp",
+      "originalSha256": "716184b63cf11e8214dad8f54d8df01446bcb227b7e073eadb0bcc88e36e7f7d"
+    },
+    {
+      "path": "assets/collections/argentum/industrial-range.webp",
+      "originalSha256": "989cb3615b04c27102398f0b94ca7d23ef0865b8da5a5f28274deaa571ec6f92"
+    },
+    {
+      "path": "assets/collections/artwork/artwork-100g-set.webp",
+      "originalSha256": "e0477ad70beef4eb2d619996c487db2b189a04b94cf3a5330fe3ae5ccbdf78fc"
+    },
+    {
+      "path": "assets/collections/artwork/artwork-50g-set.webp",
+      "originalSha256": "9105f81303b0dd3fc106e1d5e06c94d2851f6a15f4b926e6a28e51d8475f71ea"
+    },
+    {
+      "path": "assets/collections/artwork/in-hand-50g.webp",
+      "originalSha256": "77df9f7316ac0e4563c19b790c2ec0805bc53428babea78e7bdaaaefdf76a042"
+    },
+    {
+      "path": "assets/collections/artwork/open-closed-box.webp",
+      "originalSha256": "82c9ba4fd3ae0239556fe60e0e43fe9bd23c68c34ac7b7059eeaa7cef8151f1c"
+    },
+    {
+      "path": "assets/collections/artwork/painting-frame-macro.webp",
+      "originalSha256": "245cf0e156117b91ea265ffdf7b37290fb18ddf468a12679a3c32b11bf09aab5"
+    },
+    {
+      "path": "assets/collections/celestial/cards-front-back.webp",
+      "originalSha256": "3f0a31796ea14d41cc228d1316975fdff2c6e596d5d06a68756c0864481467c6"
+    },
+    {
+      "path": "assets/collections/celestial/cover-detail.webp",
+      "originalSha256": "a71264d5d1794578354218346da00a933f0a2c250751c533c843278f26efb922"
+    },
+    {
+      "path": "assets/collections/celestial/in-hand.webp",
+      "originalSha256": "eeba7d498d4a078f735f5e3593094433935e122101ae0b3554d020944c14fb22"
+    },
+    {
+      "path": "assets/collections/celestial/ingot-front-cd.webp",
+      "originalSha256": "3c2487c3889731fee2bdcb02ba7b86fff1e65c90f0790f5bc4b98bb3f679708b"
+    },
+    {
+      "path": "assets/collections/celestial/master-back.webp",
+      "originalSha256": "0b73a3a50487ba214f7ec41c87fa50bc06ba978de6e091e4b95b8b6c032e85e2"
+    },
+    {
+      "path": "assets/collections/celestial/master-front.webp",
+      "originalSha256": "4a85bfca6c2f093f487735d54637305c8663a5ba9e89e453ee5e3e0ba00935c4"
+    },
+    {
+      "path": "assets/collections/celestial/presentation.webp",
+      "originalSha256": "817fde8c519ca3c20acd0cdfde4d68dc4218ba66fb2248bda409725c08201770"
+    },
+    {
+      "path": "assets/collections/constellation/constellation-100g-front.webp",
+      "originalSha256": "8da3181ba54dc371188c60774d8cbb9645b3f49ffedf045e812b035d30955ca0"
+    },
+    {
+      "path": "assets/collections/constellation/constellation-10g-details.webp",
+      "originalSha256": "10a48f2c36f00081490809c7bc31275137d67252ee69786615fc3318c432f0cc"
+    },
+    {
+      "path": "assets/collections/constellation/constellation-10g-security.webp",
+      "originalSha256": "79f69e8b455a346be07dae275f679ff1c6961438035347efbf62334b76c5f37d"
+    },
+    {
+      "path": "assets/collections/constellation/envelope-front-back.webp",
+      "originalSha256": "c960fc03e14aa47be5dab394edefdf5b962eaa4132766ef9dc8a1728c3364ec4"
+    },
+    {
+      "path": "assets/collections/constellation/in-hand-10g.webp",
+      "originalSha256": "b85f0803f7bee586be48fd8c88604155684162edf713adb7ab2308dec0363954"
+    },
+    {
+      "path": "assets/collections/courtyard/closed-wooden-box.webp",
+      "originalSha256": "1fdfd1698c871e6c5795208b022d2dab01a9c2aa2435be3841ddbcd38d60a5fd"
+    },
+    {
+      "path": "assets/collections/courtyard/courtyard-1000g-set.webp",
+      "originalSha256": "8f1bc24ec3538504bc172ef85e825e0c142aa526810848bdf0e70bcef9e6f26d"
+    },
+    {
+      "path": "assets/collections/courtyard/courtyard-250g-set.webp",
+      "originalSha256": "cce45db971309cb95a38d9590d7821f763cce39511ab3d63609b0aeb9a19cdfa"
+    },
+    {
+      "path": "assets/collections/courtyard/courtyard-500g-set.webp",
+      "originalSha256": "48b1b284c900423381c2e78ad8c580853a59ebc52d18cb1ef668e08374436d25"
+    },
+    {
+      "path": "assets/collections/courtyard/quartz-frame-detail.webp",
+      "originalSha256": "db02f53f13fc670065e4f2e4e57c64396a737fa69759982486b0a6c8dc9efe1e"
+    },
+    {
+      "path": "assets/collections/home-square.webp",
+      "originalSha256": "31da9d627554fead4c178fc73c8422748b9ec6b808be4127bd174bb538e98786"
+    },
+    {
+      "path": "assets/collections/investment/cd-radial-reverse.webp",
+      "originalSha256": "df1a0fcaf19c53d69ff0e1d137eede669c1fc1e9a497e66a1e96135e576f9e0d"
+    },
+    {
+      "path": "assets/collections/investment/front-back-piece.webp",
+      "originalSha256": "8b9cfd213978375c22295f97f88e08420e3c858c3191572604a60196f8cc1ed7"
+    },
+    {
+      "path": "assets/collections/investment/in-hand.webp",
+      "originalSha256": "58eeae541071bd98faf009992739b0cd9cf9e6e7f845e6ad2ea320d6acddd310"
+    },
+    {
+      "path": "assets/collections/investment/investment-piece-detail.webp",
+      "originalSha256": "e20c90f9acbc07d567a1501cd450893e459e3a928f4fbb9262da690501647e0d"
+    },
+    {
+      "path": "assets/collections/investment/investment-tablets.webp",
+      "originalSha256": "7892abde0b920cd82565f44dcc1456184b0c3620ae782a18a325b1613323a93a"
+    }
+  ]
+}
