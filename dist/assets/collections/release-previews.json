@@ -134,5 +134,12 @@
       "path": "assets/collections/investment/investment-tablets.webp",
       "originalSha256": "7892abde0b920cd82565f44dcc1456184b0c3620ae782a18a325b1613323a93a"
     }
+  ],
+  "publicExceptions": [
+    {
+      "path": "assets/home-works-square.webp",
+      "originalSha256": "31da9d627554fead4c178fc73c8422748b9ec6b808be4127bd174bb538e98786",
+      "usage": "home-works-teaser"
+    }
   ]
 }

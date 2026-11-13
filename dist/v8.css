@@ -158,10 +158,10 @@ html.motion-reduced .heritage-city-portrait .wind-panorama,html.motion-reduced .
 .contact-block .phone-number{align-items:flex-end}
 
 /* Unreleased collection photography: public files are baked blurred previews. */
-:is(.gallery-main,.gallery-thumbs button,.guide-image,.portal-art,.art-reveal){position:relative;isolation:isolate;overflow:hidden}
-:is(.gallery-main,.gallery-thumbs button,.guide-image,.portal-art,.art-reveal,.media-lightbox) img{filter:blur(15px)!important;opacity:.68;user-select:none;-webkit-user-drag:none}
-:is(.gallery-main,.gallery-thumbs button,.guide-image,.portal-art,.art-reveal,.media-lightbox)::after{content:"COMING SOON";position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;pointer-events:none;text-align:center;color:#463e32;background:linear-gradient(0deg,#f5efe638,#f5efe62b);font:500 clamp(21px,2.4vw,34px) Cormorant,Georgia,serif;letter-spacing:.15em;text-shadow:0 1px 12px #fffdf5,0 1px 30px #fffdf5}
-html[lang=fa] :is(.gallery-main,.gallery-thumbs button,.guide-image,.portal-art,.art-reveal,.media-lightbox)::after{content:"به‌زودی";font-family:Naskh,Georgia,serif;font-size:clamp(27px,2.8vw,38px);letter-spacing:0}
+:is(.gallery-main,.gallery-thumbs button,.guide-image,.art-reveal){position:relative;isolation:isolate;overflow:hidden}
+:is(.gallery-main,.gallery-thumbs button,.guide-image,.art-reveal,.media-lightbox) img{filter:blur(15px)!important;opacity:.68;user-select:none;-webkit-user-drag:none}
+:is(.gallery-main,.gallery-thumbs button,.guide-image,.art-reveal,.media-lightbox)::after{content:"COMING SOON";position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;pointer-events:none;text-align:center;color:#463e32;background:linear-gradient(0deg,#f5efe638,#f5efe62b);font:500 clamp(21px,2.4vw,34px) Cormorant,Georgia,serif;letter-spacing:.15em;text-shadow:0 1px 12px #fffdf5,0 1px 30px #fffdf5}
+html[lang=fa] :is(.gallery-main,.gallery-thumbs button,.guide-image,.art-reveal,.media-lightbox)::after{content:"به‌زودی";font-family:Naskh,Georgia,serif;font-size:clamp(27px,2.8vw,38px);letter-spacing:0}
 .gallery-thumbs button::after{font-size:9px;letter-spacing:.015em}html[lang=fa] .gallery-thumbs button::after{font-size:13px}
 .guide-image::after{bottom:45px}.media-lightbox::after{inset:65px 5vw 75px}
 @media(max-width:700px){.gallery-thumbs button::after{font-size:7px}html[lang=fa] .gallery-thumbs button::after{font-size:10px}}
