@@ -20,13 +20,16 @@
  function createReverse(canvas,{ready:notify=()=>{},failed=()=>{}}={}){
   const atlas=window.MORIYATI_COIN_ATLAS,ctx=context(canvas);
   if(!atlas||!ctx||!window.Image)return null;
+  const mobile=(window.innerWidth||1000)<=700&&atlas.mobileImage;
+  const source=mobile?atlas.mobileImage:atlas.image,sourceScale=mobile?atlas.mobileScale:1;
   const image=new Image();image.decoding='async';
-  let loaded=false,lastKey=null,lastBuild=0,lastReduced=false;
+  image.fetchPriority='high';
+  let loaded=false,retried=false,lastKey=null,lastBuild=0,lastReduced=false;
   function sprite(name,alpha=1){
    if(alpha<=0)return;
    const s=atlas.sprites[name],previous=ctx.globalAlpha;
    ctx.globalAlpha=previous*alpha;
-   ctx.drawImage(image,s.x,s.y,s.width,s.height,s.dx,s.dy,s.width,s.height);
+   ctx.drawImage(image,s.x*sourceScale,s.y*sourceScale,s.width*sourceScale,s.height*sourceScale,s.dx,s.dy,s.width,s.height);
    ctx.globalAlpha=previous;
   }
   function rotated(name,angle,p,draw){
@@ -73,7 +76,9 @@
   const ready=()=>{loaded=true;draw(lastBuild,lastReduced);notify();};
   // Complete the asynchronous decode before canvas asks for its first pixels.
   image.onload=()=>{if(typeof image.decode==='function')image.decode().then(ready,failed);else ready();};
-  image.onerror=failed;image.src=atlas.image;
+  // An interrupted transfer gets one small retry before the expensive SVG fallback.
+  image.onerror=()=>{if(!retried){retried=true;image.src=source;}else failed();};
+  image.src=source;
   return {canvas,draw,get loaded(){return loaded;},resize(width,dpr,small){
    const size=resolution(width,dpr,small);
    if(canvas.width===size&&canvas.height===size)return;

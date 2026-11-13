@@ -71,3 +71,11 @@ node --test tests/*.test.mjs
 The included `.github/workflows/pages.yml` validates the site and publishes `dist/` after pushes to `main`. GitHub Pages must use **GitHub Actions** as its publishing source in the repository's Settings > Pages.
 
 The import does not change domain DNS or the existing hosted Site. Sample authenticity and dealer records remain demonstration data, as labeled in the original site.
+
+### Production performance and Liara
+
+`python3 scripts/prepare-static-release.py --output release` creates a new release directory. Every page receives one content-addressed CSS bundle and one ordered deferred JavaScript bundle; the source files remain available for the standalone download feature. The GitHub Pages workflow publishes this prepared output after validation.
+
+For Liara, use `python3 scripts/prepare-static-release.py --output /absolute/new/directory --liara`, then ZIP the contents of that directory (with `index.html` at the archive root). This also includes Liara's supported `liara_nginx.conf`: gzip for text/JavaScript/CSS, revalidation for HTML/data, long caching only for hashed bundles, and bounded caching for images/fonts. Missing assets return 404 instead of an HTML success response.
+
+The home page preloads one coin texture appropriate to the initial viewport. The mobile texture retains the original sprite destinations and construction sequence with smaller source pixels; the desktop texture retains its full dimensions. An interrupted atlas transfer receives one retry before the existing SVG fallback. Collection previews remain baked, blurred, and marked as coming soon in both release paths.

@@ -5,19 +5,19 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 const root=resolve(import.meta.dirname,'../dist');
-async function runtime(){
+async function runtime(width=1000){
  const images=[];
  class Image {constructor(){images.push(this);}}
- const ctx={window:{Image},Image};
+ const ctx={window:{Image,innerWidth:width},Image};
  for(const file of ['coin-geometry.js','coin-atlas.js','coin-renderer.js'])runInNewContext(await readFile(resolve(root,file),'utf8'),ctx);
  return {...ctx.window,images};
 }
-function drawing(atlas){
+function drawing(atlas,sourceScale=1){
  const calls=[],stack=[];
  let clears=0;
  const ctx={globalAlpha:1,save(){stack.push(this.globalAlpha);},restore(){this.globalAlpha=stack.pop();},setTransform(){},translate(){},rotate(){},beginPath(){},arc(){},clip(){},moveTo(){},quadraticCurveTo(){},stroke(){},
   clearRect(){clears++;calls.length=0;},
-  drawImage(image,x,y){const name=Object.entries(atlas.sprites).find(([,s])=>s.x===x&&s.y===y)?.[0];calls.push({name,alpha:this.globalAlpha});}};
+  drawImage(image,x,y){const name=Object.entries(atlas.sprites).find(([,s])=>s.x*sourceScale===x&&s.y*sourceScale===y)?.[0];calls.push({name,alpha:this.globalAlpha});}};
  const canvas={width:0,height:0,getContext:()=>ctx};
  return {canvas,calls,get clears(){return clears;}};
 }
@@ -86,6 +86,24 @@ test('Atlas decoding completes before the first paint and retains the pending sc
  api.MORIYATI_COIN_RENDERER.createReverse(next.canvas,{failed(){failed++;}});
  api.images[1].decode=()=>Promise.reject(new Error('Decode failed'));api.images[1].onload();await Promise.resolve();
  assert.equal(failed,1,'A decoder failure must leave the existing fallback reachable');
+});
+
+test('Phones load the smaller texture while preserving construction geometry and a failed transfer can recover',async()=>{
+ const api=await runtime(390),atlas=api.MORIYATI_COIN_ATLAS,draw=drawing(atlas,atlas.mobileScale);
+ let failed=0;
+ const renderer=api.MORIYATI_COIN_RENDERER.createReverse(draw.canvas,{failed(){failed++;}});
+ assert.equal(api.images[0].src,atlas.mobileImage);
+ assert.equal(api.images[0].fetchPriority,'high');
+ const bytes=await readFile(resolve(root,atlas.mobileImage));
+ assert.ok(bytes.length<500_000,'The mobile scene must not require the original 1.1 MB texture');
+ renderer.resize(300,3,true);renderer.draw(.56);
+ api.images[0].onerror();assert.equal(failed,0,'One interrupted response must not immediately install the costly SVG fallback');
+ api.images[0].onload();
+ assert.equal(renderer.loaded,true);assert.equal(draw.calls.filter(c=>c.name?.startsWith('tree')).length,13);
+ assert.ok(draw.calls.every(c=>c.name),'Scaled source cells must still identify all original sprites');
+ const next=drawing(atlas,atlas.mobileScale);
+ api.MORIYATI_COIN_RENDERER.createReverse(next.canvas,{failed(){failed++;}});
+ api.images[1].onerror();api.images[1].onerror();assert.equal(failed,1,'A persistent error must still reach the supported fallback');
 });
 
 test('A texture load failure restores the original SVG instead of leaving an empty reverse',async()=>{

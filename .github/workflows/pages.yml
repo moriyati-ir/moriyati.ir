@@ -30,11 +30,13 @@ jobs:
           python3 scripts/package-expertise.py
       - name: Run the existing site tests
         run: node --test tests/*.test.mjs
+      - name: Prepare cache-safe static bundles
+        run: python3 scripts/prepare-static-release.py --output release
       - name: Upload the static website
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v4
         with:
-          path: dist
+          path: release
 
   deploy:
     if: github.event_name != 'pull_request'
