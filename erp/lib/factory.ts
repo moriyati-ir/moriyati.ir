@@ -302,7 +302,8 @@ export function applyFactoryCommand(input:FactoryData,command:FCommand,actorName
     if(Math.abs(shares.reduce((w,s)=>w+s.weight,0)-job.output!)>1e-6)throw Error('جمع سهم‌ها باید دقیقاً برابر وزن خروجی بازیافت باشد.');
     for(const lid of lotIds(shares)){const l=f.lots.find(l=>l.id===lid)!;if(l.status==='returned')throw Error('خروجی به بار مرجوع تخصیص داده نمی‌شود.');if(l.status==='complete')l.status='accepted';}
    }else{
-    const lot:Lot={id:id('LOT-RCV'),metal:job.metal,owner:'موجودی موریاتی',ownership:'company',conditional:false,isolated:false,form:'فلز بازیافتی',gross:job.output!,net:job.output!,claimedAssay:job.assay!,description:`برگشت از بازیافت ${job.id}`,photo:'',status:'accepted',created:now,target:'کنترل کیفیت بازیافتی'};f.lots.unshift(lot);shares=[{lotId:lot.id,owner:lot.owner,weight:job.output!}];
+    const owner=need(text(d,'owner'),'نام صاحب خروجی بازیافتی');const ownership=text(d,'ownership');if(!['company','customer'].includes(ownership))throw Error('مالکیت خروجی بازیافتی را صریح انتخاب کن؛ مالک نامعلوم خودکار موریاتی محسوب نمی‌شود.');
+    const lot:Lot={id:id('LOT-RCV'),metal:job.metal,owner,ownership:ownership as Lot['ownership'],conditional:false,isolated:false,form:'فلز بازیافتی',gross:job.output!,net:job.output!,claimedAssay:job.assay!,description:`برگشت از بازیافت ${job.id}`,photo:'',status:'accepted',created:now,target:'کنترل کیفیت بازیافتی'};f.lots.unshift(lot);shares=[{lotId:lot.id,owner:lot.owner,weight:job.output!}];
    }
    const p=makePacket(job.metal,job.output!,job.assay!,false,'آب‌شده','آزمایشگاه',shares,[job.id]);job.packetId=p.id;job.allocations=clone(shares);job.allocation='تخصیص صریح اپراتور ثبت شد؛ خروجی برای تأیید آزمایشگاه به گردش برگشت.';audit(job.allocation,[job.id,p.id,...lotIds(shares)]);break;
   }

@@ -89,7 +89,8 @@ test('group recovery retains every source serial and does not invent individual 
  f=cmd(f,'finish_recovery',{recoveryId:rid,output:100,assay:999.9,note:'Actual laboratory result'});
  const recovered=f.recoveries[0];assert.equal(pure(recovered.output,recovered.assay),99.99);assert.deepEqual(recovered.sourceIds,['REC-CR-000','REC-TABLE-01']);
  assert.equal(recovered.allocations,undefined);assert.equal(recovered.packetId,undefined);assert.equal(f.residues.find(r=>r.id==='REC-CR-000').state,'recovered');
- f=cmd(f,'allocate_recovery',{recoveryId:rid,allocations:[]});assert.ok(f.recoveries[0].packetId);assert.equal(f.packets[0].confirmed,false);assert.equal(f.packets[0].station,'آزمایشگاه');
+ assert.throws(()=>cmd(f,'allocate_recovery',{recoveryId:rid,allocations:[]}));
+ f=cmd(f,'allocate_recovery',{recoveryId:rid,allocations:[],owner:'Explicit customer',ownership:'customer'});assert.equal(f.lots[0].ownership,'customer');assert.equal(f.lots[0].owner,'Explicit customer');assert.ok(f.recoveries[0].packetId);assert.equal(f.packets[0].confirmed,false);assert.equal(f.packets[0].station,'آزمایشگاه');
 });
 
 test('independent conditional recovery cannot be combined with another owner or another independent consignment',()=>{
