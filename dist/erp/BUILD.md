@@ -1,10 +1,7 @@
-# GitHub Pages ERP preview
-
-This directory is a static review build with sample data and device-local browser storage. It is separate from the private, server-backed ERP. Do not enter real factory data into this public demo.
+# Moriyati ERP factory review, v0.2
 
 Source: https://github.com/moriyati-ir/moriyati.ir/tree/moriyati-erp/erp
-Source revision: d332ae05fddd490694e2248b8d47bcf4f640a297
 
-To reproduce: check out that source, enter its `erp` directory, install the locked dependencies, then run this directory's `build-preview.mjs` from the ERP project root. It derives a browser-storage adapter from the existing UI and builds the same interface with Vite. Output: `work/github-preview/dist`. The root website workflow copies the committed `dist/erp` directory into the GitHub Pages artifact.
+Build: from the ERP checkout, install the locked dependencies, run `npm test`, `npm run typecheck`, and `node scripts/build-github-preview.mjs`. The generated `work/github-preview/dist` is published at `dist/erp` of the main website repository.
 
-The initial records are marked as samples. Changes persist in `localStorage` only on this browser/origin. Photo upload, staff accounts, accounting and device readers are unavailable in this preview.
+All numbers and work statuses are samples. Names/roles are an organisational model, not staff login credentials. Pages saves only to this browser. Its v2 storage key preserves the previous v1 demo separately. Real employee authentication, five-minute administrator-issued login codes, hardware readers, accounting settlement and customer-facing cryptographic authenticity are not claimed as active.
