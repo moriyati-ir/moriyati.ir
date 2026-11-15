@@ -1,3 +1,4 @@
+import { seedFactory, applyFactoryCommand, type FactoryData } from "./factory.ts";
 export type Metal = "silver" | "gold";
 export type Session = { id: string; operatorId: string; role: string; stage: number; start: string; end?: string };
 export type Batch = { id: string; metal: Metal; source: string; owner: string; weight: number; assay: number; stage: number; priority: string; created: string; note: string; sessions: Session[]; output?: number; outputAssay?: number; recoverable?: number };
@@ -8,7 +9,7 @@ export type Operator = { id: string; name: string; role: string; initials: strin
 export type Log = { id: string; time: string; text: string; type: "production" | "inventory" | "asset" | "product" | "warning"; batchId?: string; actor: string };
 export type Movement = { id: string; materialId: string; delta: number; batchId: string; note: string; time: string };
 export type AssetUse = { id: string; assetId: string; batchId: string; grams: number; operatorId: string; time: string };
-export type Workspace = { schema: 1; batches: Batch[]; inventory: Material[]; assets: Asset[]; products: Product[]; operators: Operator[]; logs: Log[]; movements: Movement[]; assetUses: AssetUse[] };
+export type Workspace = { factory?: FactoryData; schema: 1; batches: Batch[]; inventory: Material[]; assets: Asset[]; products: Product[]; operators: Operator[]; logs: Log[]; movements: Movement[]; assetUses: AssetUse[] };
 export type Command = { type: string; data: Record<string, unknown> };
 export const stages = ["ورود و توزین", "عیارسنجی", "پالایش", "ذوب و ریخته‌گری", "کنترل کیفیت", "تکمیل‌شده"];
 export const metalName = (m: Metal) => m === "gold" ? "طلا" : "نقره";
@@ -27,7 +28,7 @@ export function createSeed(): Workspace {
   const now = new Date();
   const at = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
   return {
-    schema: 1,
+    schema: 1, factory: seedFactory(),
     operators: [
       { id: "OP-01", name: "اپراتور نمونه ۱", role: "پالایش", initials: "پ۱" },
       { id: "OP-02", name: "اپراتور نمونه ۲", role: "ذوب و ریخته‌گری", initials: "ذ۲" },
@@ -88,6 +89,10 @@ const required = (value: string, label: string) => { if (!value) throw new Error
 const round = (value: number) => Math.round(value * 1e6) / 1e6;
 
 export function applyCommand(input: Workspace, command: Command, actor = "مدیر سامانه"): { state: Workspace; message: string } {
+  if (command.type.startsWith("factory/")) {
+    const result = applyFactoryCommand(input.factory || seedFactory(), command, actor);
+    return { state: { ...structuredClone(input), factory: result.factory }, message: result.message };
+  }
   const state = structuredClone(input), d = command.data;
   if (!d || typeof d !== "object" || Array.isArray(d)) throw new Error("درخواست معتبر نیست.");
   const now = new Date().toISOString();

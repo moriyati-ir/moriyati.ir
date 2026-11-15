@@ -1,2 +1,2 @@
-import ERPApp from "./erp-app";
-export default function Home() { return <ERPApp />; }
+import FactoryApp from "./factory-app";
+export default function Home(){return <FactoryApp/>;}
