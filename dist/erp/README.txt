@@ -1,0 +1,1 @@
+Moriyati ERP — GitHub Pages review demo. All initial data is illustrative. Changes are kept only in this browser, not in the production database. Photo uploads, accounting, device readers and staff accounts are not connected. Source: https://github.com/moriyati-ir/moriyati.ir/tree/moriyati-erp/erp
