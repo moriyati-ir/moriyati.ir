@@ -1,4 +1,5 @@
-import { seedFactory, applyFactoryCommand, type FactoryData } from "./factory.ts";
+import { type FactoryData } from "./factory.ts";
+import { createFlowSeed as seedFactory, applyFlowCommand as applyFactoryCommand } from "./flow.ts";
 export type Metal = "silver" | "gold";
 export type Session = { id: string; operatorId: string; role: string; stage: number; start: string; end?: string };
 export type Batch = { id: string; metal: Metal; source: string; owner: string; weight: number; assay: number; stage: number; priority: string; created: string; note: string; sessions: Session[]; output?: number; outputAssay?: number; recoverable?: number };
