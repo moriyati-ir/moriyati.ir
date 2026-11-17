@@ -11,7 +11,7 @@ synthetic fixtures; `core.mjs` derives period totals and chart buckets.
 The preview covers the task explorer (product/general), task profiles with
 process highlights and manually paged reports, task/request creation including
 Other with a required description, report entry, activity and mentions, a local
-messenger, personal notes/reminders, and six personal performance slides.
+messenger, personal notes/reminders, and seven personal performance slides.
 The design sheet changes day/night theme, type size, font candidate and sample
 role across the interface. A new shared family of transparent product and process illustrations is used throughout.
 
@@ -52,3 +52,18 @@ page and manager group. Reviewed at phone width 390, tablet width 820 and full
 desktop. Verified task stage switching, report paging, image-only zoom, personal
 chart periods, Other validation, employee request restrictions, local messaging
 and notes, finance navigation, and role-dependent Settings visibility.
+
+
+Notebook reconciliation (17 November 2026): the complete 784-block notebook was
+reviewed against the delivered preview, with the latest decisions taking
+precedence. The current design adds guarded local workflows for receiving,
+partial admission, reservations and independent custody, request/invitation/
+prerequisite control, task continuity, XRF, actual consumables/tool/solution use,
+recovery, permanent product/package identities and QR, QC/exit/receipt, factory
+finance, personal/HR records and an account-private messenger. There are seven
+personal chart topics and seven time ranges. See
+`docs/erp-design-review/requirements-audit.md` for the applied matrix, validation
+and explicit server/device boundaries. These are local prototype workflows;
+actual authentication, server authorization, durable messaging/media, hardware
+and two-server connections remain integration work. No real financial action or
+message to staff is performed.

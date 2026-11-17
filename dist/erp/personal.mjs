@@ -1,0 +1,30 @@
+import {roles} from './policy.mjs?v=3';
+import {escapeHTML as esc,fa,grams,dateLabel,periodRecords,total} from './core.mjs?v=3';
+
+export function personalRecords(actor,state,tasks,seeds={work:[],money:[]}){
+ if(actor==='haji')return {work:[],money:[],activities:[],payments:[],requests:[],loans:[],dossier:null};
+ const byDay=new Map(seeds.work.map(r=>[r.date,{...r,actor,processed:0,events:[]} ]));
+ const day=(date)=>{const key=String(date).slice(0,10);if(!byDay.has(key))byDay.set(key,{date:key,actor,hours:0,special:0,tasks:0,mission:0,processed:0,events:[]});return byDay.get(key);};
+ for(const r of state.attendance.filter(r=>r.actor===actor)){const d=day(r.day),minutes=v=>Number(v.split(':')[0])*60+Number(v.split(':')[1]);d.hours=(minutes(r.end)-minutes(r.start))/60;d.start=r.start;d.end=r.end;d.attendanceId=r.id;d.events.push({type:'attendance',...r});}
+ const activities=[];
+ for(const t of tasks)for(const st of t.stages)for(const r of st.reports)if(r.authorId===actor||r.actor===actor){const date=r.date||t.createdAt;if(!date)continue;const d=day(date);const activity={...r,taskId:t.id,taskTitle:t.title,stage:st.name};activities.push(activity);d.events.push({type:'report',...activity});}
+ for(const tool of state.tools)for(const use of tool.uses.filter(r=>r.actor===actor)){day(use.date).processed+=Number(use.mass)||0;day(use.date).events.push({type:'tool-use',...use,tool:tool.name});}
+ for(const t of tasks){const end=t.history?.find(e=>e.type==='task-close');if(end&&(end.actor===actor||state.workSessions.some(w=>w.actor===actor&&w.taskId===t.id)))day(end.date).tasks++;}
+ for(const w of state.workSessions.filter(r=>r.actor===actor)){const d=day(w.start);d.events.push({type:'work-session',...w});if(w.end)d.operationHours=(d.operationHours||0)+(new Date(w.end)-new Date(w.start))/3600000;}
+ for(const r of state.hrRequests.filter(r=>r.actor===actor&&r.kind==='حضور ویژه'&&r.state==='approved'))day(r.start||r.date).special+=Number(r.hours)||0;
+ for(const t of state.trips)for(const p of t.participants.filter(p=>p.userId===actor)){day(p.start).mission++;day(p.start).events.push({type:'trip',...p,id:t.id,destination:t.destination});}
+ const payments=state.payroll.filter(p=>p.userId===actor).map(p=>({...p,payment:state.payments.find(x=>x.id===p.paymentId)}));
+ const kinds={'حقوق':'salary','پاداش':'bonus','وام':'loan','مساعده':'advance','قسط':'installment'};
+ const financial=(state.financialRecords||[]).filter(r=>r.userId===actor);
+ const money=[...financial.filter(r=>r.kind==='قسط پرداخت‌شده').map(r=>({id:r.id,date:r.date,kind:'installment',title:r.kind,amount:r.amount,actor})),...seeds.money.map(r=>({...r,actor,sample:true})),...payments.filter(p=>p.payment?.paid).map(p=>({id:p.id,date:p.payment.paidAt.slice(0,10),kind:kinds[p.kind]||'salary',title:p.kind,amount:p.amount,receipt:p.payment.receipt,reference:p.payment.reference,actor}))];
+ return {work:[...byDay.values()].sort((a,b)=>a.date.localeCompare(b.date)),money,activities,payments,requests:state.hrRequests.filter(r=>r.actor===actor),dossier:state.dossiers[actor]||null,loans:payments.filter(p=>['وام','مساعده'].includes(p.kind)),financial,awards:state.awards.filter(r=>r.actor===actor)};
+}
+export function renderPersonalDetails(kind,c){
+ const d=c.data,a=c.actor;if(a==='haji')return '<p>این حساب دسترسی به اطلاعات پرسنلی ندارد.</p>';
+ const row=(a,b)=>`<div class="detail-row"><span>${esc(a)}</span><b>${esc(b??'ثبت نشده')}</b></div>`;
+ if(kind==='activity')return `<p>سوابق مشارکت خودتان حتی پس از پایان عضویت کار حفظ می‌شود.</p>${d.activities.map(r=>`<article class="op-card"><h3>${esc(r.taskTitle)} · ${esc(r.stage)}</h3><p data-user-content>${esc(r.text)}</p>${row('زمان ثبت',r.date)}${row('حجم ذوب یا کار ثبت‌شده',grams(r.input)+' گرم')}${r.title?row('گزارش',r.title):''}</article>`).join('')||'<p>رویداد تازه‌ای با این حساب ثبت نشده است.</p>'}`;
+ if(kind==='pay')return `<h3>دستورها و پرداخت‌های خودم</h3>${d.payments.map(r=>`<article class="op-card"><h3>${esc(r.kind)}</h3>${row('مبلغ',fa(r.amount)+' ریال')}${row('تعیین / دستور',dateLabel(r.date,{day:'numeric',month:'long',year:'numeric'}))}${row('پرداخت واقعی',r.payment?.paid?'ثبت شده':'هنوز پرداخت ثبت نشده')}${row('شماره پیگیری',r.payment?.reference)}${r.payment?.receipt?`<button class="secondary" data-action="view-image" data-src="${esc(r.payment.receipt)}">دیدن فیش</button>`:''}</article>`).join('')||'<p>دستور پرداخت تازه‌ای ثبت نشده است.</p>'}<h3>حضور ویژه و پاداش</h3>${d.awards.map(r=>row('پاداش تعیین‌شده',fa(r.amount)+' ریال')).join('')}<p>پاداش تعیین‌شده تا زمان ثبت پرداخت، دریافتی محسوب نمی‌شود.</p>`;
+ if(kind==='loans')return `${row('وام ثبت‌شده',d.dossier?.loan==null?'ثبت نشده':fa(d.dossier.loan)+' ریال')}${row('قسط مقرر',d.dossier?.installment==null?'ثبت نشده':fa(d.dossier.installment)+' ریال')}${row('سررسید ثبت‌شده',d.dossier?.due||'ثبت نشده')}<h3>برنامه اقساط</h3>${(d.financial||[]).filter(r=>r.kind==='قسط برنامه‌ریزی‌شده').map(r=>row(r.due||r.date,fa(r.amount)+' ریال')).join('')||'<p>قسطی برنامه‌ریزی نشده است.</p>'}<h3>اقساط پرداخت‌شده</h3>${d.money.filter(r=>r.kind==='installment').map(r=>row(dateLabel(r.date),fa(r.amount)+' ریال')).join('')||'<p>قسط پرداخت‌شده‌ای ثبت نشده است.</p>'}<h3>وام و مساعده</h3>${d.loans.map(r=>row(r.kind,fa(r.amount)+' ریال · '+(r.payment?.paid?'پرداخت ثبت شده':'در انتظار پرداخت'))).join('')||'<p>وام یا مساعده تازه‌ای ثبت نشده است.</p>'}<p>مانده و زمان‌بندی فقط از اسناد همین حساب خوانده می‌شود.</p>`;
+ if(kind==='missions')return c.state.trips.flatMap(t=>t.participants.filter(p=>p.userId===a).map(p=>`<article class="op-card"><h3>${esc(t.destination)}</h3>${row('نقش',p.role)}${row('شروع',p.start)}${row('پایان',p.end||'باز')}${row('دستگاه خودرو',t.vehicle)}</article>`)).join('')||'<p>مأموریت تازه‌ای برای این حساب ثبت نشده است.</p>';
+ return '<p>رکوردی در این بخش وجود ندارد.</p>';
+}

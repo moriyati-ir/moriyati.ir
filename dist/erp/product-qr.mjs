@@ -1,0 +1,3 @@
+import {qrcodegen} from './qrcodegen.mjs?v=3';
+export function qrMatrix(value){const qr=qrcodegen.QrCode.encodeText(value,qrcodegen.QrCode.Ecc.MEDIUM);return Array.from({length:qr.size},(_,y)=>Array.from({length:qr.size},(_,x)=>qr.getModule(x,y)));}
+export function qrImage(value){const matrix=qrMatrix(value),size=matrix.length+8,path=[];for(let y=0;y<matrix.length;y++)for(let x=0;x<matrix.length;x++)if(matrix[y][x])path.push(`M${x+4},${y+4}h1v1h-1z`);return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}"><rect width="${size}" height="${size}" fill="white"/><path d="${path.join('')}" fill="black"/></svg>`);}
