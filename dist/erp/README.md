@@ -13,7 +13,7 @@ process highlights and manually paged reports, task/request creation including
 Other with a required description, report entry, activity and mentions, a local
 messenger, personal notes/reminders, and six personal performance slides.
 The design sheet changes day/night theme, type size, font candidate and sample
-role across the interface. Existing Moriyati product images are reused.
+role across the interface. A new shared family of transparent product and process illustrations is used throughout.
 
 All work records, financial amounts, dates, receipts, messages and task states
 are illustrative fixtures. New records are local to this browser; nothing is
@@ -38,8 +38,8 @@ finance workspace and a full mobile finance view. Other staff
 share the mobile interface with role-specific actions and have no enterprise
 desktop layout; desktop design review displays their mobile frame.
 
-The responsive review canvas is available at `review.html`. Product photo files
-in `photos/` are unchanged copies of existing user-provided repository assets.
+The responsive review canvas is available at `review.html`. The new `visuals/` assets use consistent lighting, materials and neutral framing.
+Product identities and the prompt set are documented in `docs/erp-design-review/product-visuals.md`.
 
 Latest UI labels: product / general are shown in Persian as محصول / عمومی.
 All four management accounts have full mobile capabilities within their existing

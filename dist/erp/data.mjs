@@ -1,15 +1,5 @@
-export const media = {
-  silver: '../assets/v8/argentum-cast-detail.webp',
-  granules: './photos/granules.jpeg',
-  mint: './photos/silver-100.jpeg',
-  pack: './photos/packaging.png',
-  gold: './photos/gold-1g.png',
-  art: './photos/artwork.jpeg',
-  lab: '../assets/expertise-silver.webp',
-  coin: '../assets/motion/v7/medallion-lion-emboss.webp',
-  frame: './photos/artwork.jpeg',
-  strip: '../assets/expertise-silver.webp',
-};
+import {media} from './visuals.mjs?v=2';
+export {media};
 const report = (id, title, text, image, weight, time, author='کاربر نمونه') => ({id,title,text,image,weight,time,author});
 export const initialTasks = [
   {id:'silver-100',code:'MT-0248',type:'production',title:'تولید شمش نقره',subtitle:'Constellation · 100 g',cover:media.mint,material:'نقره',purity:'999.9',weight:3000,quantity:30,owner:'شما',team:['شما','بهنام','همکار ۱','همکار ۲'],status:'active',location:'بخش نورد',due:'امروز، ۱۶:۰۰',description:'تولید ۳۰ عدد شمش نقره ۱۰۰ گرمی؛ از تحویل مواد تا بسته‌بندی نهایی.',stages:[
@@ -22,7 +12,7 @@ export const initialTasks = [
   {id:'packaging',code:'MT-0250',type:'production',title:'بسته‌بندی نقره',subtitle:'Constellation · Final pack',cover:media.pack,material:'نقره',purity:'999.9',weight:2000,quantity:20,owner:'شما',team:['شما','همکار ۱'],status:'active',location:'بسته‌بندی',due:'امروز، ۱۷:۰۰',description:'ثبت عکس پشت و رو و آماده‌سازی بسته‌های نهایی.',stages:[{id:'packing',name:'بسته‌بندی',cover:media.pack,done:false,reports:[report('p1','کنترل بسته‌ها','عکس‌های محصول و بسته‌بندی در حال ثبت هستند.',media.pack,2000,'۱۱:۴۵')]}]},
   {id:'artwork',code:'MT-0252',type:'production',title:'قاب مجموعه آرت‌ورک',subtitle:'Artwork · 100 g',cover:media.art,material:'طلا',purity:'995.0',weight:100,quantity:1,owner:'شما',team:['شما','همکار ۲'],status:'waiting',location:'آماده‌سازی',due:'پس‌فردا',description:'آماده‌سازی قاب و کنترل نمونه مجموعه آرت‌ورک.',stages:[{id:'art-check',name:'بررسی',cover:media.art,done:false,reports:[report('a1','نمونه قاب','نمونه برای بررسی و تطبیق آماده شده است.',media.art,100,'دیروز')]}]},
   {id:'cast-250',code:'MT-0253',type:'production',title:'شمش کست نقره',subtitle:'Argentum · 250 g',cover:media.silver,material:'نقره',purity:'999.9',weight:2500,quantity:10,owner:'شما',team:['شما','همکار ۱'],status:'active',location:'ذوب',due:'فردا',description:'آماده‌سازی نوبت شمش‌های کست نقره.',stages:[{id:'cast-melt',name:'ذوب',cover:media.silver,done:false,reports:[report('s1','شروع نوبت','بار این نوبت آماده شد و شروع کار ثبت شد.',media.silver,2500,'۱۲:۰۰')]}]},
-  {id:'service',code:'GN-0086',type:'general',title:'سرویس دستگاه نورد',subtitle:'تعمیر و نگهداری',cover:media.strip,owner:'شما',team:['شما','همکار ۲'],status:'active',location:'کارگاه',due:'فردا، ۱۰:۰۰',description:'بررسی وضعیت دستگاه، ثبت موارد لازم و انجام سرویس برنامه‌ریزی‌شده.',stages:[{id:'inspect',name:'بررسی',cover:media.strip,done:false,reports:[report('x1','بررسی اولیه','بررسی اولیه دستگاه انجام شد. اقلام مورد نیاز در مرحله بعد ثبت می‌شوند.',null,null,'۰۹:۱۵')]}]},
+  {id:'service',code:'GN-0086',type:'general',title:'سرویس دستگاه نورد',subtitle:'تعمیر و نگهداری',cover:media.equipment,owner:'شما',team:['شما','همکار ۲'],status:'active',location:'کارگاه',due:'فردا، ۱۰:۰۰',description:'بررسی وضعیت دستگاه، ثبت موارد لازم و انجام سرویس برنامه‌ریزی‌شده.',stages:[{id:'inspect',name:'بررسی',cover:media.equipment,done:false,reports:[report('x1','بررسی اولیه','بررسی اولیه دستگاه انجام شد. اقلام مورد نیاز در مرحله بعد ثبت می‌شوند.',null,null,'۰۹:۱۵')]}]},
   {id:'frame-order',code:'GN-0087',type:'general',title:'پیگیری سفارش قاب',subtitle:'سفارش بیرونی',cover:media.frame,owner:'شما',team:['شما','بهنام'],status:'waiting',location:'پیگیری بیرونی',due:'امروز، ۱۴:۰۰',description:'تطبیق مشخصات نمونه قاب و پیگیری زمان تحویل سفارش.',stages:[{id:'sample',name:'نمونه',cover:media.frame,done:true,reports:[report('f1','ثبت نمونه','تصویر نمونه برای بررسی مشخصات ثبت شد.',media.frame,null,'دیروز')]},{id:'follow',name:'پیگیری',cover:media.frame,done:false,reports:[]}]},
   {id:'lab',code:'GN-0088',type:'general',title:'آماده‌سازی آزمایشگاه',subtitle:'کار داخلی',cover:media.lab,owner:'شما',team:['شما','همکار ۱'],status:'active',location:'آزمایشگاه',due:'امروز',description:'مرتب‌سازی و آماده‌سازی ابزار و فضای آزمایشگاه برای نوبت بعد.',stages:[{id:'prepare',name:'آماده‌سازی',cover:media.lab,done:false,reports:[report('l1','آماده‌سازی ابزار','ابزار و فضای کار بررسی و مرتب شدند.',media.lab,null,'۱۰:۴۵')]}]},
 ];
@@ -33,7 +23,7 @@ initialTasks.push(
 );
 export const presets = {
  production:[{id:'constellation-100',name:'شمش نقره ۱۰۰ گرمی',subtitle:'Constellation',image:media.mint,material:'نقره',purity:'999.9',unit:100},{id:'celestial-1',name:'شمش طلای یک گرمی',subtitle:'Celestial',image:media.gold,material:'طلا',purity:'995.0',unit:1},{id:'silver-coin',name:'سکه نقره یک اونس',subtitle:'Fine silver',image:media.coin,material:'نقره',purity:'999.9',unit:31.1035}],
- general:[{id:'maintenance',name:'تعمیر و نگهداری',subtitle:'بررسی و سرویس تجهیزات',image:media.strip},{id:'purchase',name:'خرید و تأمین',subtitle:'اقلام مورد نیاز کار',image:media.granules},{id:'research',name:'تحقیق و توسعه',subtitle:'نمونه‌سازی و بررسی',image:media.lab},{id:'external',name:'سفارش بیرونی',subtitle:'پیگیری و تحویل سفارش',image:media.frame}]
+ general:[{id:'maintenance',name:'تعمیر و نگهداری',subtitle:'بررسی و سرویس تجهیزات',image:media.equipment},{id:'purchase',name:'خرید و تأمین',subtitle:'اقلام مورد نیاز کار',image:media.granules},{id:'research',name:'تحقیق و توسعه',subtitle:'نمونه‌سازی و بررسی',image:media.lab},{id:'external',name:'سفارش بیرونی',subtitle:'پیگیری و تحویل سفارش',image:media.frame}]
 };
 export const contacts = [
  {id:'behnam',name:'بهنام',role:'مدیر کارخانه',initial:'ب',online:true,preview:'ممنون، بررسی می‌کنم.',time:'۱۰:۳۷',unread:2},
