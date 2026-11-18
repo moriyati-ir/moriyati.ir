@@ -66,3 +66,6 @@ img[src*="visuals/"]{object-fit:contain}
 .ws-story-sheet .sheet-head h2,#ws-entry h3{font-size:1.65rem}.ws-ring-active{outline:3px solid #299261}.ws-ring-paused{outline:3px solid #d6a52c}.ws-ring-done,.ws-ring-cancelled{outline:3px solid #cc4949}
 .ws-status-active{color:#22835a}.ws-status-paused,[data-w=pause]{color:#927000}.ws-status-done,[data-w=finish],[data-pack-warning]{color:#be3737}
 [data-logout]{display:block;margin-inline-start:auto}.manager-widgets{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px;padding:14px 0}.manager-widgets article{border:1px solid var(--border);border-radius:18px;padding:14px}.manager-widgets h2{font-size:1rem}.manager-widgets meter{width:100%}#ws-entry fieldset{border:0;padding:6px 0}#ws-entry fieldset label{display:inline-flex;gap:4px;margin-inline-end:10px}
+
+.appbar .staff-header-actions .icon-btn{width:44px;height:44px}
+.appbar .staff-header-actions .icon-btn svg{width:29px;height:29px}
