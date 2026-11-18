@@ -1,0 +1,31 @@
+/* Let the viewport size the form, including native controls with intrinsic widths. */
+.sheet, .sheet-content, .sheet-head > h2, .field, .field-row > *, .ws-dates > *, fieldset {
+  min-inline-size: 0;
+}
+.sheet-content form, .sheet-content :is(img, video, audio), form :is(input, select, textarea) {
+  max-inline-size: 100%;
+  box-sizing: border-box;
+}
+.field-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ws-dates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ws-dates > input[type="time"] { grid-column: 1 / -1; }
+form :is(input[type="time"], input[type="date"], input[type="datetime-local"]) {
+  inline-size: 100%;
+  min-inline-size: 0;
+}
+.sheet-content { overflow-wrap: anywhere; }
+.profile-device { display: block; color: var(--muted); font-weight: normal; }
+.profile-links .attendance-entry {
+  margin-block-start: 10px;
+  padding-inline: 12px;
+  background: var(--surface);
+  border-radius: 10px;
+  font-weight: normal;
+}
+@media (max-width: 767px), (pointer: coarse) {
+  body :is(input:not([type="checkbox"], [type="radio"]), select, textarea) {
+    font-size: max(16px, 1em);
+    min-inline-size: 0;
+  }
+  .overlay, .sheet { max-inline-size: 100%; }
+}
