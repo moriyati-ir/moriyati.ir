@@ -23,6 +23,14 @@ def build(destination, liara=False):
     if destination.exists():
         raise FileExistsError(f'Release output already exists: {destination}')
     shutil.copytree(ROOT / 'dist', destination)
+    # Version the full ERP module graph, including styles loaded by its modules.
+    erp = destination / 'erp'
+    assets = sorted([*erp.glob('*.mjs'), *erp.glob('*.css')])
+    digest = sha256(b''.join(p.name.encode() + b'\0' + p.read_bytes() for p in assets)).hexdigest()[:12]
+    local_asset = re.compile(r"""(['"])(\./[\w-]+\.(?:mjs|css))(?:\?v=[\w-]+)?\1""")
+    for page in [*erp.glob('*.html'), *erp.glob('*.mjs')]:
+        source = page.read_text()
+        page.write_text(local_asset.sub(lambda m: f'{m[1]}{m[2]}?v={digest}{m[1]}', source))
     pages = {}
 
     def bundle(paths, extension):
