@@ -1,9 +1,34 @@
 import {escapeHTML as esc} from './core.mjs?v=3';
+const processArt = new Map([
+  ['دریافت', 'receive'],
+  ['عیارسنجی', 'assay'],
+  ['گیوتین', 'shear'],
+  ['آلیاژسازی', 'alloy'],
+  ['ذوب همگن‌سازی', 'melt'],
+  ['گرانول‌سازی', 'granulate'],
+  ['شست‌وشو', 'wash'],
+  ['پرداخت‌کاری', 'polish'],
+  ['بسته‌بندی', 'pack'],
+  ['تحویل', 'deliver'],
+  ['نورد', 'roll'],
+  ['ضرب', 'strike'],
+  ['پولک‌زنی', 'blank'],
+  ['آنیل', 'anneal'],
+  ['کنترل کیفیت', 'inspect'],
+  ['ریژه', 'cast'],
+  ['ذوب با مس', 'alloy'],
+  ['ذوب', 'melt'],
+  ['بررسی', 'inspect'],
+  ['کنترل نهایی', 'inspect'],
+]);
+function picture(name, cover) {
+  const art = processArt.get(name);
+  if (cover && (!art || !cover.startsWith("./visuals/"))) return cover;
+  return art ? "./visuals/process/" + art + ".webp" : "./visuals/laboratory.webp";
+}
 const processes=['دریافت','عیارسنجی','گیوتین','آلیاژسازی','ذوب همگن‌سازی','گرانول‌سازی','شست‌وشو','پرداخت‌کاری','بسته‌بندی','تحویل'];
-const pics=['silver-cast','laboratory','silver-sheet','silver-cast','silver-cast','argentum','argentum','argentum','argentum','silver-cast'];
 const locations=['صندوق','کارگاه','آزمایشگاه','انبار','دفتر','دستگاه'];
 const other='سایر موارد',now=()=>new Date().toISOString(),id=()=>crypto.randomUUID(),date=d=>new Intl.DateTimeFormat('fa-IR',{dateStyle:'medium',timeStyle:'short',timeZone:'Asia/Tehran'}).format(new Date(d));
-const picture=n=>'./visuals/'+(pics[processes.indexOf(n)]||'laboratory')+'.webp';
 const opts=a=>a.map(x=>'<option>'+esc(String(x))+'</option>').join('');
 const input=(n,l,type='text',required=true)=>'<label>'+l+'<input name="'+n+'" type="'+type+'" '+(type==='number'?'step="any" min="0" ':'')+(type==='file'?'accept="image/*" ':'')+(required?'required':'')+'></label>';
 const pick=(n,l,a)=>'<label>'+l+'<select name="'+n+'">'+opts([...a,other])+'</select><input hidden name="'+n+'Other" placeholder="توضیح"></label>';
@@ -44,7 +69,7 @@ export function workshop(c){
  form('تسک جدید','<label>نوع تسک<select name="kind">'+opts(types)+'</select></label><section data-product>'+pick('product','محصول',['ساچمه نقره','شمش نقره','شمش طلا','سکه نقره'])+input('weight','وزن هدف · گرم','number')+pick('purity','عیار هدف',['۹۹۰٫۰','۹۹۱٫۰','۹۹۲٫۰','۹۹۳٫۰','۹۹۴٫۰','۹۹۵٫۰','۹۹۹٫۹'])+pick('source','مبدأ',locations)+pick('dest','مقصد',locations)+'<details><summary>بسته‌بندی</summary>'+pick('pack','نوع بسته',['ظرف پلاستیکی','قاب','بلیستر'])+[1,2,5,10].map(k=>input('p'+k,'تعداد بسته '+k+' کیلویی','number',false)).join('')+'<output role="alert" data-pack-warning></output></details></section><section data-general>'+input('title','عنوان کار')+'</section><details><summary>افزودن همکار</summary>'+people().filter(([k])=>k!==actor()).map(([k,r])=>'<label><input type="checkbox" name="member" value="'+k+'">'+r.name+'<input hidden name="role-'+k+'" placeholder="پوزیشن"></label>').join('')+'</details>',f=>{
  const prod=f.get('kind')==='محصول';if(prod&&!c.canProduct())return;
  if(prod&&packageWarning(f))throw Error(packageWarning(f));
- const t={id:id(),code:'MT-'+id().slice(0,6),workshop:true,type:prod?'production':'general',status:'active',title:prod?'تولید '+selected(f,'product'):f.get('title'),creatorId:actor(),ownerId:actor(),owner:name(actor()),material:prod&&String(selected(f,'product')).includes('طلا')?'طلا':'نقره',weight:Number(f.get('weight')),purity:selected(f,'purity'),source:selected(f,'source'),destination:selected(f,'dest'),location:selected(f,'source'),pack:selected(f,'pack'),packages:Object.fromEntries([1,2,5,10].filter(k=>Number(f.get('p'+k))>0).map(k=>[k,Number(f.get('p'+k))])),members:[actor(),...f.getAll('member').filter(k=>eligible(k,prod))].map(k=>({userId:k,state:'accepted',active:true,responsibility:k===actor()?'مسئول':f.get('role-'+k),since:now()})),stages:[stage(prod?'دریافت':'شروع کار')],cover:picture(prod?'گرانول‌سازی':'شروع کار'),history:[],dependencies:[],started:now(),targetKind:'mass',description:''};
+ const t={id:id(),code:'MT-'+id().slice(0,6),workshop:true,type:prod?'production':'general',status:'active',title:prod?'تولید '+selected(f,'product'):f.get('title'),creatorId:actor(),ownerId:actor(),owner:name(actor()),material:prod&&String(selected(f,'product')).includes('طلا')?'طلا':'نقره',weight:Number(f.get('weight')),purity:selected(f,'purity'),source:selected(f,'source'),destination:selected(f,'dest'),location:selected(f,'source'),pack:selected(f,'pack'),packages:Object.fromEntries([1,2,5,10].filter(k=>Number(f.get('p'+k))>0).map(k=>[k,Number(f.get('p'+k))])),members:[actor(),...f.getAll('member').filter(k=>eligible(k,prod))].map(k=>({userId:k,state:'accepted',active:true,responsibility:k===actor()?'مسئول':f.get('role-'+k),since:now()})),stages:[stage(prod?'دریافت':'شروع کار')],cover:prod?'./visuals/argentum.webp':'./visuals/laboratory.webp',history:[],dependencies:[],started:now(),targetKind:'mass',description:''};
  t.team=t.members.map(m=>name(m.userId));log(t,'ایجاد تسک');log(t,'مدیر هوشمند تایید کرد','اجازه دریافت');c.add(t);c.save();c.nav('task/'+t.id);
  });
  const el=document.querySelector('#ws-form');function sync(){for(const [selector,show] of [['[data-product]',el.kind.value==='محصول'],['[data-general]',el.kind.value==='عمومی']]){const s=el.querySelector(selector);s.hidden=!show;s.querySelectorAll('input,select').forEach(x=>x.disabled=!show);}
@@ -78,7 +103,7 @@ export function workshop(c){
  }
  document.addEventListener('input',e=>{const el=e.target.closest('#ws-entry');const out=el?.querySelector('[data-alloy]');if(out){const result=alloy(new FormData(el));out.textContent=result.error||result.text;}});
  function page(t){current=t.id;const s=getStage(t),owner=editable(t),open=!['done','cancelled','requested'].includes(t.status);
- return '<section class="ws"><p>'+esc([t.source,t.destination].filter(Boolean).join(' ← '))+'</p>'+button('team','همکاران')+(owner?button('dates','تاریخ و ساعت'):'')+'<div class="stage-row">'+t.stages.map(st=>'<button class="stage" data-w="story" data-value="'+esc(st.id)+'"><span class="stage-image"><img src="'+esc(st.cover||picture(st.name))+'"></span>'+esc(displayName(st))+'</button>').join('')+(owner&&(open||actor()==='alireza')?button('add','+ فرایند جدید'):'')+'</div>'+(owner&&(open||actor()==='alireza')&&t.status!=='paused'&&s?'<label>ثبت در فرایند<select id="ws-stage">'+t.stages.map(st=>'<option value="'+esc(st.id)+'" '+(st===s?'selected':'')+'>'+esc(displayName(st))+'</option>').join('')+'</select></label>'+entry(t,s):'')+'<details><summary>سابقه تسک</summary>'+t.history.map(h=>'<p>'+esc(h.type)+' · '+esc(h.reason||'')+'</p>').join('')+'</details></section>';
+ return '<section class="ws"><p>'+esc([t.source,t.destination].filter(Boolean).join(' ← '))+'</p>'+button('team','همکاران')+(owner?button('dates','تاریخ و ساعت'):'')+'<div class="stage-row">'+t.stages.map(st=>'<button class="stage" data-w="story" data-value="'+esc(st.id)+'"><span class="stage-image"><img src="'+esc(picture(st.name,st.cover))+'"></span>'+esc(displayName(st))+'</button>').join('')+(owner&&(open||actor()==='alireza')?button('add','+ فرایند جدید'):'')+'</div>'+(owner&&(open||actor()==='alireza')&&t.status!=='paused'&&s?'<label>ثبت در فرایند<select id="ws-stage">'+t.stages.map(st=>'<option value="'+esc(st.id)+'" '+(st===s?'selected':'')+'>'+esc(displayName(st))+'</option>').join('')+'</select></label>'+entry(t,s):'')+'<details><summary>سابقه تسک</summary>'+t.history.map(h=>'<p>'+esc(h.type)+' · '+esc(h.reason||'')+'</p>').join('')+'</details></section>';
  }
  function story(t,s){const r=s.reports[storyIndex];box(displayName(s),r?'<div data-w="next" class="ws-story"><small>'+Number(storyIndex+1).toLocaleString('fa')+' / '+s.reports.length.toLocaleString('fa')+'</small><h3>'+esc(r.title||s.name)+'</h3>'+'<p>'+esc([r.weight&&r.weight+' گرم',r.assay,r.serial,r.mold&&'ریژه '+r.mold,r.alloy?.text,r.text,r.shape,r.via,...(r.activities?Object.entries(r.activities).map(([activity,ids])=>activity+' · '+ids.map(name).join('، ')):(r.workers||[]).map(name))].filter(Boolean).join(' · '))+'</p>'+[r.image,r.assayPhoto].filter(Boolean).map(url=>'<img src="'+esc(url)+'">').join('')+'</div>'+(editable(t)?button('edit-report','ویرایش گزارش'):''):'هنوز گزارشی ثبت نشده.');document.querySelector('.sheet')?.classList.add('ws-story-sheet');}
  document.addEventListener('change',e=>{if(e.target.id==='ws-stage'){stageId=e.target.value;c.render(true);}});
