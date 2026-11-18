@@ -42,6 +42,7 @@ export function fileManager({actor, tr, modal, toast, esc, preview, contact}) {
       const favorites=stored('favorites');
       if(favorites.length)html+='<h3>'+label('علاقه‌مندی‌ها','Favorites')+'</h3><div class="mf-group">'+items(favorites)+'</div>';
       html+='<h3>'+label('مکان‌ها','Locations')+'</h3><div class="mf-group">'+row(root?'dir':managesServer()?'settings':'retry',label('فایل‌های موریاتی','Moriyati Files'),root||'','☁')+'</div>';
+      if(mode==='browse')html+='<h3>'+label('عکس‌های نمونه کارگاه','Workshop samples')+'</h3><div class="mf-group">'+[['receipt','دریافت','Receiving'],['melt','ذوب','Melting'],['assay','عیارسنجی','Assay'],['pack','بسته‌بندی','Packaging']].map(([file,fa,en])=>'<a class="mf-item mf-row" data-name="'+label(fa,en).toLowerCase()+'" href="./visuals/demo/'+file+'.webp" target="_blank" rel="noopener"><img width="36" height="36" src="./visuals/demo/'+file+'.webp" alt="">'+label(fa,en)+'</a>').join('')+'</div>';
     }else{
       if(tab==='browse')html+=row('back',folder===root?names().browse:title(folder),'','‹');
       const rows=tab==='recent'?stored('recent'):tab==='shared'?stored('shared'):entries;

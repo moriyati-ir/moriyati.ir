@@ -33,7 +33,7 @@ export const contacts = [
 ];
 export const initialMessages = {
  behnam:[{id:'m1',self:true,kind:'text',text:'سلام، عکس مرحله را فرستادم.',time:'۱۰:۳۵'},{id:'m2',self:true,kind:'image',src:media.silver,text:'نمونه ثبت مرحله',time:'۱۰:۳۵'},{id:'m3',self:false,kind:'text',text:'ممنون، بررسی می‌کنم.',time:'۱۰:۳۷'}],
- team:[{id:'t1',self:false,kind:'text',text:'برنامه امروز در گروه ثبت شد. هر نفر کارهای خودش را از اکسپلور دنبال کند.',time:'۰۹:۴۰',sender:'همکار ۲'}],
+ team:[{id:'t1',self:false,kind:'text',text:'برنامه امروز در گروه ثبت شد. هر نفر کارهای خودش را از اکسپلور دنبال کند.',time:'۰۹:۴۰',sender:'همکار ۲'},{id:'demo-pack-share',self:false,kind:'image',src:'./visuals/demo/pack.webp',text:'بسته نمونه پارت ۰۴ برای کنترل سریال آماده است.',time:'۱۰:۱۲',sender:'سونیا'}],
  colleague:[{id:'h1',self:false,kind:'text',text:'نمونه برای بررسی آماده است.',time:'دیروز'}],self:[]
 };
 export const initialNotifications = [

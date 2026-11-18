@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {makeFactoryState,transition,packetFine,physicalPackets,stockSummary,publicProduct,canSettlePayment,accountBalance,today,startBlockers} from '../dist/erp/factory-model.mjs';
+import {makeFactoryState,transition,packetFine,physicalPackets,stockSummary,publicProduct,canSettlePayment,accountBalance,today,startBlockers} from '../dist/erp/factory-entry-model.mjs';
 import {normalizeTasks,canViewTask,canSeeNotification,canEmergencyCode,capabilities} from '../dist/erp/policy.mjs';
 import {initialTasks} from '../dist/erp/data.mjs';
 import {parseNumber,fa,grams,periodRecords,chartBuckets,total} from '../dist/erp/core.mjs';
@@ -130,4 +130,24 @@ test('HR stays private and finance receives only a minimal personnel instruction
 test('Emergency issuers, protected target accounts and offline external freeze enforce their actual boundaries',()=>{
  for(const issuer of ['alireza','behnam']){assert.equal(canEmergencyCode(issuer,'ghazal'),true);assert.equal(canEmergencyCode(issuer,'alireza'),false);assert.equal(canEmergencyCode(issuer,'haji'),false);}assert.equal(canEmergencyCode('haji','ghazal'),false);
  let r=command(fresh(),'alireza','sync-preview',{location:'outside',sync:'catching-up'});assert.throws(()=>transition(r.state,r.tasks,'employee','cash-request',{amount:1,reason:'x'}));r=transition(r.state,r.tasks,'alireza','sync-preview',{location:'outside',sync:'complete'});assert.ok(r.state.connection.lastSync);
+});
+
+test('Invoice total stands alone and already includes the recorded freight and tax',()=>{
+ const result=command(fresh(),'employee','expense',{title:'لوازم',amount:'۱۱٬۰۰۰',vatIncluded:true,shipping:500,invoiceDate:'۱۴۰۵/۰۸/۲۷'});
+ assert.equal(result.state.expenses[0].amount,11000);
+ assert.equal(result.state.expenses[0].shipping,500);
+ assert.deepEqual(result.state.expenses[0].lines,[]);
+});
+test('A reusable filter can be used again on another job without consuming a second filter',()=>{
+ const data={purpose:'تصفیه',supplyId:'cloth-filter',quantity:1,serial:'F-2',photo};
+ const first=command(fresh(),'employee','consume',data);
+ const second=command(first,'employee','consume',{...data,purpose:'تصفیه دوم'});
+ assert.equal(second.state.supplies.find(x=>x.id==='cloth-filter').stock,0);
+ assert.deepEqual(second.state.consumptions.map(x=>x.serial),['F-2','F-2']);
+ assert.throws(()=>command(second,'employee','consume',{...data,quantity:0.5}));
+});
+test('Financial requests persist amount and omit unrelated attendance fields',()=>{
+ const result=command(fresh(),'employee','hr-request',{kind:'مساعده',amount:50,hours:3,start:'irrelevant'});
+ const request=result.state.hrRequests.at(-1);
+ assert.equal(request.amount,50);assert.equal(request.start,undefined);assert.equal(request.hours,undefined);
 });
