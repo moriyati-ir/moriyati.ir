@@ -12,7 +12,7 @@ parser.add_argument("output", type=Path, help="destination .zip")
 output = parser.parse_args().output
 with ZipFile(output, "w", compression=ZIP_DEFLATED) as bundle:
     for name in ("package.json", "package-lock.json", "liara.json", "server.cjs",
-                 "live/api.cjs", "live/provision.cjs", "live/public/index.html", "live/public/live.css",
+                 "live/api.cjs", "live/workflow.cjs", "live/provision.cjs", "live/public/index.html", "live/public/live.css",
                  "live/public/live.js"):
         bundle.write(SERVICE / name, name)
     for file in sorted(PREVIEW.rglob("*")):

@@ -28,15 +28,133 @@ async function desk(identity){
  $('desk').hidden=$('logout').hidden=false;await list();
 }
 function textEl(tag,text,cls){const el=document.createElement(tag);el.textContent=text;if(cls)el.className=cls;return el;}
+const stageNames={melt:'ذوب',refine:'پالایش',polish:'پرداخت',mint:'ضرب',pack:'بسته‌بندی'};
+const eventNames={start:'شروع عملیات',record:'ثبت گزارش',complete:'پایان عملیات'};
+const custodyNames={...actorNames,behnam:'بهنام'};
+function labelled(caption,control){
+ const label=document.createElement('label');label.append(textEl('span',caption),control);return label;
+}
+function inputField(name,decimal=false){
+ const input=document.createElement('input');input.name=name;if(decimal){input.dir='ltr';input.inputMode='decimal';}return input;
+}
+function micrograms(value){
+ const input=digits(value);
+ if(!/^\d{1,13}(\.\d{1,6})?$/.test(input))return null;
+ const [whole,fraction='']=input.split('.');
+ return BigInt(whole)*1000000n+BigInt(fraction.padEnd(6,'0'));
+}
+function gramsFromMicro(value){
+ const text=(value/1000000n)+'.'+String(value%1000000n).padStart(6,'0');return numeric(text);
+}
+function workflowFor(receipt,details){
+ const section=document.createElement('section');section.className='workflow';details.append(section);
+ const path='receipts/'+encodeURIComponent(receipt.id)+'/workflow';
+ let initialized=false;
+ async function load(){
+  initialized=true;section.replaceChildren(textEl('p','در حال خواندن عملیات…'));
+  try{const result=await api(path);draw(result);}
+  catch(e){
+   if(e.status===401){entry();return;}
+   const retry=textEl('button','تلاش دوباره');retry.type='button';retry.onclick=load;
+   section.replaceChildren(textEl('p',errorText(e),'error'),retry);
+  }
+ }
+ details.ontoggle=()=>{if(details.open&&!initialized)load();};
+ function draw({workflow:w,events}){
+  const available=numeric(w.availableMass)+' گرم';
+  const active=w.state==='active';
+  const status=active?(stageNames[w.stage]||'عملیات')+' در حال انجام':'آماده برای عملیات';
+  section.replaceChildren(textEl('h3',status),textEl('p','موجودی این پارت '+available+' · '+(w.currentPurity==null?'عیار فعلی نامشخص':'عیار فعلی '+numeric(w.currentPurity))+' · نزد '+(custodyNames[w.custody]||w.custody)));
+  const canAct=active?(actor==='manager'||actor===w.operator):(actor==='manager'||['behnam',actor].includes(w.custody));
+  if(canAct&&micrograms(w.availableMass)>0n){
+   const actions=document.createElement('div');actions.className='actions';
+   const editor=document.createElement('div');section.append(actions,editor);
+   for(const kind of active?['record','complete']:['start']){
+    const button=textEl('button',active?eventNames[kind]:'شروع مرحله');button.type='button';
+    button.onclick=()=>openForm(kind,editor,actions,w);actions.append(button);
+   }
+  }
+  if(events.length){
+   const history=document.createElement('details'),items=document.createElement('ol');
+   history.append(textEl('summary','سابقه عملیات ('+numeric(events.length)+')'),items);
+   for(const ev of events.slice().reverse()){
+    const li=document.createElement('li');li.append(textEl('strong',(eventNames[ev.kind]||'عملیات')+' · '+(stageNames[ev.stage]||'')));
+    const when=new Date(ev.createdAt);li.append(textEl('p',(actorNames[ev.actor]||'')+(Number.isNaN(when.getTime())?'':' · '+dates.format(when))));
+    if(ev.kind==='complete'&&ev.outputMass!=null){
+     const parts=['خروجی '+numeric(ev.outputMass)+' گرم','باقیمانده '+numeric(ev.residualMass??0)+' گرم'];
+     if(ev.unreconciledMass!=null){
+      const delta=String(ev.unreconciledMass),gain=delta.startsWith('-'),magnitude=micrograms(gain?delta.slice(1):delta);
+      if(magnitude>0n)parts.push((gain?'اضافه وزن ':'کسری وزن ')+gramsFromMicro(magnitude)+' گرم');
+     }
+     if(ev.outputPurity!=null)parts.push('عیار '+numeric(ev.outputPurity));
+     li.append(textEl('p',parts.join(' · ')));
+    }
+    if(ev.note)li.append(textEl('p',ev.note));
+    items.append(li);
+   }
+   section.append(history);
+  }
+ }
+ function openForm(kind,editor,actions,w){
+  const form=document.createElement('form');form.className='stageForm';actions.hidden=true;editor.replaceChildren(form);
+  let stage,output,residual,purity,balance;
+  const note=inputField('note');note.maxLength=1000;note.required=kind==='record';
+  if(kind==='start'){
+   stage=document.createElement('select');for(const [value,name] of Object.entries(stageNames)){const opt=textEl('option',name);opt.value=value;stage.append(opt);}
+   form.append(labelled('عملیات',stage));
+  }
+  if(kind==='complete'){
+   output=inputField('outputMass',true);output.required=true;
+   residual=inputField('residualMass',true);residual.required=true;residual.value='0';
+   purity=inputField('outputPurity',true);purity.placeholder='نامشخص';
+   const pair=document.createElement('div');pair.className='pair';
+   pair.append(labelled('خروجی (گرم)',output),labelled('باقیمانده (گرم)',residual));
+   form.append(pair,labelled('عیار خروجی (در هزار)',purity));balance=textEl('p','','muted');balance.setAttribute('aria-live','polite');form.append(balance);
+   const update=()=>{
+    const a=micrograms(output.value),b=micrograms(residual.value);note.required=false;
+    if(a===null||b===null){balance.textContent='';return;}
+    const delta=micrograms(w.availableMass)-a-b;
+    balance.textContent=delta===0n?'وزن‌ها تطبیق دارند.':(delta<0n?'اضافه وزن ':'کسری وزن ')+gramsFromMicro(delta<0n?-delta:delta)+' گرم؛ علت را بنویسید.';
+    note.required=delta!==0n;
+   };output.oninput=residual.oninput=update;
+  }
+  form.append(labelled(kind==='record'?'گزارش عملیات':'توضیح',note));
+  const buttons=document.createElement('div');buttons.className='actions';const submit=textEl('button',kind==='complete'?'ثبت پایان عملیات':'ثبت','primary'),cancel=textEl('button','بستن');
+  submit.type='submit';cancel.type='button';cancel.onclick=()=>{editor.replaceChildren();actions.hidden=false;};
+  const feedback=textEl('p','','error');feedback.setAttribute('role','alert');buttons.append(submit,cancel);form.append(buttons,feedback);
+  let priorPayload,id;
+  form.onsubmit=async e=>{
+   e.preventDefault();if(submit.disabled)return;feedback.textContent='';
+   try{
+    const data={kind,version:w.version,note:note.value.trim()};
+    if(stage)data.stage=stage.value;
+    if(kind==='complete'){
+     data.outputMass=digits(output.value);data.residualMass=digits(residual.value);data.outputPurity=digits(purity.value)||null;
+     const a=micrograms(data.outputMass),b=micrograms(data.residualMass);if(a===null||b===null)throw Error('وزن خروجی و باقیمانده را بررسی کنید.');
+     if(a+b!==micrograms(w.availableMass)&&!data.note)throw Error('علت اختلاف وزن را بنویسید.');
+    }
+    const serialized=JSON.stringify(data);if(serialized!==priorPayload){id=crypto.randomUUID();priorPayload=serialized;}
+    submit.disabled=cancel.disabled=true;
+    const result=await api(path,{...data,requestId:id});draw(result);message('notice',eventNames[kind]+' در سرور ثبت شد.');
+   }catch(error){
+    if(error.status===401){entry();return;}
+    if(error.status===409){await load();message('notice','عملیات تغییر کرده است. وضعیت تازه را بررسی کنید.');return;}
+    feedback.textContent=errorText(error);
+   }finally{submit.disabled=cancel.disabled=false;}
+  };
+  (stage||output||note).focus();
+ }
+}
+
 function receiptCard(r){
  const card=document.createElement('article');card.className='receipt';const title=document.createElement('div');title.className='title';
  title.append(textEl('strong',r.reference||'پارت ثبت‌شده'));
  if(r.approvedBy==='smart-manager')title.append(textEl('span','تأیید مدیر هوشمند','tag'));
  card.append(title,textEl('p',(r.metal==='gold'?'طلا':'نقره')+' · '+numeric(r.mass)+' گرم · '+(r.purity==null?'عیار نامشخص':'عیار '+numeric(r.purity)),'weight'));
  const when=new Date(r.createdAt);card.append(textEl('p',(Number.isNaN(when.getTime())?'':dates.format(when)+' · ')+'ثبت‌کننده '+(actorNames[r.createdBy]||'ثبت‌شده در سیستم')+(r.recipient==='behnam'?' · گیرنده بهنام':'')));
- const details=document.createElement('details');details.append(textEl('summary','جزئیات رسید'),textEl('code',r.id));
+ const details=document.createElement('details');details.append(textEl('summary','جزئیات و عملیات پارت'),textEl('code',r.id));
  if(r.photoAvailable){const link=textEl('a','مشاهدهٔ عکس پارت');link.href='/api/live/receipts/'+encodeURIComponent(r.id)+'/photo';link.target='_blank';link.rel='noopener';details.append(document.createElement('br'),link);}
- card.append(details);return card;
+ workflowFor(r,details);card.append(details);return card;
 }
 async function list(){
  const current=++listVersion;$('refresh').disabled=true;message('listMsg','در حال دریافت رسیدها…');
@@ -69,7 +187,7 @@ $('logout').onclick=async()=>{
 $('newReceipt').onclick=()=>toggleForm($('receiptForm').hidden);
 $('cancel').onclick=()=>toggleForm(false);
 $('refresh').onclick=list;
-document.addEventListener('visibilitychange',()=>{if(actor&&!document.hidden)list();});
+document.addEventListener('visibilitychange',()=>{if(actor&&!document.hidden&&!$('receipts').querySelector('details[open]'))list();});
 $('receiptForm').onsubmit=async event=>{
  event.preventDefault();if(sending)return;
  const form=event.currentTarget,submit=event.submitter||form.querySelector('button.primary'),gen=generation;

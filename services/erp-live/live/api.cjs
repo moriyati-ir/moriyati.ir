@@ -2,6 +2,7 @@
 const {createHash, randomBytes, randomUUID, timingSafeEqual} = require('node:crypto');
 const {Pool} = require('pg');
 
+const workflow = require('./workflow.cjs');
 const hours = 12;
 const maxImage = 4 * 1024 * 1024;
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -82,7 +83,7 @@ function createHandler(env=process.env,connect=options=>new Pool(options)){
   pool??=connect({connectionString:env.DATABASE_URL,max:5,connectionTimeoutMillis:6000,statement_timeout:10000});
   if(!ready){
    pool.on?.('error',()=>{});
-   ready=pool.query(schema).catch(e=>{ready=null;throw e;});
+   ready=pool.query(schema+workflow.schema).catch(e=>{ready=null;throw e;});
   }
   await ready;
   return pool;
@@ -134,6 +135,12 @@ function createHandler(env=process.env,connect=options=>new Pool(options)){
      [randomUUID(),v.requestId,v.hash,actor,v.metal,v.mass,v.purity,v.reference,v.mime,v.bytes]);
     if(!result.rowCount)throw problem(409,'این شناسه قبلاً با مشخصات دیگری ثبت شده است.');
     return json(res,200,{receipt:result.rows[0]});
+   }
+   const work=pathname.match(/^\/api\/live\/receipts\/([^/]+)\/workflow$/);
+   if(work&&uuid.test(work[1])){
+    const info=req.method==='GET'?await workflow.read(db,work[1]):
+     await workflow.write(db,work[1],actor,workflow.eventInput(await readInput(req),uuid));
+    return json(res,200,info);
    }
    const photo=pathname.match(/^\/api\/live\/receipts\/([^/]+)\/photo$/);
    if(req.method==='GET'&&photo&&uuid.test(photo[1])){
