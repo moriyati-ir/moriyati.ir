@@ -1,40 +1,58 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f7f7f4">
-<title>پذیرش و تحویل | موریاتی</title><link rel="stylesheet" href="./live.css">
-<script type="module" src="./live.js"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#ffffff"><title>فضای کار | موریاتی</title>
+<link rel="icon" href="/preview/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/preview/app.css"><link rel="stylesheet" href="/live/live.css">
+<script type="module" src="/live/live.js"></script>
 </head>
-<body><header><b lang="en" dir="ltr">MORIYATI</b><span>فضای کار موریاتی</span><button id="logout" type="button" class="quiet" hidden>خروج</button></header>
-<main>
-<div id="checking" role="status">در حال اتصال به سرور…</div>
-<div id="failure" hidden><p id="failureText" role="alert"></p><button id="retry">تلاش دوباره</button></div>
-<section id="entry" hidden>
-<h1>ورود به فضای کار</h1>
-<form id="loginForm" class="panel">
-<label>حساب <select id="role"><option value="staff">انباردار</option><option value="manager">مدیر</option></select></label>
-<label>کد دسترسی <input id="code" type="password" autocomplete="current-password" required dir="ltr" autocapitalize="none" spellcheck="false"></label>
+<body><div class="shell live-shell"><aside class="rail"><a href="#/home" class="brand" aria-label="خانه موریاتی">MORIYATI<span class="brand-dot">®</span></a>
+<nav class="rail-nav" aria-label="ناوبری اصلی"><a href="#/home" data-view="home" class="rail-item is-active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg><span>خانه</span></a><a href="#/receipts" data-view="receipts" class="rail-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 10 5-10 5L2 8Zm-10 9 10 5 10-5M2 16l10 5 10-5"/></svg><span>پارت‌ها</span></a><a href="#/new" data-view="new" class="rail-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 7v10M7 12h10"/></svg><span>ثبت پارت</span></a><a href="#/account" data-view="account" class="rail-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4 21c0-9 16-9 16 0"/></svg><span>حساب</span></a></nav></aside>
+<div class="main-area"><header class="appbar"><div class="appbar-start"><a href="#/home" class="brand mobile-brand" aria-label="خانه موریاتی">MORIYATI</a><span class="appbar-title">فضای کار موریاتی</span></div>
+<div class="appbar-actions"><button class="icon-btn" type="button" id="theme" aria-label="حالت شب" aria-pressed="false"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 13.2A9 9 0 0 1 10.8 3a9 9 0 1 0 10 10.2Z"/></svg></button><a href="#/account" id="profileIcon" class="icon-btn" aria-label="حساب کاربری"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4 21c0-9 16-9 16 0"/></svg><span id="profileLabel">ورود</span></a></div></header>
+<main class="content-scroll" id="main-content"><div class="workspace-content">
+<section id="home"><div class="section-head"><h1 id="homeTitle">فضای کار</h1><time id="today"></time></div>
+<div class="work-grid">
+<a class="work-tile" href="#/new"><img src="/preview/visuals/process/receive.webp" alt=""><span>ثبت پارت<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></span></a>
+<a class="work-tile" href="#/receipts"><img src="/preview/visuals/process/melt.webp" alt=""><span>پارت‌ها و عملیات تولید<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m14 5-7 7 7 7"/></svg></span></a>
+</div>
+<div id="noModules" class="panel" hidden>برای این حساب هنوز کاری در پذیرش یا تولید تعریف نشده است. <a href="#/account">حساب من</a></div>
+<div id="recent" hidden><div class="section-head"><h2 id="recentTitle">آخرین رسیدها</h2><a href="#/receipts">مشاهده همه</a></div><div id="recentRows"></div></div>
+</section>
+<div id="forbidden" class="panel" hidden><p>این بخش برای حساب شما فعال نیست.</p><a href="#/home">بازگشت به خانه</a></div>
+<div id="checking" hidden role="status">در حال اتصال…</div>
+<div id="failure" class="panel" hidden><p id="failureText" role="alert"></p><button id="retry">تلاش دوباره</button></div>
+<section id="entry" hidden><div class="section-head"><h1 id="entryTitle">ورود به حساب</h1><a href="#/home">بازگشت</a></div><form id="loginForm" class="panel">
+<label>نام کاربری <input id="username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
+<label>رمز عبور <input name="password" id="password" type="password" autocomplete="current-password" required dir="ltr" autocapitalize="none" spellcheck="false"></label>
 <button class="primary">ورود</button><p id="loginMsg" class="error" role="alert" hidden></p>
 </form></section>
-<section id="desk" hidden>
-<div class="title"><div><div id="actor" class="muted"></div><h1>پذیرش و تحویل</h1></div><button class="primary" id="newReceipt" aria-expanded="false" aria-controls="receiptForm">ثبت پارت</button></div>
+<section id="account" hidden><div class="section-head"><h1>حساب کاربری</h1></div><div class="panel"><p id="actor"></p><details id="devicePanel"><summary>رمز کوتاه این دستگاه</summary>
+<form id="deviceForm" class="stageForm" hidden>
+<label>رمز عبور حساب<input type="password" id="devicePassword" autocomplete="current-password" required dir="ltr"></label>
+<label>رمز کوتاه جدید (۴ تا ۸ رقم)<input id="devicePin" type="password" inputmode="numeric" minlength="4" maxlength="8" autocomplete="new-password" required dir="ltr"></label>
+<button class="primary" type="submit">ذخیره روی این دستگاه</button></form>
+<p id="deviceStatus" role="status"></p><button id="removePin" type="button" hidden>برداشتن رمز کوتاه این دستگاه</button></details>
+<button id="logout" type="button">خروج از حساب</button></div></section>
+<section id="desk" hidden><div class="section-head"><h1 id="deskTitle">پارت‌ها و عملیات تولید</h1><a href="#/new" id="newReceipt" class="primary">ثبت پارت</a></div>
 <form class="panel" id="receiptForm" hidden>
-<h2>ثبت پارت جدید</h2>
+
 <label>شرح یا شماره پارت <input id="reference" required maxlength="240" placeholder="مثلاً شماره رسید تحویل‌دهنده"></label>
 <label>فلز <select id="metal"><option value="silver">نقره</option><option value="gold">طلا</option></select></label>
 <div class="pair">
 <label>وزن (گرم) <input id="mass" inputmode="decimal" dir="ltr" required></label>
 <label>عیار (در هزار) <input id="purity" inputmode="decimal" dir="ltr" placeholder="نامشخص"></label>
 </div>
+<label>مسئول تولید (اختیاری)<select id="assignee"><option value="">تعیین نشده</option></select></label>
 <label>عکس پارت (اختیاری) <input id="photo" type="file" accept="image/jpeg,image/png,image/webp"><small>تصویر JPG، PNG یا WebP، حداکثر ۴ مگابایت</small></label>
 <p class="muted">گیرنده بهنام است. مدیر هوشمند این تحویل را خودکار تأیید می‌کند.</p>
 <div class="actions"><button class="primary">ثبت و تحویل</button><button type="button" id="cancel">بستن</button></div>
 <p class="error" id="formMsg" role="alert" hidden></p>
 </form>
+
 <p id="notice" role="status" hidden></p>
-<div class="title listTitle"><h2>رسیدهای ثبت‌شده</h2><button type="button" id="refresh" class="quiet">به‌روزرسانی</button></div>
-<p id="listMsg" role="status" class="muted"></p><div id="receipts"></div>
-</section>
-<footer><a href="/preview/">پیش‌نمایش سایر بخش‌های ERP (دادهٔ نمونه)</a></footer>
-</main></body></html>
+<div id="receiptList"><div class="section-head listTitle"><h2>رسیدهای ثبت‌شده</h2><button type="button" id="refresh" class="quiet">به‌روزرسانی</button></div>
+<p id="listMsg" role="status" class="muted"></p><div id="receipts"></div></div>
+</section><footer id="previewLink"><a href="/preview/">پیش‌نمایش سایر بخش‌های ERP (دادهٔ نمونه)</a></footer>
+</div></main><nav class="bottom-nav" aria-label="ناوبری اصلی گوشی"><a href="#/home" data-view="home" class="bottom-item is-active"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1Z"/></svg><span>خانه</span></a><a href="#/receipts" data-view="receipts" class="bottom-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 10 5-10 5L2 8Zm-10 9 10 5 10-5M2 16l10 5 10-5"/></svg><span>پارت‌ها</span></a><a href="#/new" data-view="new" class="bottom-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><path d="M12 7v10M7 12h10"/></svg><span>ثبت پارت</span></a><a href="#/account" data-view="account" class="bottom-item"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4 21c0-9 16-9 16 0"/></svg><span>حساب</span></a></nav></div></div></body></html>

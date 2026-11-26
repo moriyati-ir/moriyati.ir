@@ -2,3 +2,4 @@
 exports/*.html
 scripts/__pycache__/
 release/
+/services/erp-live/live/accounts-seed.json

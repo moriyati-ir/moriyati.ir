@@ -46,10 +46,13 @@ async function route(req, res) {
     res.writeHead(405, {Allow: 'GET, HEAD'}).end();
     return;
   }
-  if (['/', '/erp', '/erp/', '/erp/index.html', '/live'].includes(pathname) || pathname === '/preview') {
-    const location = pathname === '/preview' ? '/preview/' : '/live/';
-    res.writeHead(302, {Location: location, 'Cache-Control': 'no-store'}).end();
+  if (pathname === '/preview') {
+    res.writeHead(302, {Location: '/preview/', 'Cache-Control': 'no-store'}).end();
     return;
+  }
+  // The official domain and existing ERP bookmarks open the same workspace directly.
+  if (['/', '/erp', '/erp/', '/erp/index.html', '/live'].includes(pathname)) {
+    pathname = '/live/index.html';
   }
   const mount = staticRoots.find(([prefix]) => pathname.startsWith(prefix));
   if (!mount) {

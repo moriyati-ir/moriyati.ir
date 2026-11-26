@@ -3,12 +3,13 @@ const {createHash, randomBytes, randomUUID, timingSafeEqual} = require('node:cry
 const {Pool} = require('pg');
 
 const workflow = require('./workflow.cjs');
-const hours = 12;
+const named=require('./named-auth.cjs');
+const devicePin=require('./device-pin.cjs');
 const maxImage = 4 * 1024 * 1024;
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const digest = value => createHash('sha256').update(value).digest('hex');
 const publicColumns = `id,created_at AS "createdAt",metal,mass::text,purity::text,reference,
- created_by AS "createdBy",approved_by AS "approvedBy",recipient,
+ created_by AS "createdBy",created_by_user AS "createdByUserId",assignee_user AS "assigneeUserId",approved_by AS "approvedBy",recipient,
  photo_type IS NOT NULL AS "photoAvailable"`;
 const schema = `
  CREATE TABLE IF NOT EXISTS erp_live_sessions(
@@ -74,16 +75,15 @@ function receiptInput(data){
  return {requestId:data.requestId,metal:data.metal,mass,purity,reference,mime,bytes,hash};
 }
 
+function decorate(r){return {...r,createdByName:named.display(r.createdByUserId),assigneeName:named.display(r.assigneeUserId)};}
 function createHandler(env=process.env,connect=options=>new Pool(options)){
  let pool,ready;
- const roles={manager:env.ERP_MANAGER_SHA256,staff:env.ERP_STAFF_SHA256};
- const configured=Object.values(roles).every(v=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v))&&roles.staff!==roles.manager&&!!env.DATABASE_URL;
  async function database(){
-  if(!configured)throw problem(503,'تنظیم اتصال به دیتابیس و حساب‌های عملیاتی تکمیل نشده است.');
+  if(!env.DATABASE_URL)throw problem(503,'تنظیم اتصال به دیتابیس و حساب‌های عملیاتی تکمیل نشده است.');
   pool??=connect({connectionString:env.DATABASE_URL,max:5,connectionTimeoutMillis:6000,statement_timeout:10000});
   if(!ready){
    pool.on?.('error',()=>{});
-   ready=pool.query(schema+workflow.schema).catch(e=>{ready=null;throw e;});
+   ready=pool.query(schema+workflow.schema+named.schema).then(()=>named.initialize(pool,env)).catch(e=>{ready=null;throw e;});
   }
   await ready;
   return pool;
@@ -99,52 +99,64 @@ function createHandler(env=process.env,connect=options=>new Pool(options)){
    }
    const db=await database();
    if(req.method==='POST'&&pathname==='/api/live/login'){
-    const {role,code}=await readInput(req);
-    const known=Object.hasOwn(roles,role), expected=known?roles[role]:'0'.repeat(64);
-    const actual=digest(typeof code==='string'&&code.length>=32&&code.length<=256?code:'');
-    if(!timingSafeEqual(Buffer.from(actual,'hex'),Buffer.from(expected,'hex'))||!known)throw problem(401,'مشخصات ورود صحیح نیست.');
-    await db.query('DELETE FROM erp_live_sessions WHERE expires_at <= now()');
-    const token=randomBytes(32).toString('hex');
-    await db.query(`INSERT INTO erp_live_sessions(token_hash,role,credential_hash,expires_at) VALUES($1,$2,$3,now()+interval '12 hours')`,[digest(token),role,expected]);
-    res.setHeader('Set-Cookie',`__Host-mori-session=${token}; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=${hours*3600}`);
-    return json(res,200,{actor:role});
+    return json(res,200,await named.login(db,req,res,await readInput(req)));
    }
-   const token=(req.headers.cookie||'').match(/(?:^|;\s*)__Host-mori-session=([0-9a-f]{64})(?:;|$)/)?.[1];
-   if(!token)throw problem(401,'وارد حساب خود شوید.');
-   const session=(await db.query('SELECT role,credential_hash FROM erp_live_sessions WHERE token_hash=$1 AND expires_at>now()',[digest(token)])).rows[0];
-   if(!session||roles[session.role]!==session.credential_hash)throw problem(401,'دوباره وارد حساب خود شوید.');
-   const actor=session.role;
-   if(req.method==='GET'&&pathname==='/api/live/session')return json(res,200,{actor});
+   const person=await named.authenticate(db,req);
+   const actor=person.actor,owner=person.userId,permissions=person.permissions;
+   const scope='($1::boolean OR created_by_user=$2 OR assignee_user=$2)';
+   const scopeParams=[permissions.allReceipts,owner];
+   if(req.method==='GET'&&pathname==='/api/live/session')return json(res,200,named.describe(person));
    if(req.method==='POST'&&pathname==='/api/live/logout'){
-    await db.query('DELETE FROM erp_live_sessions WHERE token_hash=$1',[digest(token)]);
-    res.setHeader('Set-Cookie','__Host-mori-session=; Path=/; HttpOnly; Secure; SameSite=Strict; Max-Age=0');
+    await named.logout(db,req,res);
     return json(res,200,{ok:true});
    }
+   if(pathname==='/api/live/device-pin'&&req.method==='POST'){
+    const data=await readInput(req);
+    const fingerprint=await named.verifyPassword(db,req,person,data.password,false);
+    return json(res,200,await devicePin.enroll(db,req,res,owner,fingerprint,data.pin));
+   }
+   if(pathname==='/api/live/device-pin'&&req.method==='GET'){
+    const result=await db.query('SELECT password_hash FROM erp_people WHERE user_id=$1',[owner]);
+    return json(res,200,{enabled:await devicePin.hasPin(db,req,owner,result.rows[0].password_hash)});
+   }
+   if(pathname==='/api/live/device-pin/remove'&&req.method==='POST'){
+    return json(res,200,await devicePin.revoke(db,req,res,owner));
+   }
+   if(!permissions.receipts)throw problem(403,'دسترسی به عملیات پارت برای حساب شما تعریف نشده است.');
    if(req.method==='GET'&&pathname==='/api/live/receipts'){
-    const result=await db.query(`SELECT ${publicColumns} FROM erp_live_receipts ORDER BY created_at DESC,id DESC LIMIT 200`);
-    return json(res,200,{receipts:result.rows});
+    const result=await db.query(`SELECT ${publicColumns} FROM erp_live_receipts WHERE ${scope} ORDER BY created_at DESC,id DESC LIMIT 200`,scopeParams);
+    return json(res,200,{receipts:result.rows.map(decorate)});
    }
    if(req.method==='POST'&&pathname==='/api/live/receipts'){
-    const v=receiptInput(await readInput(req));
+    if(!permissions.admission)throw problem(403,'مجوز پذیرش بار برای این حساب تعریف نشده است.');
+    const data=await readInput(req);
+    const v=receiptInput(data);
+    const assignee=data.assigneeUserId||null;
+    if(assignee&&!(await named.directory()).get(assignee)?.permissions.production)throw problem(400,'مسئول تولید معتبر نیست.');
+    const payloadHash=digest(JSON.stringify([v.hash,assignee,owner]));
     // A single row commits both the receipt and system decision. Concurrent retries
     // serialize on the unique index and return the original immutable receipt.
-    const result=await db.query(`INSERT INTO erp_live_receipts AS existing(id,request_id,payload_hash,created_by,metal,mass,purity,reference,recipient,approved_by,photo_type,photo_bytes)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'behnam','smart-manager',$9,$10)
+    const result=await db.query(`INSERT INTO erp_live_receipts AS existing(id,request_id,payload_hash,created_by,metal,mass,purity,reference,recipient,approved_by,photo_type,photo_bytes,created_by_user,assignee_user)
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'behnam','smart-manager',$9,$10,$11,$12)
      ON CONFLICT(created_by,request_id) DO UPDATE SET request_id=existing.request_id
       WHERE existing.payload_hash=EXCLUDED.payload_hash RETURNING ${publicColumns}`,
-     [randomUUID(),v.requestId,v.hash,actor,v.metal,v.mass,v.purity,v.reference,v.mime,v.bytes]);
+     [randomUUID(),v.requestId,payloadHash,actor,v.metal,v.mass,v.purity,v.reference,v.mime,v.bytes,owner,assignee]);
     if(!result.rowCount)throw problem(409,'این شناسه قبلاً با مشخصات دیگری ثبت شده است.');
-    return json(res,200,{receipt:result.rows[0]});
+    return json(res,200,{receipt:decorate(result.rows[0])});
    }
    const work=pathname.match(/^\/api\/live\/receipts\/([^/]+)\/workflow$/);
    if(work&&uuid.test(work[1])){
+    const visible=await db.query(`SELECT 1 FROM erp_live_receipts WHERE ${scope} AND id=$3`,[...scopeParams,work[1]]);
+    if(!visible.rowCount)throw problem(404,'رسید پیدا نشد.');
+    if(req.method==='POST'&&!permissions.production)throw problem(403,'مجوز عملیات تولید ندارید.');
     const info=req.method==='GET'?await workflow.read(db,work[1]):
-     await workflow.write(db,work[1],actor,workflow.eventInput(await readInput(req),uuid));
+     await workflow.write(db,work[1],actor,workflow.eventInput(await readInput(req),uuid),owner);
+    for(const event of info.events)event.actorName=named.display(event.actorUserId);
     return json(res,200,info);
    }
    const photo=pathname.match(/^\/api\/live\/receipts\/([^/]+)\/photo$/);
    if(req.method==='GET'&&photo&&uuid.test(photo[1])){
-    const row=(await db.query('SELECT photo_type,photo_bytes FROM erp_live_receipts WHERE id=$1 AND photo_type IS NOT NULL',[photo[1]])).rows[0];
+    const row=(await db.query(`SELECT photo_type,photo_bytes FROM erp_live_receipts WHERE ${scope} AND id=$3 AND photo_type IS NOT NULL`,[...scopeParams,photo[1]])).rows[0];
     if(!row)throw problem(404,'عکس پیدا نشد.');
     res.writeHead(200,{'Content-Type':row.photo_type,'Cache-Control':'private, no-store','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'"});return res.end(row.photo_bytes);
    }

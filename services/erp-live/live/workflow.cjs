@@ -12,7 +12,7 @@ const schema=`
   output_purity numeric(8,4), available_mass numeric(19,6) NOT NULL,
   current_purity numeric(8,4), custody text NOT NULL, operator text,
   PRIMARY KEY(receipt_id,version), UNIQUE(receipt_id,actor,request_id));`;
-const fields=`version,id,created_at AS "createdAt",actor,kind,stage,note,output_mass AS "outputMass",
+const fields=`version,id,created_at AS "createdAt",actor,actor_user AS "actorUserId",kind,stage,note,output_mass AS "outputMass",
  residual_mass AS "residualMass",unreconciled_mass AS "unreconciledMass",output_purity AS "outputPurity",
  available_mass AS "availableMass",current_purity AS "currentPurity",custody,operator`;
 const failure=(status,message)=>Object.assign(new Error(message),{status});
@@ -62,12 +62,12 @@ async function read(client,receiptId){
  const events=first.version===null?[]:result.rows.map(({mass,purity,...e})=>e);
  return {workflow:current(first,events.at(-1)),events};
 }
-async function write(pool,id,actor,input){
+async function write(pool,id,actor,input,owner){
  const client=await pool.connect();
- const hash=createHash('sha256').update(JSON.stringify(input)).digest('hex');
+ const hash=createHash('sha256').update(JSON.stringify([owner,input])).digest('hex');
  try{
   await client.query('BEGIN');
-  const receipt=(await client.query('SELECT mass,purity FROM erp_live_receipts WHERE id=$1 FOR UPDATE',[id])).rows[0];
+  const receipt=(await client.query('SELECT mass,purity,assignee_user FROM erp_live_receipts WHERE id=$1 FOR UPDATE',[id])).rows[0];
   if(!receipt)throw failure(404,'رسید پیدا نشد.');
   const replay=(await client.query('SELECT payload_hash FROM erp_live_work_events WHERE receipt_id=$1 AND actor=$2 AND request_id=$3',[id,actor,input.requestId])).rows[0];
   if(replay){
@@ -77,19 +77,20 @@ async function write(pool,id,actor,input){
    const state=current(receipt,last);
    if(state.version!==input.version)throw failure(409,'شخص دیگری این رسید را به‌روز کرده است. دوباره باز کنید.');
    const starting=input.kind==='start',completing=input.kind==='complete';
+   if(starting&&actor!=='manager'&&receipt.assignee_user&&receipt.assignee_user!==owner)throw failure(403,'این پارت به مسئول دیگری سپرده شده است.');
    if(starting?state.state!=='ready':state.state!=='active')throw failure(409,'وضعیت فعلی رسید با این عملیات سازگار نیست.');
-   if(actor!=='manager'&&(starting?!['behnam',actor].includes(state.custody):state.operator!==actor))throw failure(403,'این عملیات به مسئول دیگری سپرده شده است.');
+   if(actor!=='manager'&&(starting?!['behnam',owner].includes(state.custody):state.operator!==owner))throw failure(403,'این عملیات به مسئول دیگری سپرده شده است.');
    if(starting&&micros(state.availableMass)===0n)throw failure(409,'برای شروع، وزن قابل پردازش لازم است.');
    const delta=completing?micros(state.availableMass)-micros(input.outputMass)-micros(input.residualMass):null;
    if(delta!==null&&delta!==0n&&!input.note)throw failure(400,'اختلاف وزن وجود دارد. دلیل یا وضعیت بررسی آن را درج کنید.');
-   const custody=starting?actor:state.custody;
+   const custody=starting?owner:state.custody;
    await client.query(`INSERT INTO erp_live_work_events(receipt_id,version,id,request_id,payload_hash,actor,kind,stage,note,
-    output_mass,residual_mass,unreconciled_mass,output_purity,available_mass,current_purity,custody,operator)
-    VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)`,
+    output_mass,residual_mass,unreconciled_mass,output_purity,available_mass,current_purity,custody,operator,actor_user)
+    VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18)`,
     [id,state.version+1,randomUUID(),input.requestId,hash,actor,input.kind,starting?input.stage:state.stage,input.note,
      input.outputMass??null,input.residualMass??null,delta===null?null:decimal(delta),input.outputPurity??null,
      completing?input.outputMass:state.availableMass,completing?input.outputPurity:state.currentPurity,custody,
-     completing?null:starting?actor:state.operator]);
+     completing?null:starting?owner:state.operator,owner]);
   }
   const data=await read(client,id);
   await client.query('COMMIT');

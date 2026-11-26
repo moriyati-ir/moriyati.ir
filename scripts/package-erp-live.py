@@ -9,10 +9,12 @@ PREVIEW = ROOT / "dist" / "erp"
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("output", type=Path, help="destination .zip")
-output = parser.parse_args().output
+parser.add_argument("--accounts-seed", type=Path, help="private account seed to embed in the Liara source archive")
+args = parser.parse_args()
+output = args.output
 with ZipFile(output, "w", compression=ZIP_DEFLATED) as bundle:
     for name in ("package.json", "package-lock.json", "liara.json", "server.cjs",
-                 "live/api.cjs", "live/workflow.cjs", "live/provision.cjs", "live/public/index.html", "live/public/live.css",
+                 "live/api.cjs", "live/named-auth.cjs", "live/device-pin.cjs", "live/workflow.cjs", "live/provision.cjs", "live/public/index.html", "live/public/live.css",
                  "live/public/live.js"):
         bundle.write(SERVICE / name, name)
     for file in sorted(PREVIEW.rglob("*")):
@@ -26,3 +28,5 @@ with ZipFile(output, "w", compression=ZIP_DEFLATED) as bundle:
         elif file.is_file():
             bundle.write(file, "erp/" + file.relative_to(PREVIEW).as_posix())
     bundle.write(ROOT / "dist/assets/Vazirmatn.woff2", "assets/Vazirmatn.woff2")
+    if args.accounts_seed:
+        bundle.write(args.accounts_seed, "live/accounts-seed.json")

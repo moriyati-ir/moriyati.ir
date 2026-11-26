@@ -17,16 +17,81 @@ async function api(path,data){
  return result;
 }
 function errorText(e){return e instanceof TypeError?'پاسخی از سرور دریافت نشد. اتصال را بررسی کنید و دوباره تلاش کنید.':e.message;}
+const pages=['home','receipts','new','account'];
+let identity=null, checking=true, offline=false, cachedReceipts=[], selectedReceipt=null;
+function permitted(view){
+ if(!identity)return true;
+ if(view==='new')return identity.permissions.admission;
+ if(view==='receipts')return identity.permissions.receipts;
+ return true;
+}
+function page(){
+ const name=location.hash.replace(/^#\/?/,'');
+ return pages.includes(name)?name:'home';
+}
+function navigate(name){
+ if(page()===name){renderShell();return;}
+ location.hash='/'+name;
+}
+function renderShell(){
+ const view=page(), home=view==='home', gated=!home&&!actor;
+ const granted=permitted(view);
+ $('forbidden').hidden=granted;
+ $('noModules').hidden=!actor||permitted('new')||permitted('receipts');
+ document.querySelectorAll('.work-tile').forEach(link=>{link.hidden=!permitted(link.hash.slice(2));});
+ $('home').hidden=!home;
+ $('homeTitle').textContent=identity?'میزکار '+identity.displayName:'فضای کار';
+ const icon=$('profileIcon');icon.setAttribute('aria-label',identity?'حساب '+identity.displayName:'حساب کاربری');
+ $('profileLabel').textContent=identity?identity.displayName:'ورود';
+ $('recentTitle').textContent=identity?.permissions.allReceipts?'آخرین پارت‌ها':'پارت‌های من';
+ $('home').classList.toggle('personal-home',Boolean(identity));
+ if(identity)icon.dataset.initial=identity.displayName.trim().charAt(0);else delete icon.dataset.initial;
+ document.querySelectorAll('[data-view=account] span').forEach(el=>{el.textContent=identity?identity.displayName:'حساب';});
+ $('checking').hidden=!gated||!checking;
+ $('failure').hidden=!offline;
+ $('entry').hidden=!gated||checking||offline;
+ $('account').hidden=view!=='account'||!actor;
+ $('desk').hidden=!actor||!granted||!['receipts','new'].includes(view);
+ $('receiptList').hidden=view!=='receipts';
+ $('receiptForm').hidden=view!=='new'||!actor;
+ $('newReceipt').hidden=view==='new'||!permitted('new');
+ $('recent').hidden=!actor||!home||!permitted('receipts');
+ $('deskTitle').textContent=view==='new'?'ثبت پارت جدید':'پارت‌ها و عملیات تولید';
+ $('entryTitle').textContent={new:'ورود برای ثبت پارت',receipts:'ورود برای مشاهده پارت‌ها',account:'ورود به حساب'}[view]||'ورود به حساب';
+ document.querySelectorAll('[data-view]').forEach(link=>{
+  link.hidden=!permitted(link.dataset.view);const active=link.dataset.view===view;link.classList.toggle('is-active',active);
+  if(active)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');
+ });
+ if(view==='receipts'&&actor&&selectedReceipt){
+  const card=document.getElementById('receipt-'+selectedReceipt);
+  if(card){card.querySelector('details').open=true;card.scrollIntoView({block:'nearest'});selectedReceipt=null;}
+ }
+}
 function entry(){
- actor=null;generation++;listVersion++;requestId=null;lastSubmission=null;
- $('checking').hidden=$('failure').hidden=$('desk').hidden=$('logout').hidden=true;$('entry').hidden=false;
- $('receipts').replaceChildren();$('receiptForm').reset();toggleForm(false);message('notice','');message('loginMsg','');
+ actor=null;identity=null;checking=false;offline=false;generation++;listVersion++;requestId=null;lastSubmission=null;cachedReceipts=[];selectedReceipt=null;
+ $('receipts').replaceChildren();$('assignee').replaceChildren();$('actor').textContent='';resetDeviceSettings();$('recentRows').replaceChildren();$('receiptForm').reset();message('notice','');message('loginMsg','');
+ renderShell();
 }
-async function desk(identity){
- if(!actorNames[identity])throw Error('حساب از سرور شناسایی نشد.');
- actor=identity;generation++;$('actor').textContent=actorNames[actor];$('checking').hidden=$('entry').hidden=$('failure').hidden=true;
- $('desk').hidden=$('logout').hidden=false;await list();
+async function desk(session){
+ if(!session?.userId||!session.permissions)throw Error('حساب از سرور شناسایی نشد.');
+ identity=session;actor=session.actor;checking=false;offline=false;generation++;
+ $('actor').textContent=session.displayName;
+ const assignees=[new Option('تعیین نشده',''),...(session.productionUsers||[]).map(u=>new Option(u.name,u.id))];
+ $('assignee').replaceChildren(...assignees);renderShell();
+ if(permitted('receipts'))await list();
 }
+function showRecent(){
+ const rows=cachedReceipts.slice(0,3).map(r=>{
+  const button=textEl('button','','recent-row');
+  button.type='button';button.append(textEl('strong',r.reference),textEl('span',numeric(r.mass)+' گرم'));
+  button.onclick=()=>{selectedReceipt=r.id;navigate('receipts');};return button;
+ });
+ $('recentRows').replaceChildren(...(rows.length?rows:[textEl('p','هنوز رسید ثبت نشده است.','muted')]));
+}
+window.addEventListener('hashchange',()=>{
+ document.getElementById('main-content').scrollTop=0;
+ message('loginMsg','');message('notice','');renderShell();
+});
 function textEl(tag,text,cls){const el=document.createElement(tag);el.textContent=text;if(cls)el.className=cls;return el;}
 const stageNames={melt:'ذوب',refine:'پالایش',polish:'پرداخت',mint:'ضرب',pack:'بسته‌بندی'};
 const eventNames={start:'شروع عملیات',record:'ثبت گزارش',complete:'پایان عملیات'};
@@ -64,8 +129,8 @@ function workflowFor(receipt,details){
   const available=numeric(w.availableMass)+' گرم';
   const active=w.state==='active';
   const status=active?(stageNames[w.stage]||'عملیات')+' در حال انجام':'آماده برای عملیات';
-  section.replaceChildren(textEl('h3',status),textEl('p','موجودی این پارت '+available+' · '+(w.currentPurity==null?'عیار فعلی نامشخص':'عیار فعلی '+numeric(w.currentPurity))+' · نزد '+(custodyNames[w.custody]||w.custody)));
-  const canAct=active?(actor==='manager'||actor===w.operator):(actor==='manager'||['behnam',actor].includes(w.custody));
+  section.replaceChildren(textEl('h3',status),textEl('p','موجودی این پارت '+available+' · '+(w.currentPurity==null?'عیار فعلی نامشخص':'عیار فعلی '+numeric(w.currentPurity))+' · نزد '+(w.custody===identity?.userId?identity.displayName:w.custody===receipt.assigneeUserId?receipt.assigneeName:custodyNames[w.custody]||events.findLast(e=>e.actorUserId===w.custody)?.actorName||w.custody)));
+  const canAct=identity?.permissions.production && (active?(actor==='manager'||[identity.userId,actor].includes(w.operator)):(actor==='manager'||['behnam',actor,identity.userId].includes(w.custody)));
   if(canAct&&micrograms(w.availableMass)>0n){
    const actions=document.createElement('div');actions.className='actions';
    const editor=document.createElement('div');section.append(actions,editor);
@@ -79,7 +144,7 @@ function workflowFor(receipt,details){
    history.append(textEl('summary','سابقه عملیات ('+numeric(events.length)+')'),items);
    for(const ev of events.slice().reverse()){
     const li=document.createElement('li');li.append(textEl('strong',(eventNames[ev.kind]||'عملیات')+' · '+(stageNames[ev.stage]||'')));
-    const when=new Date(ev.createdAt);li.append(textEl('p',(actorNames[ev.actor]||'')+(Number.isNaN(when.getTime())?'':' · '+dates.format(when))));
+    const when=new Date(ev.createdAt);li.append(textEl('p',(ev.actorName||actorNames[ev.actor]||'')+(Number.isNaN(when.getTime())?'':' · '+dates.format(when))));
     if(ev.kind==='complete'&&ev.outputMass!=null){
      const parts=['خروجی '+numeric(ev.outputMass)+' گرم','باقیمانده '+numeric(ev.residualMass??0)+' گرم'];
      if(ev.unreconciledMass!=null){
@@ -147,11 +212,11 @@ function workflowFor(receipt,details){
 }
 
 function receiptCard(r){
- const card=document.createElement('article');card.className='receipt';const title=document.createElement('div');title.className='title';
+ const card=document.createElement('article');card.id='receipt-'+r.id;card.className='receipt';const title=document.createElement('div');title.className='title';
  title.append(textEl('strong',r.reference||'پارت ثبت‌شده'));
  if(r.approvedBy==='smart-manager')title.append(textEl('span','تأیید مدیر هوشمند','tag'));
  card.append(title,textEl('p',(r.metal==='gold'?'طلا':'نقره')+' · '+numeric(r.mass)+' گرم · '+(r.purity==null?'عیار نامشخص':'عیار '+numeric(r.purity)),'weight'));
- const when=new Date(r.createdAt);card.append(textEl('p',(Number.isNaN(when.getTime())?'':dates.format(when)+' · ')+'ثبت‌کننده '+(actorNames[r.createdBy]||'ثبت‌شده در سیستم')+(r.recipient==='behnam'?' · گیرنده بهنام':'')));
+ const when=new Date(r.createdAt);card.append(textEl('p',(Number.isNaN(when.getTime())?'':dates.format(when)+' · ')+'ثبت‌کننده '+(r.createdByName||actorNames[r.createdBy]||'ثبت‌شده در سیستم')+(r.recipient==='behnam'?' · گیرنده بهنام':'')+(r.assigneeName?' · مسئول '+r.assigneeName:'')));
  const details=document.createElement('details');details.append(textEl('summary','جزئیات و عملیات پارت'),textEl('code',r.id));
  if(r.photoAvailable){const link=textEl('a','مشاهدهٔ عکس پارت');link.href='/api/live/receipts/'+encodeURIComponent(r.id)+'/photo';link.target='_blank';link.rel='noopener';details.append(document.createElement('br'),link);}
  workflowFor(r,details);card.append(details);return card;
@@ -159,35 +224,66 @@ function receiptCard(r){
 async function list(){
  const current=++listVersion;$('refresh').disabled=true;message('listMsg','در حال دریافت رسیدها…');
  try{const {receipts}=await api('receipts');if(current!==listVersion)return;
- $('receipts').replaceChildren(...receipts.map(receiptCard));message('listMsg',receipts.length?'':'هنوز رسید ثبت نشده است.');
+ cachedReceipts=receipts;showRecent();$('receipts').replaceChildren(...receipts.map(receiptCard));renderShell();message('listMsg',receipts.length?'':'هنوز رسید ثبت نشده است.');
  }catch(e){if(current!==listVersion)return;if(e.status===401)entry();else message('listMsg',errorText(e));}
  finally{if(current===listVersion)$('refresh').disabled=false;}
-}
-function toggleForm(open){
- $('receiptForm').hidden=!open;$('newReceipt').setAttribute('aria-expanded',String(open));
- if(open){$('reference').focus();message('notice','');}
 }
 function readPhoto(file){
  return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(Error('خواندن عکس انجام نشد.'));reader.onload=()=>resolve(reader.result);reader.readAsDataURL(file);});
 }
 async function startup(){
- $('checking').hidden=false;$('failure').hidden=true;
- try{await desk((await api('session')).actor);}
- catch(e){if(e.status===401){entry();return;}$('checking').hidden=true;$('failure').hidden=false;message('failureText',errorText(e));}
+ checking=true;offline=false;renderShell();
+ try{await desk(await api('session'));}
+ catch(e){if(e.status===401){entry();return;}checking=false;offline=true;message('failureText',errorText(e));renderShell();}
 }
+$('today').textContent=new Intl.DateTimeFormat('fa-IR',{timeZone:'Asia/Tehran',weekday:'long',day:'numeric',month:'long'}).format(new Date());
+function theme(dark){
+ document.documentElement.dataset.theme=dark?'dark':'light';
+ $('theme').setAttribute('aria-pressed',String(dark));$('theme').setAttribute('aria-label',dark?'حالت روز':'حالت شب');
+ document.querySelector('meta[name="theme-color"]').content=dark?'#090909':'#ffffff';
+}
+try{theme(localStorage.getItem('erp-live-theme')==='dark');}catch{}
+$('theme').onclick=()=>{const dark=document.documentElement.dataset.theme!=='dark';theme(dark);try{localStorage.setItem('erp-live-theme',dark?'dark':'light');}catch{}};
+function resetDeviceSettings(){
+ $('devicePanel').open=false;$('deviceForm').hidden=true;$('deviceForm').reset();
+ $('removePin').hidden=true;message('deviceStatus','');
+}
+function deviceResult(data){
+ $('deviceForm').hidden=false;$('removePin').hidden=!data.enabled;
+ message('deviceStatus',data.enabled?'رمز کوتاه برای ورود به حساب شما در همین مرورگر فعال است.':'');
+}
+$('devicePanel').ontoggle=async()=>{
+ if(!$('devicePanel').open||!identity)return;
+ const gen=generation;
+ try{const status=await api('device-pin');if(gen===generation)deviceResult(status);}
+ catch(e){if(gen!==generation)return;if(e.status===401)entry();else message('deviceStatus',errorText(e));}
+};
+async function setDevicePin(remove){
+ const gen=generation,button=remove?$('removePin'):$('deviceForm').querySelector('button');
+ button.disabled=true;
+ try{
+  const payload=remove?{}:{password:$('devicePassword').value,pin:digits($('devicePin').value)};
+  const result=await api(remove?'device-pin/remove':'device-pin',payload);
+  if(gen!==generation)return;
+  $('deviceForm').reset();deviceResult(result);
+  if(remove)message('deviceStatus','رمز کوتاه این دستگاه برداشته شد.');
+ }catch(e){if(gen===generation)message('deviceStatus',errorText(e));}
+ finally{button.disabled=false;}
+}
+$('deviceForm').onsubmit=e=>{e.preventDefault();setDevicePin(false);};
+$('removePin').onclick=()=>setDevicePin(true);
 $('retry').onclick=startup;
 $('loginForm').onsubmit=async event=>{
  event.preventDefault();const submit=event.submitter||$('loginForm').querySelector('button');submit.disabled=true;
- try{message('loginMsg','');const result=await api('login',{role:$('role').value,code:$('code').value.trim()});$('code').value='';await desk(result.actor||(await api('session')).actor);}
+ try{message('loginMsg','');const result=await api('login',{username:$('username').value.trim(),password:$('password').value});$('password').value='';await desk(result);}
  catch(e){message('loginMsg',errorText(e));}finally{submit.disabled=false;}
 };
 $('logout').onclick=async()=>{
- $('logout').disabled=true;try{await api('logout',{});entry();}catch(e){if(e.status===401)entry();else message('notice',errorText(e));}finally{$('logout').disabled=false;}
+ $('logout').disabled=true;try{await api('logout',{});entry();navigate('home');}catch(e){if(e.status===401)entry();else message('notice',errorText(e));}finally{$('logout').disabled=false;}
 };
-$('newReceipt').onclick=()=>toggleForm($('receiptForm').hidden);
-$('cancel').onclick=()=>toggleForm(false);
+$('cancel').onclick=()=>navigate('receipts');
 $('refresh').onclick=list;
-document.addEventListener('visibilitychange',()=>{if(actor&&!document.hidden&&!$('receipts').querySelector('details[open]'))list();});
+document.addEventListener('visibilitychange',()=>{if(actor&&permitted('receipts')&&!document.hidden&&!$('receipts').querySelector('details[open]'))list();});
 $('receiptForm').onsubmit=async event=>{
  event.preventDefault();if(sending)return;
  const form=event.currentTarget,submit=event.submitter||form.querySelector('button.primary'),gen=generation;
@@ -198,6 +294,7 @@ $('receiptForm').onsubmit=async event=>{
   if(!/^\d{1,13}(\.\d{1,6})?$/.test(mass)||Number(mass)<=0)throw Error('وزن را به گرم، با حداکثر شش رقم اعشار وارد کنید.');
   if(purity!==null&&(!/^\d{1,4}(\.\d{1,4})?$/.test(purity)||Number(purity)>1000))throw Error('عیار را بین صفر و هزار وارد کنید یا برای عیار نامشخص خالی بگذارید.');
   const data={metal:$('metal').value,mass,purity,reference:$('reference').value.trim()};
+  if($('assignee').value)data.assigneeUserId=$('assignee').value;
   if(!data.reference)throw Error('شرح یا شماره پارت را وارد کنید.');
   const file=$('photo').files[0];if(file){if(file.size>4194304||!photoTypes.includes(file.type))throw Error('تصویر JPG، PNG یا WebP تا ۴ مگابایت انتخاب کنید.');data.photo=await readPhoto(file);}
   const payload=JSON.stringify(data);
@@ -206,7 +303,7 @@ $('receiptForm').onsubmit=async event=>{
   const {receipt}=await api('receipts',{...data,requestId});
   if(!receipt?.id)throw Error('پاسخ سرور شناسه رسید نداشت. دوباره تلاش کنید.');
   if(gen!==generation)return;
-  form.reset();requestId=null;lastSubmission=null;toggleForm(false);message('notice','رسید '+receipt.reference+' در سرور ثبت شد.');await list();
+  form.reset();requestId=null;lastSubmission=null;navigate('receipts');await list();message('notice','رسید '+receipt.reference+' در سرور ثبت شد.');
  }catch(e){if(e.status===401){entry();message('loginMsg','اعتبار ورود پایان یافته است. دوباره وارد شوید.');}else message('formMsg',errorText(e));}
  finally{sending=false;submit.disabled=false;$('logout').disabled=false;}
 };
