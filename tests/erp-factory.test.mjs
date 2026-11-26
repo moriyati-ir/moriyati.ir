@@ -151,3 +151,15 @@ test('Financial requests persist amount and omit unrelated attendance fields',()
  const request=result.state.hrRequests.at(-1);
  assert.equal(request.amount,50);assert.equal(request.start,undefined);assert.equal(request.hours,undefined);
 });
+
+test('Internal handover to Behnam records one automatic decision and no personal confirmation',()=>{
+ const input={packetId:'LOT-105',mass:20,receiver:'behnam',to:'ذوب',operationId:'test-smart-handover'};
+ const r=command(fresh(),'haji','handover',input);
+ const handover=r.state.handovers[0];
+ assert.equal(handover.state,'received');
+ assert.equal(handover.receiverConfirmed,false);
+ assert.equal(r.state.audit.find(e=>e.entityId===handover.id&&e.type==='handover-confirm').actor,'smart-manager');
+ assert.equal(r.state.packets.find(p=>p.id==='LOT-105').mass,'80');
+ assert.throws(()=>transition(r.state,r.tasks,'haji','handover',input));
+ assert.throws(()=>transition(r.state,r.tasks,'behnam','handover-confirm',{id:handover.id,decision:'receive'}));
+});
