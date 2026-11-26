@@ -26,7 +26,7 @@ export const presets = {
  general:[{id:'maintenance',name:'تعمیر و نگهداری',subtitle:'بررسی و سرویس تجهیزات',image:media.equipment},{id:'purchase',name:'خرید و تأمین',subtitle:'اقلام مورد نیاز کار',image:media.granules},{id:'research',name:'تحقیق و توسعه',subtitle:'نمونه‌سازی و بررسی',image:media.lab},{id:'external',name:'سفارش بیرونی',subtitle:'پیگیری و تحویل سفارش',image:media.frame}]
 };
 export const contacts = [
- {id:'behnam',name:'بهنام',role:'مدیر کارخانه',initial:'ب',online:true,preview:'ممنون، بررسی می‌کنم.',time:'۱۰:۳۷',unread:2},
+ {id:'behnam',name:'بهنام',role:'مدیر هوشمند',initial:'ب',online:true,preview:'ممنون، بررسی می‌کنم.',time:'۱۰:۳۷',unread:2},
  {id:'team',name:'تیم تولید',role:'گروه هم‌سطح · ۴ عضو',initial:'ت',online:false,group:true,preview:'برنامه امروز در گروه ثبت شد.',time:'۰۹:۴۰',unread:1},
  {id:'colleague',name:'همکار ۱',role:'همکار تولید',initial:'ه',online:false,preview:'نمونه برای بررسی آماده است.',time:'دیروز',unread:0},
  {id:'self',name:'برای خودم',role:'نوت‌ها و یادآورها',initial:'م',online:false,preview:'یادداشت‌های شخصی شما',time:'',unread:0},
