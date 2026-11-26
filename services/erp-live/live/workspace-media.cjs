@@ -10,21 +10,21 @@ const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const problem=(status,message)=>Object.assign(new Error(message),{status});
 const missing=()=>problem(404,'فایل پیدا نشد.');
 function decode(data){
- const comma=typeof data==='string'?data.indexOf(','):-1;
- if(comma<0||comma>100)throw problem(400,'فرمت فایل معتبر نیست.');
- const header=data.slice(0,comma);
- const match=/^data:([a-z0-9.+-]+\/[a-z0-9.+-]+);base64$/i.exec(header);
+ const marker=typeof data==='string'?data.indexOf(';base64,'):-1;
+ if(marker<0||marker>100)throw problem(400,'فرمت فایل معتبر نیست.');
+ const header=data.slice(0,marker+7);
+ const match=/^data:([a-z0-9.+-]+\/[a-z0-9.+-]+)(?:;\s*codecs=(?:"[a-z0-9., _-]+"|[a-z0-9._-]+))?;base64$/i.exec(header);
  if(!match)throw problem(400,'فرمت فایل معتبر نیست.');
  const mime=match[1].toLowerCase();
- const bytes=Buffer.from(data.slice(comma+1),'base64');
- if(bytes.length===0||bytes.length>8*1024*1024||bytes.toString('base64')!==data.slice(comma+1))throw problem(400,'حجم یا محتوای فایل معتبر نیست.');
+ const bytes=Buffer.from(data.slice(marker+8),'base64');
+ if(bytes.length===0||bytes.length>8*1024*1024||bytes.toString('base64')!==data.slice(marker+8))throw problem(400,'حجم یا محتوای فایل معتبر نیست.');
  const head=bytes.subarray(0,12);
  const raster=mime==='image/jpeg'?head.subarray(0,3).toString('hex')==='ffd8ff':
   mime==='image/png'?head.subarray(0,8).toString('hex')==='89504e470d0a1a0a':
   mime==='image/webp'?head.toString('ascii',0,4)==='RIFF'&&head.toString('ascii',8,12)==='WEBP':
   mime==='image/gif'?['GIF89a','GIF87a'].includes(head.toString('ascii',0,6)):false;
  if(mime.startsWith('image/')&&!raster)throw problem(415,'عکس باید JPEG، PNG، GIF یا WebP باشد.');
- const type=raster||['application/pdf','audio/mpeg','audio/webm','audio/ogg','video/mp4','video/webm'].includes(mime)?mime:'application/octet-stream';
+ const type=raster||['application/pdf','audio/mpeg','audio/mp4','audio/aac','audio/webm','audio/ogg','video/mp4','video/webm'].includes(mime)?mime:'application/octet-stream';
  return {mime:type,bytes};
 }
 async function put(db,owner,data){
@@ -55,7 +55,7 @@ async function prepare(db,user,input,view){
  const accessible=references(view), referenced=new Set(),uploads=new Map();
  inspect(input,(v,parent,key)=>{
   if(typeof v!=='string')return;
-  if(/^data:[^,]{1,96};base64,/.test(v)){
+  if(/^data:[^;]{1,60}(?:;[^;]{1,80})?;base64,/.test(v)){
    if(!uploads.has(v))uploads.set(v,[]);
    uploads.get(v).push([parent,key]);
   }else if(v.startsWith(prefix)&&!accessible.has(v)){
