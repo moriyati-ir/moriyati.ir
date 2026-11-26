@@ -116,3 +116,6 @@ img[src*="visuals/"]{object-fit:contain}
 .task-detail-group button { margin: .2rem; }
 
 #factory-form .ws-upload{display:grid;margin-inline:auto;text-align:center}#factory-form .ws-upload input{width:100%;height:100%}#factory-form .ws-upload img[hidden]{display:none}
+
+.behnam-launch{position:fixed;z-index:7;inset-inline-end:12px;bottom:calc(70px + env(safe-area-inset-bottom));display:grid;justify-items:center;background:transparent;border:0;color:inherit;padding:0;cursor:pointer;font:inherit}
+.behnam-portrait{width:48px;height:48px;object-fit:contain}.behnam-launch img{width:58px;height:58px}.behnam-launch span{padding:3px 9px;border-radius:12px;background:#193a34;color:white;font-size:11px}.behnam-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:4px 12px}.behnam-controls button,.behnam-controls select{font:inherit;font-size:12px}.behnam-controls small{opacity:.8}
