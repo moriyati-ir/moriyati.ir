@@ -20,8 +20,13 @@ CREATE INDEX IF NOT EXISTS erp_person_sessions_expiry ON erp_person_sessions(exp
 ALTER TABLE erp_live_receipts ADD COLUMN IF NOT EXISTS created_by_user text;
 ALTER TABLE erp_live_receipts ADD COLUMN IF NOT EXISTS assignee_user text;
 ALTER TABLE erp_live_work_events ADD COLUMN IF NOT EXISTS actor_user text;`;
+// RTL account sheets can surround a copied field with Unicode direction marks.
+function withoutDirectionWrap(value){
+ return value.replace(/^[\u061c\u200e\u200f\u202a-\u202e\u2066-\u2069]+|[\u061c\u200e\u200f\u202a-\u202e\u2066-\u2069]+$/gu,'');
+}
 function nameKey(x){
- return String(x??'').normalize('NFKC').trim().toLowerCase().replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[\u200c\s]+/g,' ');
+ const label=withoutDirectionWrap(String(x??'').trim()).normalize('NFKC').trim().toLowerCase();
+ return label.replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[\u200c\s]+/g,' ');
 }
 function passKey(x){return String(x??'').replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-1776)).replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-1632));}
 let catalog;
@@ -37,7 +42,7 @@ async function directory(){
   const admission=policy.capabilities.admission(id);
   const production=['alireza','behnam','haji','mohaddeseh','kimia','sonia','hana','mehrab','ghazal'].includes(id)&&policy.capabilities.production(id);
   const allReceipts=policy.capabilities.inventory(id);
-  catalog.set(id,{userId:id,displayName:person.name,actor:allReceipts?'manager':'staff',
+  catalog.set(id,{userId:id,displayName:person.name,level:person.level||'staff',actor:allReceipts?'manager':'staff',
    permissions:{admission,production,allReceipts,receipts:admission||production||allReceipts}});
  }
  return catalog;
@@ -73,15 +78,20 @@ async function verifyPassword(db,req,person,raw,allowPin){
    WHERE user_id=$1 AND active AND (next_window<=now() OR attempts<12) RETURNING salt,password_hash`,[person.userId]);
   if(!result.rows[0])throw invalid();
   const {salt,password_hash}=result.rows[0];
-  const actual=await derive(pass,salt,64);
-  const primary=timingSafeEqual(actual,Buffer.from(password_hash,'hex'));
-  if(!primary&&!(allowPin&&/^\d{4,8}$/.test(pass)&&await devicePin.verify(db,req,person.userId,password_hash,pass)))throw invalid();
+  const expected=Buffer.from(password_hash,'hex');
+  let primary=timingSafeEqual(await derive(pass,salt,64),expected);
+  const unwrapped=withoutDirectionWrap(pass);
+  if(!primary&&unwrapped&&unwrapped!==pass){
+   primary=timingSafeEqual(await derive(unwrapped,salt,64),expected);
+  }
+  if(!primary&&!(allowPin&&/^\d{4,8}$/.test(unwrapped)&&await devicePin.verify(db,req,person.userId,password_hash,unwrapped)))throw invalid();
   await db.query('UPDATE erp_people SET attempts=0 WHERE user_id=$1',[person.userId]);
   return password_hash;
  }finally{inFlight--;}
 }
 async function login(db,req,res,data){
- const name=nameKey(data.username);
+ const entered=nameKey(data.username);
+ const name=entered==='sonya'?'sonia':entered;
  const person=[...catalog.values()].find(p=>p.userId===name||nameKey(p.displayName)===name);
  const password_hash=await verifyPassword(db,req,person,data.password,true);
   const token=randomBytes(32).toString('hex');

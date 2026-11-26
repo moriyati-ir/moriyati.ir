@@ -14,18 +14,20 @@ args = parser.parse_args()
 output = args.output
 with ZipFile(output, "w", compression=ZIP_DEFLATED) as bundle:
     for name in ("package.json", "package-lock.json", "liara.json", "server.cjs",
-                 "live/api.cjs", "live/named-auth.cjs", "live/device-pin.cjs", "live/workflow.cjs", "live/provision.cjs", "live/public/index.html", "live/public/live.css",
-                 "live/public/live.js"):
+                 "live/public/index.html", "live/public/live.css", "live/public/live.js"):
         bundle.write(SERVICE / name, name)
+    for module in sorted((SERVICE / "live").glob("*.cjs")):
+        bundle.write(module, "live/" + module.name)
     for file in sorted(PREVIEW.rglob("*")):
         if file == PREVIEW / "index.html":
-            notice = ('<aside aria-label="نوع محیط" style="position:relative;z-index:1;'
-                      'text-align:center;padding:.45rem;background:#f6eddb;color:#352915;'
-                      'font:14px Workspace,sans-serif">پیش‌نمایش با دادهٔ آزمایشی · '
-                      '<a style="color:inherit" href="/live/">ورود به ثبت عملیاتی</a></aside>')
-            html = file.read_text().replace("<body>", "<body>\n  " + notice, 1)
+            html = file.read_text().replace(
+                "<head>", '<head>\n  <meta name="moriyati-environment" content="live">', 1
+            ).replace("MORIYATI — Workspace Preview", "فضای کار موریاتی | MORIYATI").replace(
+                "پیش‌نمونه کلیکی رابط موریاتی؛ اکسپلور تسک‌ها، فرایندها، مسنجر و کارنامه شخصی",
+                "فضای کار کارکنان موریاتی"
+            )
             bundle.writestr("erp/index.html", html)
-        elif file.is_file():
+        elif file.is_file() and file.name != "review.html":
             bundle.write(file, "erp/" + file.relative_to(PREVIEW).as_posix())
     bundle.write(ROOT / "dist/assets/Vazirmatn.woff2", "assets/Vazirmatn.woff2")
     if args.accounts_seed:

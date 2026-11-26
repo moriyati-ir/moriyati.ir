@@ -18,7 +18,7 @@ async function api(path,data){
 }
 function errorText(e){return e instanceof TypeError?'پاسخی از سرور دریافت نشد. اتصال را بررسی کنید و دوباره تلاش کنید.':e.message;}
 const pages=['home','receipts','new','account'];
-let identity=null, checking=true, offline=false, cachedReceipts=[], selectedReceipt=null;
+let identity=null, checking=true, offline=false, cachedReceipts=[], selectedReceipt=new URLSearchParams(location.search).get('receipt');
 function permitted(view){
  if(!identity)return true;
  if(view==='new')return identity.permissions.admission;

@@ -4,6 +4,11 @@ const {Pool} = require('pg');
 
 const workflow = require('./workflow.cjs');
 const named=require('./named-auth.cjs');
+const workspace=require('./workspace.cjs');
+const workspaceMedia=require('./workspace-media.cjs');
+const messenger=require('./messenger.cjs');
+const personFiles=require('./person-files.cjs');
+const gifs=require('./gifs.cjs');
 const devicePin=require('./device-pin.cjs');
 const maxImage = 4 * 1024 * 1024;
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -31,13 +36,13 @@ function json(res,status,value){
  res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'});
  res.end(JSON.stringify(value));
 }
-async function readInput(req){
+async function readInput(req,limit=Math.ceil(maxImage*4/3)+8192){
  if(req.headers['content-type']?.split(';')[0]!=='application/json') throw problem(415,'دادهٔ درخواست باید JSON باشد.');
  let length=0;
  const chunks=[];
  for await(const chunk of req){
   length+=chunk.length;
-  if(length>Math.ceil(maxImage*4/3)+8192) throw problem(413,'حجم فایل بیش از حد مجاز است.');
+  if(length>limit) throw problem(413,'حجم فایل بیش از حد مجاز است.');
   chunks.push(chunk);
  }
  try{
@@ -83,7 +88,7 @@ function createHandler(env=process.env,connect=options=>new Pool(options)){
   pool??=connect({connectionString:env.DATABASE_URL,max:5,connectionTimeoutMillis:6000,statement_timeout:10000});
   if(!ready){
    pool.on?.('error',()=>{});
-   ready=pool.query(schema+workflow.schema+named.schema).then(()=>named.initialize(pool,env)).catch(e=>{ready=null;throw e;});
+   ready=pool.query(schema+workflow.schema+named.schema+workspace.schema+workspaceMedia.schema+messenger.schema+personFiles.schema+gifs.schema).then(()=>named.initialize(pool,env)).catch(e=>{ready=null;throw e;});
   }
   await ready;
   return pool;
@@ -101,6 +106,8 @@ function createHandler(env=process.env,connect=options=>new Pool(options)){
    if(req.method==='POST'&&pathname==='/api/live/login'){
     return json(res,200,await named.login(db,req,res,await readInput(req)));
    }
+   if(req.method==='GET'&&['/api/live/verify','/api/live/verify/photo'].includes(pathname))
+    return await workspaceMedia.verify(db,new URL(req.url,'http://localhost').searchParams,res,json,pathname.endsWith('/photo'));
    const person=await named.authenticate(db,req);
    const actor=person.actor,owner=person.userId,permissions=person.permissions;
    const scope='($1::boolean OR created_by_user=$2 OR assignee_user=$2)';
@@ -121,6 +128,22 @@ function createHandler(env=process.env,connect=options=>new Pool(options)){
    }
    if(pathname==='/api/live/device-pin/remove'&&req.method==='POST'){
     return json(res,200,await devicePin.revoke(db,req,res,owner));
+   }
+   if(req.headers['x-workspace-user'] && req.headers['x-workspace-user']!==owner)throw problem(409,'حساب فعال تغییر کرده است. دوباره وارد میزکار شوید.');
+   if(pathname.startsWith('/api/live/files/'))return await personFiles.handle(db,req,res,person,pathname,json,readInput);
+   if(pathname==='/api/live/gifs'||pathname.startsWith('/api/live/gifs/'))return await gifs.handleGifs({req,res,pool:db,actor:owner,route:pathname.slice('/api/live'.length),json,readInput});
+   if(pathname.startsWith('/api/live/messenger/media/')&&req.method==='GET')return await messenger.media(db,person,pathname,res);
+   if(pathname.startsWith('/api/live/messenger/'))return json(res,200,await messenger.route({db,req,pathname,person,readInput,problem}));
+   if(pathname==='/api/live/workspace/assets'&&req.method==='POST')
+    return json(res,200,{url:await workspaceMedia.put(db,owner,(await readInput(req,12*1024*1024)).data)});
+   if(pathname.startsWith(workspaceMedia.prefix)&&req.method==='GET')
+    return await workspaceMedia.file(db,pathname.slice(workspaceMedia.prefix.length),owner,async()=>(await workspace.read(db,person)).state,res);
+   if(pathname==='/api/live/workspace' || pathname==='/api/live/workspace/command'){
+    const command=pathname.endsWith('/command');
+    if(req.method==='GET'&&command)throw problem(405,'برای ثبت عملیات درخواست POST لازم است.');
+    const output=req.method==='GET'?await workspace.read(db,person):
+     await workspace.write(db,person,await readInput(req,32*1024*1024),command);
+    return json(res,200,output);
    }
    if(!permissions.receipts)throw problem(403,'دسترسی به عملیات پارت برای حساب شما تعریف نشده است.');
    if(req.method==='GET'&&pathname==='/api/live/receipts'){

@@ -13,9 +13,9 @@ const positive=v=>{const n=numberOrNull(v);if(n===null||n<=0)throw new Error('م
 const required=(value,label='توضیح')=>{const s=String(value??'').trim();if(!s)throw new Error(label+' لازم است.');return s;};
 const permitted=(condition)=>{if(!condition)throw new Error('این اقدام در اختیار این حساب نیست.');};
 export const operationallyFrozen=s=>s.connection.location==='outside'&&s.connection.sync!=='complete';
-export function makeFactoryState(){return {
- version:3,connection:{location:'factory',sync:'complete',primary:'کارخانه',replica:'دفتر مرکزی',lastSync:null},settings:{financeLimit:null,limitScope:'پرداخت‌های عادی کارخانه',exitAbsent:false,temporaryExit:[],packagingVoid:['alireza','behnam','haji'],notification:'push-then-sms-on-failure',language:'fa',calendar:'persian'},
- packets:[
+export function makeFactoryState({demo=true}={}){return {
+ version:3,connection:demo?{location:'factory',sync:'complete',primary:'کارخانه',replica:'دفتر مرکزی',lastSync:null}:{location:'liara',sync:'online',primary:'لیارا',replica:null,lastSync:null},settings:{financeLimit:null,limitScope:'پرداخت‌های عادی کارخانه',exitAbsent:false,temporaryExit:[],packagingVoid:['alireza','behnam','haji'],notification:'push-then-sms-on-failure',language:'fa',calendar:'persian'},
+ packets:demo?[
   {id:'LOT-101',receiptId:'RC-DEMO-01',metal:'نقره',form:'آب‌شده',mass:'6000',purity:'990',certainty:'declared',place:'صندوق',state:'available',reserved:0,conditional:false},
   {id:'LOT-102',receiptId:'RC-DEMO-01',metal:'نقره',form:'ظروف',mass:'8000',purity:null,certainty:'unknown',place:'صندوق',state:'available',reserved:0,conditional:true},
   {id:'LOT-103',receiptId:'RC-DEMO-02',metal:'نقره',form:'ورق',mass:'3000',purity:'999.9',certainty:'measured',place:'نورد',state:'work',taskId:'silver-100',reserved:0},
@@ -23,16 +23,16 @@ export function makeFactoryState(){return {
   {id:'LOT-105',receiptId:'RC-DEMO-02',metal:'طلا',form:'پولک',mass:'100',purity:'995',certainty:'measured',place:'صندوق',state:'available',reserved:0},
   {id:'LOT-106',receiptId:'RC-DEMO-02',metal:'نقره',form:'سکه',mass:'311.035',purity:'999.9',certainty:'measured',place:'کنترل کیفیت',state:'work',taskId:'silver-coin',reserved:0},
   {id:'LOT-107',metal:'نقره',form:'شمش بسته‌بندی‌شده',mass:'100',gross:'114.2550',purity:'999.9',certainty:'final',place:'بسته‌بندی',state:'ready',taskId:'packaging',reserved:0},
- ],receipts:[],reservations:[],handovers:[],assaySessions:[],assays:[],consumptions:[],
- tools:[{id:'CR-001',name:'بوته ذوب نقره',serial:'CR-001',tag:'ثبت نشده',state:'active',workload:0,uses:[]},{id:'ROLL-01',name:'دستگاه نورد',serial:'ROLL-01',tag:'ثبت نشده',state:'active',workload:0,uses:[]}],
- supplies:[{id:'graphite',name:'گرافیت',unit:'گرم',stock:500},{id:'gloves',name:'دستکش',unit:'جفت',stock:10}],
+ ]:[],receipts:[],reservations:[],handovers:[],assaySessions:[],assays:[],consumptions:[],
+ tools:demo?[{id:'CR-001',name:'بوته ذوب نقره',serial:'CR-001',tag:'ثبت نشده',state:'active',workload:0,uses:[]},{id:'ROLL-01',name:'دستگاه نورد',serial:'ROLL-01',tag:'ثبت نشده',state:'active',workload:0,uses:[]}]:[],
+ supplies:[{id:'graphite',name:'گرافیت',unit:'گرم',stock:demo?500:0},{id:'gloves',name:'دستکش',unit:'جفت',stock:demo?10:0}],
  devices:[],financialRecords:[],loginRequests:[],
- solutions:[{id:'SOL-01',name:'محلول مشترک نقره',cycle:1,state:'active',opened:today(),operations:[],additions:[]}],recoveries:[],
- products:[{id:'UNIT-001',serial:'MT-DEMO-001',collection:'constellation',title:'شمش نقره ۱۰۰ گرمی',packetId:'LOT-107',taskId:'packaging',net:'100',gross:'114.2550',purity:'999.9',location:'factory',packaged:true,qc:'pending',image:media.mint,packaging:[{id:'PKG-DEMO-001',active:true,front:media.mint,back:media.mint,date:today(),tag:null}]}],
- shipments:[],trips:[],accounts:[{id:'bank',name:'حساب اصلی کارخانه',opening:null},{id:'cash',name:'تنخواه خرید',opening:null}],journal:[],expenses:[],payments:[{id:'PAY-DEMO-01',name:'تأمین‌کننده نمونه',amount:48000000,category:'purchase',approval:'pending',paid:false,receipt:null}],cashRequests:[],
+ solutions:demo?[{id:'SOL-01',name:'محلول مشترک نقره',cycle:1,state:'active',opened:today(),operations:[],additions:[]}]:[],recoveries:[],
+ products:demo?[{id:'UNIT-001',serial:'MT-DEMO-001',collection:'constellation',title:'شمش نقره ۱۰۰ گرمی',packetId:'LOT-107',taskId:'packaging',net:'100',gross:'114.2550',purity:'999.9',location:'factory',packaged:true,qc:'pending',image:media.mint,packaging:[{id:'PKG-DEMO-001',active:true,front:media.mint,back:media.mint,date:today(),tag:null}]}]:[],
+ shipments:[],trips:[],accounts:demo?[{id:'bank',name:'حساب اصلی کارخانه',opening:null},{id:'cash',name:'تنخواه خرید',opening:null}]:[],journal:[],expenses:[],payments:demo?[{id:'PAY-DEMO-01',name:'تأمین‌کننده نمونه',amount:48000000,category:'purchase',approval:'pending',paid:false,receipt:null}]:[],cashRequests:[],
  hrRequests:[],attendance:[],schedules:[],workSessions:[],dossiers:{},awards:[],payroll:[],emergency:[],integrations:{dvr:'not-connected',iot:'not-connected',nfc:'not-connected',biometric:'not-connected',push:'not-connected',summary:'not-connected'},audit:[],archive:[],notifications:[],
  };}
-export function hydrateFactory(raw){const initial=makeFactoryState();if(!raw||raw.version!==3)return initial;return {...initial,...raw,settings:{...initial.settings,...raw.settings},integrations:{...initial.integrations,...raw.integrations},connection:{...initial.connection,...raw.connection}};}
+export function hydrateFactory(raw,options){const initial=makeFactoryState(options);if(!raw||raw.version!==3)return initial;return {...initial,...raw,settings:{...initial.settings,...raw.settings},integrations:{...initial.integrations,...raw.integrations},connection:{...initial.connection,...raw.connection}};}
 export function packetFine(p){if(p.mass===null||p.mass===undefined)return null;if(p.certainty==='unknown')return null;if(p.fineEstimate!==null&&p.fineEstimate!==undefined)return Number(p.fineEstimate);if(p.purity===null||p.purity===undefined)return null;return Number(p.mass)*Number(p.purity)/1000;}
 export function physicalPackets(s){return s.packets.filter(p=>p.state!=='consumed'&&p.place!=='خارج کارخانه'&&p.mass!==0&&p.mass!=='0');}
 export function stockSummary(s){return ['نقره','طلا'].map(metal=>{const rows=physicalPackets(s).filter(p=>p.metal===metal);return {metal,knownMass:rows.filter(p=>p.mass!==null).reduce((n,p)=>n+Number(p.mass),0),knownFine:rows.filter(p=>['measured','final'].includes(p.certainty)).reduce((n,p)=>n+(packetFine(p)??0),0),declaredFine:rows.filter(p=>p.certainty==='declared').reduce((n,p)=>n+(packetFine(p)??0),0),estimatedFine:rows.filter(p=>p.certainty==='estimated').reduce((n,p)=>n+(packetFine(p)??0),0),unknown:rows.filter(p=>packetFine(p)===null).length,reserved:s.reservations.filter(r=>r.metal===metal&&r.state==='reserved').reduce((n,r)=>n+r.mass,0),available:rows.filter(p=>p.state==='available').reduce((n,p)=>n+Number(p.mass||0)-(Number(p.reserved)||0),0)};});}

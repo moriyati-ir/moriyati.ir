@@ -9,12 +9,12 @@ const permitted=(condition)=>{if(!condition)throw new Error('این اقدام �
 function invoiceLines(lines=[]){
  return lines.filter(line=>line.title||line.quantity||line.unitPrice).map(line=>({title:required(line.title,'نام قلم'),quantity:positive(line.quantity),unit:line.unit||'عدد',unitPrice:positive(line.unitPrice)}));
 }
-export function makeFactoryState(){
- const state=base.makeFactoryState();
+export function makeFactoryState(options){
+ const state=base.makeFactoryState(options);
  state.supplies.unshift(...structuredClone(supplyCatalog));
  return state;
 }
-export function hydrateFactory(raw){const initial=makeFactoryState();if(!raw||raw.version!==3)return initial;return {...initial,...raw,hrRequests:(raw.hrRequests||[]).map(r=>r.kind==='تنخواه شخصی'?{...r,kind:'تنخواه'}:r),financialRecords:(raw.financialRecords||[]).map(r=>r.kind==='تنخواه شخصی'?{...r,kind:'تنخواه'}:r),supplies:[...(raw.supplies||initial.supplies),...structuredClone(supplyCatalog.filter(item=>raw.supplies&&!raw.supplies.some(s=>s.id===item.id)))],settings:{...initial.settings,...raw.settings},integrations:{...initial.integrations,...raw.integrations},connection:{...initial.connection,...raw.connection}};}
+export function hydrateFactory(raw,options){const initial=makeFactoryState(options);if(!raw||raw.version!==3)return initial;return {...initial,...raw,hrRequests:(raw.hrRequests||[]).map(r=>r.kind==='تنخواه شخصی'?{...r,kind:'تنخواه'}:r),financialRecords:(raw.financialRecords||[]).map(r=>r.kind==='تنخواه شخصی'?{...r,kind:'تنخواه'}:r),supplies:[...(raw.supplies||initial.supplies),...structuredClone(supplyCatalog.filter(item=>raw.supplies&&!raw.supplies.some(s=>s.id===item.id)))],settings:{...initial.settings,...raw.settings},integrations:{...initial.integrations,...raw.integrations},connection:{...initial.connection,...raw.connection}};}
 export function transition(factory,tasks,actor,command,data={}){
  if(!['consume','consume-correct','expense','expense-finalize','expense-edit','hr-request'].includes(command))return base.transition(factory,tasks,actor,command,data);
  if(!roles[actor])throw new Error('حساب نامعتبر است.');

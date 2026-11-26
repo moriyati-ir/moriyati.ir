@@ -7,8 +7,8 @@ const handleLiveApi = require('./live/api.cjs');
 
 const staticRoots = [
   ['/live/', path.join(__dirname, 'live', 'public')],
-  ['/preview/', path.join(__dirname, 'erp')],
   ['/assets/', path.join(__dirname, 'assets')],
+  ['/', path.join(__dirname, 'erp')],
 ];
 const types = {
   '.html': 'text/html; charset=utf-8',
@@ -46,13 +46,22 @@ async function route(req, res) {
     res.writeHead(405, {Allow: 'GET, HEAD'}).end();
     return;
   }
-  if (pathname === '/preview') {
-    res.writeHead(302, {Location: '/preview/', 'Cache-Control': 'no-store'}).end();
+  // Keep links sent during the GitHub preview period inside the live workspace.
+  const previousMount = pathname.match(/^\/(erp|preview)(?:\/(.*))?$/);
+  if (previousMount) {
+    const target = new URL(req.url, 'http://localhost');
+    const rest = previousMount[2] || '';
+    const destination = rest && !['index.html','review.html'].includes(rest) ? '/' + rest : '/';
+    if (destination.startsWith('//') || /[\\\r\n]/.test(destination)) {
+      res.writeHead(400).end();
+      return;
+    }
+    res.writeHead(302, {Location:encodeURI(destination) + target.search, 'Cache-Control':'no-store'}).end();
     return;
   }
-  // The official domain and existing ERP bookmarks open the same workspace directly.
-  if (['/', '/erp', '/erp/', '/erp/index.html', '/live'].includes(pathname)) {
-    pathname = '/live/index.html';
+  if (pathname === '/live' || pathname === '/review.html') {
+    res.writeHead(302, {Location:'/', 'Cache-Control':'no-store'}).end();
+    return;
   }
   const mount = staticRoots.find(([prefix]) => pathname.startsWith(prefix));
   if (!mount) {
