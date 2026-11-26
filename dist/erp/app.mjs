@@ -19,7 +19,23 @@ const icon=(name,cls='')=>`<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hid
 const btn=(action,label,name,extra='')=>`<button type="button" class="icon-btn" data-action="${action}" aria-label="${esc(label)}" title="${esc(label)}" ${extra}>${icon(name)}</button>`;
 const storageKey='moriyati-social-workspace-v2',appearanceKey='moriyati-social-appearance-v1';
 const clone=value=>JSON.parse(JSON.stringify(value));
-let stored;try{stored=upgradeWorkspaceVisuals(JSON.parse(localStorage.getItem(storageKey)||'null'),initialTasks);}catch{}
+const database=await new Promise(resolve=>{
+  try{
+    const request=indexedDB.open('moriyati-workspace',1);
+    request.onupgradeneeded=()=>request.result.createObjectStore('workspace');
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=request.onblocked=()=>resolve(null);
+  }catch{resolve(null);}
+});
+let stored;
+try{
+  const current=database && await new Promise((resolve,reject)=>{
+    const request=database.transaction('workspace').objectStore('workspace').get(storageKey);
+    request.onsuccess=()=>resolve(request.result);
+    request.onerror=()=>reject(request.error);
+  });
+  stored=upgradeWorkspaceVisuals(current || JSON.parse(localStorage.getItem(storageKey)||'null'),initialTasks);
+}catch{}
 let tasks=Array.isArray(stored?.tasks)&&stored.tasks.every(t=>t.id&&Array.isArray(t.stages))?stored.tasks:clone(initialTasks);
 let messages=stored?.messages&&typeof stored.messages==='object'?stored.messages:clone(initialMessages);
 let contacts=clone(baseContacts);for(const c of contacts)if(!Array.isArray(messages[c.id]))messages[c.id]=clone(initialMessages[c.id]);
@@ -91,7 +107,21 @@ function openTaskControls(t){
  ${fold('سابقه کار',history)}</section>`,'',true);
 }
 function renderPublicProduct(){const p=publicProduct(factory,decodeURIComponent(ui.params[0]||''),decodeURIComponent(ui.params[1]||''));if(!p)return '<section class="op-page"><h1>استعلام محصول</h1><p>این بسته در داده نمونه پیدا نشد.</p></section>';return `<section class="op-page"><h1>${esc(p.title)}</h1><p dir="ltr">${esc(p.serial)}</p><div class="op-warning">${p.active?'رویداد بسته‌بندی فعال':'این بسته‌بندی باطل شده است؛ هویت خود محصول محفوظ است.'}</div><p>${esc(p.seal)}</p><p>خوانده‌نشدن تگ، به معنی تقلبی‌بودن فلز نیست؛ سلامت پلمب از این مسیر تأیید نشده است.</p><div class="report-fields"><span>وزن خود محصول <b>${grams(p.net)} گرم</b></span><span>وزن با بسته <b>${grams(p.gross)} گرم</b></span><span>عیار <b>${esc(p.purity)}</b></span></div>${[p.front,p.back].map(src=>`<img class="public-product-photo" src="${esc(src)}" alt="عکس همان بسته" data-action="view-image" data-src="${esc(src)}">`).join('')}<p>آخرین وضعیت این نمونه مرورگر است؛ استعلام آنلاین دائمی پس از اتصال سرور فعال می‌شود.</p></section>`;}
-function save(){capturePersonal();try{localStorage.setItem(storageKey,JSON.stringify({tasks,messages,notifications,financeRecords,factory,accounts:accountSpaces}));return true;}catch{toast('تغییرات فعلاً در همین صفحه باقی می‌مانند؛ فضای ذخیره مرورگر پر است.');return false;}}
+function save(){
+  capturePersonal();
+  const snapshot={tasks,financeRecords,factory,accounts:accountSpaces};
+  try{
+    if(!database){
+      localStorage.setItem(storageKey,JSON.stringify(snapshot));
+      return true;
+    }
+    const transaction=database.transaction('workspace','readwrite');
+    transaction.objectStore('workspace').put(snapshot,storageKey);
+    transaction.oncomplete=()=>{try{localStorage.removeItem(storageKey);}catch{}};
+    transaction.onabort=()=>toast('ذخیرهٔ تغییرات روی این دستگاه انجام نشد.');
+    return true;
+  }catch{toast('ذخیرهٔ تغییرات روی این دستگاه انجام نشد.');return false;}
+}
 function applyAppearance(){configureLocale(appearance.language||'fa','auto');setLanguage(appearance.language||'fa');document.documentElement.lang=appearance.language||'fa';document.documentElement.dir=appearance.language==='en'?'ltr':'rtl';document.documentElement.dataset.theme=appearance.theme==='dark'?'dark':'light';document.documentElement.style.setProperty('--font',appearance.font==='WorkspaceAlt'?'WorkspaceAlt':'Workspace');document.documentElement.style.setProperty('--font-size',`${appearance.size}px`);document.querySelector('meta[name="theme-color"]').content=appearance.theme==='dark'?'#090909':'#ffffff';try{localStorage.setItem(appearanceKey,JSON.stringify(appearance));}catch{}}
 function toast(text){const el=document.getElementById('toast');el.textContent=translate(text);el.classList.add('visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('visible'),3300);}
 function nav(route){chat.cancel();closeModal();ui.reply=null;if(location.hash!=='#/'+route)history.pushState(null,'','#/'+route);routeFromHash();render();}
