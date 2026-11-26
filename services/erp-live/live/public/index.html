@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f7f7f4">
+<title>پذیرش و تحویل | موریاتی</title><link rel="stylesheet" href="./live.css">
+<script type="module" src="./live.js"></script>
+</head>
+<body><header><b lang="en" dir="ltr">MORIYATI</b><span>فضای کار موریاتی</span><button id="logout" type="button" class="quiet" hidden>خروج</button></header>
+<main>
+<div id="checking" role="status">در حال اتصال به سرور…</div>
+<div id="failure" hidden><p id="failureText" role="alert"></p><button id="retry">تلاش دوباره</button></div>
+<section id="entry" hidden>
+<h1>ورود به فضای کار</h1>
+<form id="loginForm" class="panel">
+<label>حساب <select id="role"><option value="staff">انباردار</option><option value="manager">مدیر</option></select></label>
+<label>کد دسترسی <input id="code" type="password" autocomplete="current-password" required dir="ltr" autocapitalize="none" spellcheck="false"></label>
+<button class="primary">ورود</button><p id="loginMsg" class="error" role="alert" hidden></p>
+</form></section>
+<section id="desk" hidden>
+<div class="title"><div><div id="actor" class="muted"></div><h1>پذیرش و تحویل</h1></div><button class="primary" id="newReceipt" aria-expanded="false" aria-controls="receiptForm">ثبت پارت</button></div>
+<form class="panel" id="receiptForm" hidden>
+<h2>ثبت پارت جدید</h2>
+<label>شرح یا شماره پارت <input id="reference" required maxlength="240" placeholder="مثلاً شماره رسید تحویل‌دهنده"></label>
+<label>فلز <select id="metal"><option value="silver">نقره</option><option value="gold">طلا</option></select></label>
+<div class="pair">
+<label>وزن (گرم) <input id="mass" inputmode="decimal" dir="ltr" required></label>
+<label>عیار (در هزار) <input id="purity" inputmode="decimal" dir="ltr" placeholder="نامشخص"></label>
+</div>
+<label>عکس پارت (اختیاری) <input id="photo" type="file" accept="image/jpeg,image/png,image/webp"><small>تصویر JPG، PNG یا WebP، حداکثر ۴ مگابایت</small></label>
+<p class="muted">گیرنده بهنام است. مدیر هوشمند این تحویل را خودکار تأیید می‌کند.</p>
+<div class="actions"><button class="primary">ثبت و تحویل</button><button type="button" id="cancel">بستن</button></div>
+<p class="error" id="formMsg" role="alert" hidden></p>
+</form>
+<p id="notice" role="status" hidden></p>
+<div class="title listTitle"><h2>رسیدهای ثبت‌شده</h2><button type="button" id="refresh" class="quiet">به‌روزرسانی</button></div>
+<p id="listMsg" role="status" class="muted"></p><div id="receipts"></div>
+</section>
+</main></body></html>
