@@ -121,10 +121,7 @@ img[src*="visuals/"]{object-fit:contain}
 .behnam-portrait{display:block;flex:none;aspect-ratio:1}
 .behnam-portrait img{display:block;width:100%;height:100%;object-fit:contain}
 .behnam-launch .behnam-portrait{width:68px}
-.chat-panel .chat-head:has(.behnam-portrait){height:auto;min-height:min(84px,19dvh);padding-block:3px;gap:clamp(3px,1.6vw,10px)}
-.chat-head .behnam-portrait{width:clamp(58px,18vw,76px);max-width:16dvh}
-.chat-head:has(.behnam-portrait) .chat-head-actions{margin:0;margin-inline-start:auto}
-.behnam-chat-intro{display:grid;place-items:center;flex:none;padding-block:4px;background:var(--chat-bg,var(--bg));pointer-events:none}
-.behnam-chat-intro .behnam-portrait{width:min(112px,15dvh,37vw)}
-.behnam-chat-intro.is-empty .behnam-portrait{width:min(240px,33dvh,64vw)}
+.chat-panel .chat-head:has(.behnam-portrait){direction:rtl;height:auto;min-height:min(84px,19dvh);padding-block:3px;gap:clamp(3px,1.6vw,10px)}
+.chat-head .behnam-portrait{width:clamp(70px,21vw,88px);max-width:19dvh}
+.chat-head:has(.behnam-portrait) .chat-head-actions{margin:0 auto 0 0}
 .behnam-launch span{padding:3px 9px;border-radius:12px;background:#193a34;color:white;font-size:11px}.behnam-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:4px 12px}.behnam-controls button,.behnam-controls select{font:inherit;font-size:12px}.behnam-controls small{opacity:.8}

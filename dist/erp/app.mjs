@@ -4,7 +4,7 @@ import {managerHome} from './manager-home.mjs';
 import { workshop,normalizeWorkshopProcesses } from './workshop.mjs';
 import {setLanguage,translate,localizeDOM,installGuidance} from './locale.mjs?v=3';
 import {personalRecords,renderPersonalDetails} from './personal.mjs?v=3';
-import {messenger} from './messenger.mjs?v=4';
+import {messenger} from './messenger.mjs?v=5';
 import {products,createMarkup,captureTaskForm,reportMarkup,structuredReport} from './task-ui.mjs?v=3';
 import {roles as accountRoles,capabilities,isManagement,isHR,canViewTask,canManageTask,canReport,canSeeNotification,normalizeTasks} from './policy.mjs?v=3';
 import {hydrateFactory,transition,routeTemplates,statusNames,certaintyNames,numberOrNull,uid,startBlockers,taskInvitations,publicProduct,today} from './factory-entry-model.mjs?v=3';
